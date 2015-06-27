@@ -10,6 +10,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var measurements = require('./routes/measurements');
 
+var rcon = require('./controllers/rethinkConnection');
+
 var app = express();
 
 // view engine setup
