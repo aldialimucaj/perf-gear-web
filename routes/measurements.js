@@ -25,18 +25,29 @@ router.post('/', dbChecker, function(req, res) {
 
 /* ========================================================================== */
 
-/* GET measurement fetching */
+/* GET measurements fetching */
 router.get('/', dbChecker, function(req, res) {
   var reql = r.table('measurements');
   // add skip
   if (req.query.skip && parseInt(req.query.skip)) reql = reql.skip(parseInt(req.query.skip));
-    // add limit
+  // add limit
   if (req.query.limit && parseInt(req.query.limit)) reql = reql.limit(parseInt(req.query.limit));
 
   reql.run(rcon.conn, function(err, cursor) {
     cursor.toArray(function(err, result) {
       forwarder(res, err, result)
     });
+  })
+});
+
+/* ========================================================================== */
+
+/* GET single measurement fetching */
+router.get('/:id', dbChecker, function(req, res) {
+  var reql = r.table('measurements').get(req.params.id);
+
+  reql.run(rcon.conn, function(err, result) {
+    forwarder(res, err, result)
   })
 });
 

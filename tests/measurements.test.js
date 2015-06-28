@@ -86,4 +86,41 @@ describe("Measurements", function() {
         .expect(200, done);
     });
   });
+
+  /* ======================================================================== */
+
+  describe(" / GET measurement (one)", function() {
+    var id = null;
+    // adding new measurement
+    it("create test measurement", function(done) {
+      request(app)
+        .post('/measurements')
+        .set('Accept', 'application/json')
+        .send({
+          path: 'measurements/tests/get/id'
+        })
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end(function(err, res) {
+          if (err) return done(err);
+          id = res.body.content.generated_keys[0];
+          console.log(res.body);
+          done();
+        });
+    });
+
+    it("should return one measurement", function(done) {
+      request(app)
+        .get('/measurements/' + id)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err);
+          expect(res.body.ok).eq(true);
+          expect(res.body.content.id).eq(id);
+          done()
+        });
+    });
+  });
 });
