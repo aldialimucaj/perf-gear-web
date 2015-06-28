@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "iojs"
+before_install:
+  - sudo add-apt-repository ppa:rethinkdb/ppa -y
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq rethinkdb
+
+before_script:
+    - rethinkdb --daemon
+
+env:
+  - NODE_ENV=test
