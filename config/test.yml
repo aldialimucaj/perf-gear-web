@@ -1,4 +1,4 @@
 Database:
   host: localhost
-  db: dev
+  db: test
   port: 28015
