@@ -28,6 +28,62 @@ describe("Measurements", function() {
           expect(res.body.err).eq('Measurement payload was empty');
           done()
         });
-    })
+    });
+  });
+  /* ======================================================================== */
+  describe(" / GET measurements (many)", function() {
+    it("should return all measurements", function(done) {
+      request(app)
+        .get('/measurements')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, done);
+    });
+
+    it("should return only one measurement", function(done) {
+      request(app)
+        .get('/measurements')
+        .set('Accept', 'application/json')
+        .query({
+          limit: 1
+        })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err);
+          expect(res.body.ok).eq(true);
+          expect(res.body.content.length).eq(1);
+          done()
+        });
+    });
+
+    it("should return only three measurements", function(done) {
+      request(app)
+        .get('/measurements')
+        .set('Accept', 'application/json')
+        .query({
+          limit: 3
+        })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err);
+          expect(res.body.ok).eq(true);
+          expect(res.body.content.length).eq(3);
+          done()
+        });
+    });
+
+    // this test needs static fixtures to work. To be added!
+    it("should skip some measurements", function(done) {
+      request(app)
+        .get('/measurements')
+        .set('Accept', 'application/json')
+        .query({
+          skip: 3
+        })
+        .expect('Content-Type', /json/)
+        .expect(200, done);
+    });
   });
 });

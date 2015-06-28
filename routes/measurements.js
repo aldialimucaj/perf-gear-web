@@ -8,23 +8,13 @@ var rcon = require('../controllers/rethinkConnection');
 
 
 /* POST measurement posting */
-router.post('/', function(req, res, next) {
+router.post('/', dbChecker, function(req, res) {
   l.info(req.body);
   if (!_.isEmpty(req.body)) {
-    if (rcon.conn) {
-      r.table('measurements').insert(req.body)
-        .run(rcon.conn, function(err, result) {
-          res.status(201).send({
-            ok: true,
-            body: result
-          });
-        })
-    } else {
-      l.error('DB Connection not ready');
-      res.status(200).send({
-        ok: false
-      });
-    }
+    r.table('measurements').insert(req.body)
+      .run(rcon.conn, function(err, result) {
+        forwarder(res, err, result, 201);
+      })
   } else {
     res.status(200).send({
       ok: false,
@@ -32,5 +22,49 @@ router.post('/', function(req, res, next) {
     });
   }
 });
+
+/* ========================================================================== */
+
+/* GET measurement fetching */
+router.get('/', dbChecker, function(req, res) {
+  var reql = r.table('measurements');
+  // add skip
+  if (req.query.skip && parseInt(req.query.skip)) reql = reql.skip(parseInt(req.query.skip));
+    // add limit
+  if (req.query.limit && parseInt(req.query.limit)) reql = reql.limit(parseInt(req.query.limit));
+
+  reql.run(rcon.conn, function(err, cursor) {
+    cursor.toArray(function(err, result) {
+      forwarder(res, err, result)
+    });
+  })
+});
+
+/* ========================================================================== */
+
+function forwarder(res, err, result, statusCode) {
+  if (!err) {
+    res.status(statusCode || 200).send({
+      ok: true,
+      content: result
+    });
+  } else {
+    res.status(200).send({
+      ok: false,
+      err: err
+    });
+  }
+}
+
+function dbChecker(req, res, next) {
+  if (rcon.conn) {
+    next();
+  } else {
+    l.error('DB Connection not ready');
+    res.status(200).send({
+      ok: false
+    });
+  }
+}
 
 module.exports = router;
