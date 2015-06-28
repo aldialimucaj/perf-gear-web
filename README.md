@@ -1,11 +1,14 @@
-# perf-gera-web
+# perf-gear-web
+[![Build Status](https://travis-ci.org/aldialimucaj/perf-gear-web.svg)](https://travis-ci.org/aldialimucaj/perf-gear-web)
+
+PefGear Web is the presentation side of the PerfGear framework. This project takes care of previewing the data through a convenient and easy to customize platform.
+
 
 # Repository installation
 
-npm install -g express
-npm install express-generator -g
+npm install
 
-## Required by Code
-npm install tsd@next -g
-tsd install node
-tsd install express
+## Required
+sudo add-apt-repository ppa:rethinkdb/ppa -y
+sudo apt-get update -qq
+sudo apt-get install rethinkdb -y
