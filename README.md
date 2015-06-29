@@ -12,3 +12,7 @@ npm install
 sudo add-apt-repository ppa:rethinkdb/ppa -y
 sudo apt-get update -qq
 sudo apt-get install rethinkdb -y
+
+## Development
+npm install gulp -g
+npm install --save-dev gulp gulp-util gulp-react gulp-nodemon

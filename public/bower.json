@@ -1,0 +1,28 @@
+{
+  "name": "PerfGear Web",
+  "version": "0.0.1",
+  "homepage": "https://github.com/aldialimucaj/perf-gear-web",
+  "authors": [
+    "Aldi Alimucaj <aldi.alimucaj@gmail.com>"
+  ],
+  "description": "Web Interface for PerfGear",
+  "main": "index.html",
+  "keywords": [
+    "perf-gear",
+    "PerfGear",
+    "performance",
+    "analytics"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.13.3",
+    "jquery": "~2.1.4"
+  }
+}
