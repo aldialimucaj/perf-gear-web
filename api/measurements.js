@@ -34,9 +34,10 @@ router.get('/', dbChecker, function(req, res) {
   if (req.query.limit && parseInt(req.query.limit)) reql = reql.limit(parseInt(req.query.limit));
 
   reql.run(rcon.conn, function(err, cursor) {
-    cursor.toArray(function(err, result) {
+    if (cursor) cursor.toArray(function(err, result) {
       forwarder(res, err, result)
     });
+    else forwarder(res, err, []);
   })
 });
 
