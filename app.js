@@ -8,7 +8,10 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var measurements = require('./api/measurements');
+var measurements = require('./routes/measurements');
+
+/* API */
+var apiMeasurements = require('./api/measurements');
 
 var rcon = require('./controllers/rethinkConnection');
 
@@ -26,11 +29,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+/* Routes */
 app.use('/', routes);
 app.use('/users', users);
+app.use('/measurements', measurements);
 
 /* API Routes */
-app.use('/api/measurements', measurements);
+app.use('/api/measurements', apiMeasurements);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
