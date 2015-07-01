@@ -16,6 +16,7 @@
     "js-yaml": "^3.3.1",
     "lodash": "^3.9.3",
     "morgan": "~1.5.3",
+    "react": "^0.13.3",
     "rethinkdb": "^2.0.2",
     "serve-favicon": "~2.2.1",
     "winston": "^1.0.1"

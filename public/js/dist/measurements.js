@@ -12,9 +12,10 @@ var MeasurementTablePagination = React.createClass({displayName: "MeasurementTab
 
 var MeasurementNode = React.createClass({displayName: "MeasurementNode",
   render: function() {
+    var itemHref = "/measurements/"+this.props.data.id;
     return (
       React.createElement("tr", null, 
-        React.createElement("td", null, this.props.data.id), 
+        React.createElement("td", null, React.createElement("a", {href: itemHref}, this.props.data.id)), 
         React.createElement("td", null, this.props.data.path)
       )
     );
@@ -25,7 +26,7 @@ var MeasurementNode = React.createClass({displayName: "MeasurementNode",
 var MeasurementTable = React.createClass({displayName: "MeasurementTable",
   render: function() {
     if(this.props.data) {
-      var measurementNodes = this.props.data.content.map(function (measurement) {
+      var measurementNodes = this.props.data.map(function (measurement) {
         return (
           React.createElement(MeasurementNode, {key: measurement.id, data: measurement})
         );
@@ -49,7 +50,7 @@ var MeasurementTable = React.createClass({displayName: "MeasurementTable",
 
 var MeasurementBox = React.createClass({displayName: "MeasurementBox",
   getInitialState: function() {
-    return {data: {content:[]}, skip: 0, limit: 0};
+    return {data: [], skip: 0, limit: 0};
   },
 
   componentDidMount: function() {
@@ -68,8 +69,9 @@ var MeasurementBox = React.createClass({displayName: "MeasurementBox",
     );
   }
 });
-React.render(
 
+// Render
+React.render(
   React.createElement(MeasurementBox, {url: "/api/measurements"}),
   document.getElementById('content')
 );
