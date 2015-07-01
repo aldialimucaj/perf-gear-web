@@ -3,8 +3,20 @@ var pgUtils = new PGUtils();
 var MeasurementTablePagination = React.createClass({displayName: "MeasurementTablePagination",
   render: function() {
     return (
-      React.createElement("div", {className: "measurementTablePagination"}, 
-        "Pagination"
+      React.createElement("tfoot", null, 
+        React.createElement("tr", null, 
+          React.createElement("th", {colSpan: "2"}, 
+          React.createElement("div", {className: "ui right floated pagination menu"}, 
+            React.createElement("a", {className: "icon item"}, 
+              React.createElement("i", {className: "left chevron icon"})
+            ), 
+            React.createElement("a", {className: "item"}, "1"), 
+            React.createElement("a", {className: "icon item"}, 
+              React.createElement("i", {className: "right chevron icon"})
+            )
+          )
+          )
+      )
       )
     );
   }
@@ -12,10 +24,11 @@ var MeasurementTablePagination = React.createClass({displayName: "MeasurementTab
 
 var MeasurementNode = React.createClass({displayName: "MeasurementNode",
   render: function() {
+    var shortId = this.props.data.id.substr(-5);
     var itemHref = "/measurements/"+this.props.data.id;
     return (
       React.createElement("tr", null, 
-        React.createElement("td", null, React.createElement("a", {href: itemHref}, this.props.data.id)), 
+        React.createElement("td", null, React.createElement("a", {href: itemHref}, shortId)), 
         React.createElement("td", null, this.props.data.path)
       )
     );
@@ -36,7 +49,13 @@ var MeasurementTable = React.createClass({displayName: "MeasurementTable",
     return (
       React.createElement("div", {className: "measurementTable"}, 
         "Measurement Table", 
-        React.createElement("table", {className: "ui table"}, 
+        React.createElement("table", {className: "ui celled striped table"}, 
+          React.createElement("thead", null, 
+            React.createElement("tr", null, 
+              React.createElement("th", null, "#ID"), 
+              React.createElement("th", null, "Path")
+            )
+          ), 
         React.createElement("tbody", null, 
           measurementNodes
         )

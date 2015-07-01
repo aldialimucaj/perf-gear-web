@@ -3,19 +3,32 @@ var pgUtils = new PGUtils();
 var MeasurementTablePagination = React.createClass({
   render: function() {
     return (
-      <div className="measurementTablePagination">
-        Pagination
-      </div>
+      <tfoot>
+        <tr>
+          <th colSpan="2">
+          <div className="ui right floated pagination menu">
+            <a className="icon item">
+              <i className="left chevron icon"></i>
+            </a>
+            <a className="item">1</a>
+            <a className="icon item">
+              <i className="right chevron icon"></i>
+            </a>
+          </div>
+          </th>
+      </tr>
+      </tfoot>
     );
   }
 });
 
 var MeasurementNode = React.createClass({
   render: function() {
+    var shortId = this.props.data.id.substr(-5);
     var itemHref = "/measurements/"+this.props.data.id;
     return (
       <tr>
-        <td><a href={itemHref}>{this.props.data.id}</a></td>
+        <td><a href={itemHref}>{shortId}</a></td>
         <td>{this.props.data.path}</td>
       </tr>
     );
@@ -36,7 +49,13 @@ var MeasurementTable = React.createClass({
     return (
       <div className="measurementTable">
         Measurement Table
-        <table className="ui table">
+        <table className="ui celled striped table">
+          <thead>
+            <tr>
+              <th>#ID</th>
+              <th>Path</th>
+            </tr>
+          </thead>
         <tbody>
           {measurementNodes}
         </tbody>
