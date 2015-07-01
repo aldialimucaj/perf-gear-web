@@ -6,6 +6,12 @@ var gmon = require('gulp-nodemon');
 gulp.task('default', function () {
   gulp.run('start');
   gulp.run('react');
+  gulp.run('scripts');
+});
+
+gulp.task('scripts', function () {
+  return gulp.src('./public/js/src/**/*.js')
+      .pipe(gulp.dest('./public/js/dist'));
 });
 
 gulp.task('react', function () {
@@ -24,4 +30,8 @@ gulp.task('start', function () {
 
 gulp.watch('./public/js/src/**/*.jsx', function () {
      gulp.run('react');
+});
+
+gulp.watch('./public/js/src/**/*.js', function () {
+     gulp.run('scripts');
 });
