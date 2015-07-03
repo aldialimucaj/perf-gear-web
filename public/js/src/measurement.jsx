@@ -9,8 +9,55 @@ var MeasurementPreview = React.createClass({
       </div>
     );
   }
-
 });
+
+var GraphKey = React.createClass({
+  render: function(){
+    var keys = [];
+    if(this.props.measurement) {
+      var index = 0;
+      keys = Object.keys(this.props.measurement).map(function(key){
+        return(<option key={index++}>{key}</option>)
+      });
+    }
+
+    return (
+      <div>{this.props.axisTitle}
+      <select>{keys}</select>
+      </div>
+    );
+  }
+});
+
+var GraphConfiguration = React.createClass({
+  buildGraph: function (argument) {
+    pgUtils.buildTestGraph();
+  },
+
+  render: function() {
+    return (
+      <div className="graphConfiguration">
+        GraphConfiguration
+        <div>
+        <GraphKey measurement={this.props.data} axisTitle="X Axis"/>
+        <GraphKey measurement={this.props.data} axisTitle="Y Axis"/>
+        </div>
+        <button onClick={this.buildGraph}>TestGraph</button>
+      </div>
+    );
+  }
+});
+
+var GraphPreview = React.createClass({
+  render: function() {
+    return (
+      <div className="GraphPreview">
+        GraphPreview
+      </div>
+    );
+  }
+});
+
 
 var MeasurementBox = React.createClass({
   getInitialState: function() {
@@ -30,6 +77,8 @@ var MeasurementBox = React.createClass({
       <div className="measurementBox">
         Single Measurement {this.state.measurementId}
         <MeasurementPreview data={this.state.measurement} />
+        <GraphConfiguration data={this.state.measurement} />
+        <GraphPreview data={this.state.measurement} />
       </div>
     );
   }
