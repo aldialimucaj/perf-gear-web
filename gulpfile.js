@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var react = require('gulp-react');
 var gmon = require('gulp-nodemon');
+var babel = require('gulp-babel');
 
 gulp.task('default', function () {
   gulp.run('start');
@@ -16,7 +16,7 @@ gulp.task('scripts', function () {
 
 gulp.task('react', function () {
     return gulp.src('./public/js/src/**/*.jsx')
-        .pipe(react())
+        .pipe(babel())
         .pipe(gulp.dest('./public/js/dist'));
 });
 

@@ -22,8 +22,9 @@ var GraphKey = React.createClass({
     }
 
     return (
-      <div>{this.props.axisTitle}
-      <select>{keys}</select>
+      <div className="field">
+        <label>{this.props.axisTitle}</label>
+        <select className="ui select dropdown">{keys}</select>
       </div>
     );
   }
@@ -38,9 +39,11 @@ var GraphConfiguration = React.createClass({
     return (
       <div className="graphConfiguration">
         GraphConfiguration
-        <div>
-        <GraphKey measurement={this.props.data} axisTitle="X Axis"/>
-        <GraphKey measurement={this.props.data} axisTitle="Y Axis"/>
+        <div className="ui form">
+          <div className="two fields">
+            <GraphKey measurement={this.props.data} axisTitle="X Axis"/>
+            <GraphKey measurement={this.props.data} axisTitle="Y Axis"/>
+          </div>
         </div>
         <button onClick={this.buildGraph}>TestGraph</button>
       </div>
