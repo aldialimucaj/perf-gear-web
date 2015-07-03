@@ -23,8 +23,28 @@ var GraphKey = React.createClass({
 
     return (
       <div className="field">
-        <label>{this.props.axisTitle}</label>
-        <select className="ui select dropdown">{keys}</select>
+        <label>{this.props.label}</label>
+        <select className="ui select dropdown">
+          <option></option>
+          {keys}
+        </select>
+      </div>
+    );
+  }
+});
+
+var GraphType = React.createClass({
+  render: function(){
+    var types = ['bar'];
+    var index = 0;
+    var _selectTypes = types.map(function(type){
+      return(<option key={index++}>{type}</option>)
+    });
+
+    return (
+      <div className="field">
+        <label>{this.props.label}</label>
+        <select className="ui select dropdown">{_selectTypes}</select>
       </div>
     );
   }
@@ -38,14 +58,14 @@ var GraphConfiguration = React.createClass({
   render: function() {
     return (
       <div className="graphConfiguration">
-        GraphConfiguration
         <div className="ui form">
-          <div className="two fields">
-            <GraphKey measurement={this.props.data} axisTitle="X Axis"/>
-            <GraphKey measurement={this.props.data} axisTitle="Y Axis"/>
+          <div className="three fields">
+            <GraphType label="Graph Type"/>
+            <GraphKey measurement={this.props.data} label="X Axis"/>
+            <GraphKey measurement={this.props.data} label="Y Axis"/>
           </div>
+        <button className="ui primary button centered" onClick={this.buildGraph}>Build Graph</button>
         </div>
-        <button onClick={this.buildGraph}>TestGraph</button>
       </div>
     );
   }
@@ -55,7 +75,7 @@ var GraphPreview = React.createClass({
   render: function() {
     return (
       <div className="GraphPreview">
-        GraphPreview
+
       </div>
     );
   }
@@ -78,10 +98,9 @@ var MeasurementBox = React.createClass({
   render: function() {
     return (
       <div className="measurementBox">
-        Single Measurement {this.state.measurementId}
-        <MeasurementPreview data={this.state.measurement} />
         <GraphConfiguration data={this.state.measurement} />
         <GraphPreview data={this.state.measurement} />
+        <MeasurementPreview data={this.state.measurement} />
       </div>
     );
   }

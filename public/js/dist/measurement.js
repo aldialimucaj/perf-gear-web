@@ -41,12 +41,44 @@ var GraphKey = React.createClass({
       React.createElement(
         "label",
         null,
-        this.props.axisTitle
+        this.props.label
       ),
       React.createElement(
         "select",
         { className: "ui select dropdown" },
+        React.createElement("option", null),
         keys
+      )
+    );
+  }
+});
+
+var GraphType = React.createClass({
+  displayName: "GraphType",
+
+  render: function render() {
+    var types = ["bar"];
+    var index = 0;
+    var _selectTypes = types.map(function (type) {
+      return React.createElement(
+        "option",
+        { key: index++ },
+        type
+      );
+    });
+
+    return React.createElement(
+      "div",
+      { className: "field" },
+      React.createElement(
+        "label",
+        null,
+        this.props.label
+      ),
+      React.createElement(
+        "select",
+        { className: "ui select dropdown" },
+        _selectTypes
       )
     );
   }
@@ -63,21 +95,21 @@ var GraphConfiguration = React.createClass({
     return React.createElement(
       "div",
       { className: "graphConfiguration" },
-      "GraphConfiguration",
       React.createElement(
         "div",
         { className: "ui form" },
         React.createElement(
           "div",
-          { className: "two fields" },
-          React.createElement(GraphKey, { measurement: this.props.data, axisTitle: "X Axis" }),
-          React.createElement(GraphKey, { measurement: this.props.data, axisTitle: "Y Axis" })
+          { className: "three fields" },
+          React.createElement(GraphType, { label: "Graph Type" }),
+          React.createElement(GraphKey, { measurement: this.props.data, label: "X Axis" }),
+          React.createElement(GraphKey, { measurement: this.props.data, label: "Y Axis" })
+        ),
+        React.createElement(
+          "button",
+          { className: "ui primary button centered", onClick: this.buildGraph },
+          "Build Graph"
         )
-      ),
-      React.createElement(
-        "button",
-        { onClick: this.buildGraph },
-        "TestGraph"
       )
     );
   }
@@ -87,11 +119,7 @@ var GraphPreview = React.createClass({
   displayName: "GraphPreview",
 
   render: function render() {
-    return React.createElement(
-      "div",
-      { className: "GraphPreview" },
-      "GraphPreview"
-    );
+    return React.createElement("div", { className: "GraphPreview" });
   }
 });
 
@@ -114,11 +142,9 @@ var MeasurementBox = React.createClass({
     return React.createElement(
       "div",
       { className: "measurementBox" },
-      "Single Measurement ",
-      this.state.measurementId,
-      React.createElement(MeasurementPreview, { data: this.state.measurement }),
       React.createElement(GraphConfiguration, { data: this.state.measurement }),
-      React.createElement(GraphPreview, { data: this.state.measurement })
+      React.createElement(GraphPreview, { data: this.state.measurement }),
+      React.createElement(MeasurementPreview, { data: this.state.measurement })
     );
   }
 });
