@@ -17,7 +17,7 @@ var GraphKey = React.createClass({
     if(this.props.measurement) {
       var index = 0;
       keys = Object.keys(this.props.measurement).map(function(key){
-        return(<option key={index++}>{key}</option>)
+        return(<option value={key} key={index++}>{key}</option>)
       });
     }
 
@@ -35,10 +35,10 @@ var GraphKey = React.createClass({
 
 var GraphType = React.createClass({
   render: function(){
-    var types = ['bar'];
+    var types = ['bar', 'line'];
     var index = 0;
     var _selectTypes = types.map(function(type){
-      return(<option key={index++}>{type}</option>)
+      return(<option value={type} key={index++}>{type}</option>)
     });
 
     return (
