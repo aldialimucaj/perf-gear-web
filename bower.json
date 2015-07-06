@@ -25,6 +25,7 @@
     "react": "~0.13.3",
     "jquery": "~2.1.4",
     "semantic-ui": "~2.0.0",
-    "echarts": "~2.2.5"
+    "echarts": "~2.2.5",
+    "reflux": "~0.2.8"
   }
 }

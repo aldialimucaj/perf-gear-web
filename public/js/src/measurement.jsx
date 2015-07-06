@@ -34,6 +34,11 @@ var GraphKey = React.createClass({
 });
 
 var GraphType = React.createClass({
+  handleTypeChange: function(event) {
+    console.log("Handling change in GraphType");
+    MeasurementActions.selectChart(1);
+  },
+
   render: function(){
     var types = ['bar', 'line'];
     var index = 0;
@@ -44,7 +49,7 @@ var GraphType = React.createClass({
     return (
       <div className="field">
         <label>{this.props.label}</label>
-        <select className="ui select dropdown">{_selectTypes}</select>
+        <select className="ui select dropdown" onChange={this.handleTypeChange}>{_selectTypes}</select>
       </div>
     );
   }
@@ -83,6 +88,8 @@ var GraphPreview = React.createClass({
 
 
 var MeasurementBox = React.createClass({
+  mixins: [Reflux.connect(measurementStore,"measurement")],
+
   getInitialState: function() {
     return {measurementId: 0};
   },
