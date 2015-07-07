@@ -14,7 +14,7 @@ router.post('/', dbChecker, function(req, res) {
     r.table('measurements').insert(req.body)
       .run(rcon.conn, function(err, result) {
         forwarder(res, err, result, 201);
-      })
+      });
   } else {
     res.status(200).send({
       ok: false,
@@ -38,7 +38,7 @@ router.get('/', dbChecker, function(req, res) {
       forwarder(res, err, result)
     });
     else forwarder(res, err, []);
-  })
+  });
 });
 
 /* ========================================================================== */

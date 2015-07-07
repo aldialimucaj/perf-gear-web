@@ -14,13 +14,11 @@ var measurementStore = Reflux.createStore({
   onSelectAxis: function (optionId, value) {
     this.options[optionId] = value;
     this.updateOptions(this.options);
-    console.log(this.options);
   },
 
   onSelectChart: function(arg) {
     this.options.type = arg;
     this.updateOptions(this.options);
-    console.log(this.options);
   },
 
   updateOptions: function(obj){

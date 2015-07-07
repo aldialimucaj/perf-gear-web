@@ -1,7 +1,7 @@
 // pg_utils.js
 
 function PGUtils() {
-
+  // constructor
 }
 
 /** Fetch data from database
@@ -124,10 +124,14 @@ PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
 };
 
 
+/** Create options from measurement and selection and build graph
+ * 
+ */
 PGUtils.prototype.buildGraphFromSingle = function(measurement, selection) {
   var options = this.buildOptionsFromSingle(measurement, selection);
   this.buildGraph(selection.type, options);
 }
+
 
 /** Build a test graph -- DELETE
  *

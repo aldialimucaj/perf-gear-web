@@ -75,9 +75,7 @@ var GraphConfiguration = React.createClass({
   mixins: [Reflux.connect(measurementStore,"options")],
 
   buildGraph: function (argument) {
-    //pgUtils.buildTestGraph();
     pgUtils.buildGraphFromSingle(this.props.data, this.state.options);
-    console.log(this.state.options);
   },
 
   render: function() {
@@ -116,8 +114,8 @@ var MeasurementBox = React.createClass({
 
   componentDidMount: function() {
     var self = this;
-    self.setState({measurementId: params.measurement.id});
-    pgUtils.fetchOneMeasurementById(params.measurement.id, function (err, data) {
+    self.setState({measurementId: params.id});
+    pgUtils.fetchOneMeasurementById(params.id, function (err, data) {
       self.setState({measurement: data});
     });
   },
@@ -128,7 +126,7 @@ var MeasurementBox = React.createClass({
         <GraphConfiguration data={this.state.measurement} options={this.state.options} />
         <GraphPreview data={this.state.measurement} options={this.state.options}/>
         <MeasurementPreview data={this.state.measurement} options={this.state.options}/>
-        {JSON.stringify(this.state)}
+         {/*JSON.stringify(this.state)*/} 
       </div>
     );
   }

@@ -3,7 +3,7 @@ extends layout
 block content
   script.
     var params = {};
-    params.measurement = {id: "#{measurement.id}"};
+    params = !{JSON.stringify(params)};
   #content
   #chart.graph-content
   script(src="/bower_components/reflux/dist/reflux.js")
