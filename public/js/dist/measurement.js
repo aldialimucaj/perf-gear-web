@@ -69,7 +69,6 @@ var GraphType = React.createClass({
   },
 
   handleTypeChange: function handleTypeChange(arg) {
-    console.log("Handling change in GraphType");
     MeasurementActions.selectChart(arg.target.value);
   },
 
@@ -87,7 +86,6 @@ var GraphType = React.createClass({
     return React.createElement(
       "div",
       { className: "field" },
-      JSON.stringify(this.state),
       React.createElement(
         "label",
         null,
@@ -109,9 +107,9 @@ var GraphConfiguration = React.createClass({
   mixins: [Reflux.connect(measurementStore, "options")],
 
   buildGraph: function buildGraph(argument) {
-    pgUtils.buildTestGraph();
+    //pgUtils.buildTestGraph();
+    pgUtils.buildGraphFromSingle(this.props.data, this.state.options);
     console.log(this.state.options);
-    MeasurementActions.selectChart("test");
   },
 
   render: function render() {
@@ -167,7 +165,6 @@ var MeasurementBox = React.createClass({
     return React.createElement(
       "div",
       { className: "measurementBox" },
-      JSON.stringify(this.state.options),
       React.createElement(GraphConfiguration, { data: this.state.measurement, options: this.state.options }),
       React.createElement(GraphPreview, { data: this.state.measurement, options: this.state.options }),
       React.createElement(MeasurementPreview, { data: this.state.measurement, options: this.state.options }),
