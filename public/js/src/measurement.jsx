@@ -12,6 +12,15 @@ var MeasurementPreview = React.createClass({
 });
 
 var GraphKey = React.createClass({
+
+  getInitialState: function() {
+    return {};
+  },
+
+  handleChange: function (arg) {
+    MeasurementActions.selectAxis(this.props.optionId, arg.target.value)
+  },
+
   render: function(){
     var keys = [];
     if(this.props.measurement) {
@@ -24,7 +33,7 @@ var GraphKey = React.createClass({
     return (
       <div className="field">
         <label>{this.props.label}</label>
-        <select className="ui select dropdown">
+        <select onChange={this.handleChange} className="ui select dropdown">
           <option></option>
           {keys}
         </select>
@@ -34,30 +43,43 @@ var GraphKey = React.createClass({
 });
 
 var GraphType = React.createClass({
-  handleTypeChange: function(event) {
+
+  getInitialState: function() {
+    return {graphType: null};
+  },
+
+  handleTypeChange: function(arg) {
     console.log("Handling change in GraphType");
-    MeasurementActions.selectChart(1);
+    MeasurementActions.selectChart(arg.target.value);
   },
 
   render: function(){
     var types = ['bar', 'line'];
     var index = 0;
     var _selectTypes = types.map(function(type){
-      return(<option value={type} key={index++}>{type}</option>)
+      return (<option value={type} key={index++}>{type}</option>)
     });
 
     return (
       <div className="field">
+        {JSON.stringify(this.state)}
         <label>{this.props.label}</label>
-        <select className="ui select dropdown" onChange={this.handleTypeChange}>{_selectTypes}</select>
+        <select className="ui select dropdown" onChange={this.handleTypeChange}>
+          <option></option>
+          {_selectTypes}
+        </select>
       </div>
     );
   }
 });
 
 var GraphConfiguration = React.createClass({
+  mixins: [Reflux.connect(measurementStore,"options")],
+
   buildGraph: function (argument) {
     pgUtils.buildTestGraph();
+    console.log(this.state.options);
+    MeasurementActions.selectChart("test");
   },
 
   render: function() {
@@ -66,8 +88,8 @@ var GraphConfiguration = React.createClass({
         <div className="ui form">
           <div className="three fields">
             <GraphType label="Graph Type"/>
-            <GraphKey measurement={this.props.data} label="X Axis"/>
-            <GraphKey measurement={this.props.data} label="Y Axis"/>
+            <GraphKey measurement={this.props.data} optionId="xAxis" label="X Axis"/>
+            <GraphKey measurement={this.props.data} optionId="yAxis" label="Y Axis"/>
           </div>
         <button className="ui primary button centered" onClick={this.buildGraph}>Build Graph</button>
         </div>
@@ -88,7 +110,7 @@ var GraphPreview = React.createClass({
 
 
 var MeasurementBox = React.createClass({
-  mixins: [Reflux.connect(measurementStore,"measurement")],
+  mixins: [Reflux.connect(measurementStore,"options")],
 
   getInitialState: function() {
     return {measurementId: 0};
@@ -105,9 +127,11 @@ var MeasurementBox = React.createClass({
   render: function() {
     return (
       <div className="measurementBox">
-        <GraphConfiguration data={this.state.measurement} />
-        <GraphPreview data={this.state.measurement} />
-        <MeasurementPreview data={this.state.measurement} />
+        {JSON.stringify(this.state.options)}
+        <GraphConfiguration data={this.state.measurement} options={this.state.options} />
+        <GraphPreview data={this.state.measurement} options={this.state.options}/>
+        <MeasurementPreview data={this.state.measurement} options={this.state.options}/>
+        {JSON.stringify(this.state)}
       </div>
     );
   }
