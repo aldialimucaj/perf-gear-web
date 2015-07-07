@@ -11,3 +11,7 @@ a {
 .graph-content {
   height: 45em;
 }
+
+.ui.styled.accordion.full-width {
+  width: 100%;
+}
