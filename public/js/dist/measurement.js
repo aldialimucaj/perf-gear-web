@@ -12,7 +12,7 @@ var MeasurementPreview = React.createClass({
       { className: "ui styled accordion full-width" },
       React.createElement(
         "div",
-        { className: "active title" },
+        { className: "title" },
         React.createElement("i", { className: "dropdown icon" }),
         "JSON content"
       ),
@@ -120,7 +120,13 @@ var GraphConfiguration = React.createClass({
 
   mixins: [Reflux.connect(measurementStore, "options")],
 
+  willBuildGraph: function willBuildGraph() {
+    // add class to set element height needed by echarts
+    $("#chart").addClass("graph-content");
+  },
+
   buildGraph: function buildGraph(argument) {
+    this.willBuildGraph();
     pgUtils.buildGraphFromSingle(this.props.data, this.state.options);
   },
 
@@ -134,7 +140,7 @@ var GraphConfiguration = React.createClass({
         React.createElement(
           "div",
           { className: "three fields" },
-          React.createElement(GraphType, { label: "Graph Type" }),
+          React.createElement(GraphType, { label: "Presentation Form" }),
           React.createElement(GraphKey, { measurement: this.props.data, optionId: "xAxis", label: "X Axis" }),
           React.createElement(GraphKey, { measurement: this.props.data, optionId: "yAxis", label: "Y Axis" })
         ),
@@ -152,7 +158,7 @@ var GraphPreview = React.createClass({
   displayName: "GraphPreview",
 
   render: function render() {
-    return React.createElement("div", { id: "chart", className: "graph-content" });
+    return React.createElement("div", { id: "chart", className: "" });
   }
 });
 
@@ -198,9 +204,9 @@ var MeasurementBox = React.createClass({
     return React.createElement(
       "div",
       { className: "measurementBox" },
+      React.createElement(MeasurementPreview, { data: this.state.measurement, options: this.state.options }),
       React.createElement(GraphConfiguration, { data: this.state.measurement, options: this.state.options }),
-      React.createElement(GraphPreview, { data: this.state.measurement, options: this.state.options }),
-      React.createElement(MeasurementPreview, { data: this.state.measurement, options: this.state.options })
+      React.createElement(GraphPreview, { data: this.state.measurement, options: this.state.options })
     );
   }
 });

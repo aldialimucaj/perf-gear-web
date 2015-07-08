@@ -5,7 +5,7 @@ var MeasurementPreview = React.createClass({
     var preview = JSON.stringify(this.props.data, null, 2);
     return (
       <div className="ui styled accordion full-width">
-        <div className="active title">
+        <div className="title">
           <i className="dropdown icon"></i>
           JSON content
         </div>
@@ -80,7 +80,13 @@ var GraphType = React.createClass({
 var GraphConfiguration = React.createClass({
   mixins: [Reflux.connect(measurementStore,"options")],
 
+  willBuildGraph: function() {
+    // add class to set element height needed by echarts
+    $('#chart').addClass('graph-content');
+  },
+
   buildGraph: function (argument) {
+    this.willBuildGraph();
     pgUtils.buildGraphFromSingle(this.props.data, this.state.options);
   },
 
@@ -89,7 +95,7 @@ var GraphConfiguration = React.createClass({
       <div className="graphConfiguration">
         <div className="ui form">
           <div className="three fields">
-            <GraphType label="Graph Type"/>
+            <GraphType label="Presentation Form"/>
             <GraphKey measurement={this.props.data} optionId="xAxis" label="X Axis"/>
             <GraphKey measurement={this.props.data} optionId="yAxis" label="Y Axis"/>
           </div>
@@ -103,7 +109,7 @@ var GraphConfiguration = React.createClass({
 var GraphPreview = React.createClass({
   render: function() {
     return (
-      <div id="chart" className="graph-content">
+      <div id="chart" className="">
 
       </div>
     );
@@ -151,9 +157,9 @@ var MeasurementBox = React.createClass({
   render: function() {
     return (
       <div className="measurementBox">
+        <MeasurementPreview data={this.state.measurement} options={this.state.options}/>
         <GraphConfiguration data={this.state.measurement} options={this.state.options} />
         <GraphPreview data={this.state.measurement} options={this.state.options}/>
-        <MeasurementPreview data={this.state.measurement} options={this.state.options}/>
          {/*JSON.stringify(this.state)*/}
       </div>
     );

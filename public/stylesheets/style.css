@@ -1,11 +1,15 @@
 body {
   padding: 30px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #CCCCCC
+  background-color: #F8F8F8
 }
 
 a {
   color: #00B7FF;
+}
+
+code.json.hljs {
+  background: #FFFFFF
 }
 
 .graph-content {
@@ -14,4 +18,5 @@ a {
 
 .ui.styled.accordion.full-width {
   width: 100%;
+  margin-bottom: 1em;
 }
