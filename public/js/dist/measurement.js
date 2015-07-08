@@ -41,7 +41,7 @@ var GraphKey = React.createClass({
   },
 
   handleChange: function handleChange(arg) {
-    MeasurementActions.selectAxis(this.props.optionId, arg.target.value);
+    MeasurementActions.selectAxis(this.props.keyId, this.props.optionId, arg.target.value);
   },
 
   render: function render() {
@@ -78,12 +78,8 @@ var GraphKey = React.createClass({
 var GraphType = React.createClass({
   displayName: "GraphType",
 
-  getInitialState: function getInitialState() {
-    return { graphType: null };
-  },
-
   handleTypeChange: function handleTypeChange(arg) {
-    MeasurementActions.selectChart(arg.target.value);
+    MeasurementActions.selectChart(this.props.keyId, arg.target.value);
   },
 
   render: function render() {
@@ -130,24 +126,50 @@ var GraphConfiguration = React.createClass({
     pgUtils.buildGraphFromSingle(this.props.data, this.state.options);
   },
 
+  addElement: function addElement(argument) {
+    this.setState({ graphElements: this.state.graphElements.concat({}) });
+  },
+
+  getInitialState: function getInitialState() {
+    return { graphElements: [{ keyId: 0 }] };
+  },
+
   render: function render() {
+    var measurement = this.props.data;
+    var elements = this.state.graphElements.map(function (element, idx) {
+      return React.createElement(
+        "div",
+        { className: "three fields", key: idx },
+        React.createElement(GraphType, { keyId: idx, label: "Presentation Form" }),
+        React.createElement(GraphKey, { measurement: measurement, keyId: idx, optionId: "xAxis", label: "X Axis" }),
+        React.createElement(GraphKey, { measurement: measurement, keyId: idx, optionId: "yAxis", label: "Y Axis" })
+      );
+    });
+
     return React.createElement(
       "div",
       { className: "graphConfiguration" },
       React.createElement(
         "div",
         { className: "ui form" },
+        elements,
         React.createElement(
           "div",
-          { className: "three fields" },
-          React.createElement(GraphType, { label: "Presentation Form" }),
-          React.createElement(GraphKey, { measurement: this.props.data, optionId: "xAxis", label: "X Axis" }),
-          React.createElement(GraphKey, { measurement: this.props.data, optionId: "yAxis", label: "Y Axis" })
+          { className: "field" },
+          React.createElement(
+            "button",
+            { className: "ui default button centered", onClick: this.addElement },
+            React.createElement("i", { className: "plus icon" })
+          )
         ),
         React.createElement(
-          "button",
-          { className: "ui primary button centered", onClick: this.buildGraph },
-          "Build Graph"
+          "div",
+          { className: "field" },
+          React.createElement(
+            "button",
+            { className: "ui primary button centered", onClick: this.buildGraph },
+            "Build Graph"
+          )
         )
       )
     );

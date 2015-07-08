@@ -24,7 +24,7 @@ var GraphKey = React.createClass({
   },
 
   handleChange: function (arg) {
-    MeasurementActions.selectAxis(this.props.optionId, arg.target.value)
+    MeasurementActions.selectAxis(this.props.keyId, this.props.optionId, arg.target.value)
   },
 
   render: function(){
@@ -49,13 +49,8 @@ var GraphKey = React.createClass({
 });
 
 var GraphType = React.createClass({
-
-  getInitialState: function() {
-    return {graphType: null};
-  },
-
   handleTypeChange: function(arg) {
-    MeasurementActions.selectChart(arg.target.value);
+    MeasurementActions.selectChart(this.props.keyId, arg.target.value);
   },
 
   render: function(){
@@ -90,16 +85,36 @@ var GraphConfiguration = React.createClass({
     pgUtils.buildGraphFromSingle(this.props.data, this.state.options);
   },
 
+  addElement: function (argument) {
+    this.setState({graphElements: this.state.graphElements.concat({})})
+  },
+
+  getInitialState: function() {
+    return {graphElements: [{keyId: 0}]};
+  },
+
   render: function() {
+    var measurement = this.props.data;
+    var elements = this.state.graphElements.map(function (element, idx) {
+      return (
+        <div className="three fields" key={idx}>
+          <GraphType keyId={idx} label="Presentation Form"/>
+          <GraphKey measurement={measurement} keyId={idx} optionId="xAxis" label="X Axis"/>
+          <GraphKey measurement={measurement} keyId={idx} optionId="yAxis" label="Y Axis"/>
+        </div>
+      );
+    });
+
     return (
       <div className="graphConfiguration">
         <div className="ui form">
-          <div className="three fields">
-            <GraphType label="Presentation Form"/>
-            <GraphKey measurement={this.props.data} optionId="xAxis" label="X Axis"/>
-            <GraphKey measurement={this.props.data} optionId="yAxis" label="Y Axis"/>
-          </div>
-        <button className="ui primary button centered" onClick={this.buildGraph}>Build Graph</button>
+        {elements}
+        <div className="field">
+          <button className="ui default button centered" onClick={this.addElement}><i className="plus icon"></i></button>
+        </div>
+        <div className="field">
+          <button className="ui primary button centered" onClick={this.buildGraph}>Build Graph</button>
+        </div>
         </div>
       </div>
     );

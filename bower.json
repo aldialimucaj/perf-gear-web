@@ -27,6 +27,7 @@
     "semantic-ui": "~2.0.0",
     "echarts": "~2.2.5",
     "reflux": "~0.2.8",
-    "highlightjs": "~8.5.0"
+    "highlightjs": "~8.5.0",
+    "lodash": "~3.10.0"
   }
 }

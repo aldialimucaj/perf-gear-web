@@ -11,13 +11,15 @@ var measurementStore = Reflux.createStore({
       return this.options;
   },
 
-  onSelectAxis: function (optionId, value) {
-    this.options[optionId] = value;
+  onSelectAxis: function (keyId, optionId, value) {
+    if(!this.options[keyId]) this.options[keyId] = {};
+    this.options[keyId][optionId] = value;
     this.updateOptions(this.options);
   },
 
-  onSelectChart: function(arg) {
-    this.options.type = arg;
+  onSelectChart: function(keyId, arg) {
+    if(!this.options[keyId]) this.options[keyId] = {};
+    this.options[keyId].type = arg;
     this.updateOptions(this.options);
   },
 

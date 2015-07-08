@@ -65,24 +65,16 @@ PGUtils.prototype._dataCheckAndReturn = function(data, cb) {
 /** Build graph
  *
  */
-PGUtils.prototype.buildGraph = function(graphType, options, element) {
+PGUtils.prototype.buildGraph = function(graphTypes, options, element) {
   var chartHolder = document.getElementById(element) || document.getElementById('chart');
-  var chartType = ['echarts', 'echarts/chart/'];
+  var chartType = ['echarts'].concat(graphTypes);
 
-  switch (graphType) {
-    case 'bar':
-    case 'line':
-      chartType[1] += graphType;
-      options.series.type = graphType;
-      break;
-    default:
-      console.error("Graph Type not recognized. Please contact someone.");
-      return;
-  }
   // checking options
   if (!options.legend) options.legend = {
     data: ['#Add legend']
   };
+
+  console.log(JSON.stringify(options));
 
   require(chartType,
     function(ec) {
@@ -125,11 +117,29 @@ PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
 
 
 /** Create options from measurement and selection and build graph
- * 
+ *
  */
-PGUtils.prototype.buildGraphFromSingle = function(measurement, selection) {
-  var options = this.buildOptionsFromSingle(measurement, selection);
-  this.buildGraph(selection.type, options);
+PGUtils.prototype.buildGraphFromSingle = function(measurement, selections) {
+  var self = this;
+  var graphTypes = [];
+  var options = {
+    xAxis: [],
+    yAxis: [],
+    series: [],
+    tooltip: {
+      show: true
+    }
+  };
+
+  var optionsArr = Object.keys(selections).map(function(selection) {
+    graphTypes.push('echarts/chart/' + selections[selection].type);
+    var transformed = self.buildOptionsFromSingle(measurement, selections[selection]);
+    options.xAxis = options.xAxis.concat(transformed.xAxis);
+    options.yAxis = options.yAxis.concat(transformed.yAxis);
+    options.series = options.series.concat(transformed.series);
+    return transformed;
+  });
+  this.buildGraph(graphTypes, options);
 }
 
 
