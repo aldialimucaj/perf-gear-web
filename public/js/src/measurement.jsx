@@ -110,7 +110,9 @@ var GraphConfiguration = React.createClass({
         <div className="ui form">
         {elements}
         <div className="field">
-          <button className="ui default button centered" onClick={this.addElement}><i className="plus icon"></i></button>
+          <button className="tiny ui icon button circular" onClick={this.addElement}>
+            <i className="icon plus"></i>
+          </button>
         </div>
         <div className="field">
           <button className="ui primary button centered" onClick={this.buildGraph}>Build Graph</button>

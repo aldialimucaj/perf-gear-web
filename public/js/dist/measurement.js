@@ -158,8 +158,8 @@ var GraphConfiguration = React.createClass({
           { className: "field" },
           React.createElement(
             "button",
-            { className: "ui default button centered", onClick: this.addElement },
-            React.createElement("i", { className: "plus icon" })
+            { className: "tiny ui icon button circular", onClick: this.addElement },
+            React.createElement("i", { className: "icon plus" })
           )
         ),
         React.createElement(
