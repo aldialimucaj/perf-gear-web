@@ -35,7 +35,7 @@ router.get('/', dbChecker, function(req, res) {
 
   reql.run(rcon.conn, function(err, cursor) {
     if (cursor) cursor.toArray(function(err, result) {
-      forwarder(res, err, result)
+      forwarder(res, err, result);
     });
     else forwarder(res, err, []);
   });
@@ -48,11 +48,12 @@ router.get('/:id', dbChecker, function(req, res) {
   var reql = r.table('measurements').get(req.params.id);
 
   reql.run(rcon.conn, function(err, result) {
-    forwarder(res, err, result)
+    forwarder(res, err, result);
   })
 });
 
 /* ========================================================================== */
+/* HELPERS */
 
 function forwarder(res, err, result, statusCode) {
   if (!err) {
@@ -78,5 +79,7 @@ function dbChecker(req, res, next) {
     });
   }
 }
+
+/* ========================================================================== */
 
 module.exports = router;

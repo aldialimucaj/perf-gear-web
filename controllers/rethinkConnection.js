@@ -2,7 +2,7 @@
 var config = require('config');
 var dbConfig = config.get('Database');
 var winston = require('winston');
-r = require('rethinkdb');
+var r = require('rethinkdb');
 
 /* Timeout to wait for reconnection */
 var timeOut = 1;

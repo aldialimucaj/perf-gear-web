@@ -1,5 +1,5 @@
 // pg_utils.js
-
+/* @flow */
 function PGUtils() {
   // constructor
 }
