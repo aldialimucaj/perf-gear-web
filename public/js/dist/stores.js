@@ -1,4 +1,5 @@
 // stores.js
+/* @flow */
 'use strict';
 
 // this goes to window.*

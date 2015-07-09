@@ -3,11 +3,7 @@ var gutil = require('gulp-util');
 var gmon = require('gulp-nodemon');
 var babel = require('gulp-babel');
 
-gulp.task('default', function () {
-  gulp.run('start');
-  gulp.run('react');
-  gulp.run('scripts');
-});
+gulp.task('default', ['scripts', 'react', 'start']);
 
 gulp.task('scripts', function () {
   return gulp.src('./public/js/src/**/*.js')
@@ -23,15 +19,11 @@ gulp.task('react', function () {
 gulp.task('start', function () {
   gmon({
     script: 'bin/www'
-  , ext: 'js html'
+  , ext: 'js css html'
   , env: { 'NODE_ENV': 'development' }
   })
 })
 
-gulp.watch('./public/js/src/**/*.jsx', function () {
-     gulp.run('react');
-});
+gulp.watch('./public/js/src/**/*.jsx', ['react']);
 
-gulp.watch('./public/js/src/**/*.js', function () {
-     gulp.run('scripts');
-});
+gulp.watch('./public/js/src/**/*.js', ['scripts']);
