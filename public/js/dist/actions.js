@@ -1,4 +1,5 @@
 // actions.js
+/* @flow */
 'use strict';
 
 var MeasurementActions = Reflux.createActions([
