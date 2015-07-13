@@ -117,10 +117,11 @@ var GraphConfiguration = React.createClass({
 
   init: function (argument) {
     var self = this;
-    $('.ui.dropdown.adder')
+    var dropdown = $('.ui.dropdown.adder')
     .dropdown({
       action: function(text, value) {
         self.addElement({type: value});
+        dropdown.dropdown("hide");
       }
     });
   },

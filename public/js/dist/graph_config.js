@@ -147,9 +147,10 @@ var GraphConfiguration = React.createClass({
 
   init: function init(argument) {
     var self = this;
-    $('.ui.dropdown.adder').dropdown({
+    var dropdown = $('.ui.dropdown.adder').dropdown({
       action: function action(text, value) {
         self.addElement({ type: value });
+        dropdown.dropdown('hide');
       }
     });
   },
