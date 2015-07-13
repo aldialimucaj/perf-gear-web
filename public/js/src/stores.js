@@ -24,6 +24,12 @@ var measurementStore = Reflux.createStore({
     this.updateOptions(this.options);
   },
 
+  editLabel: function (keyId, optionId, value) {
+    if(!this.options[keyId]) this.options[keyId] = {};
+    this.options[keyId][optionId] = value;
+    this.updateOptions(this.options);
+  },
+
   updateOptions: function(obj){
     this.trigger(obj);
   }

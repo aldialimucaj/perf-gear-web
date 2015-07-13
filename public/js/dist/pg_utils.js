@@ -107,7 +107,7 @@ PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
   }];
 
   options.series = [{
-    "name": selection.yAxis,
+    "name": selection.name || selection.yAxis,
     "type": selection.type,
     "data": [measurement[selection.yAxis]]
   }]
@@ -190,3 +190,10 @@ PGUtils.prototype.buildTestGraph = function(first_argument) {
     }
   );
 };
+
+/* ************************************************************************* */
+// EXTERNALS
+
+String.prototype.toUpperFirst = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}

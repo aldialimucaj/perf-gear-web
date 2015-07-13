@@ -1,3 +1,27 @@
+var GraphType = React.createClass({
+  render: function(){
+    var classes = ['ui','huge', 'label'];
+    var labelColor;
+    switch (this.props.arg.type) {
+      case 'bar':
+        classes.push('olive');
+        break;
+      case 'line':
+      classes.push('orange');
+          break;
+      default:
+        classes.push('black');
+    }
+
+    return (
+      <div className="ui field two wide">
+        <label>{this.props.label}</label>
+        <div className={classes.join(' ')}>{this.props.arg.type.toUpperFirst()}</div>
+      </div>
+    );
+  }
+});
+
 var GraphKey = React.createClass({
 
   getInitialState: function() {
@@ -29,12 +53,16 @@ var GraphKey = React.createClass({
   }
 });
 
-var GraphType = React.createClass({
+var GraphLabel = React.createClass({
+  handleChange: function (arg) {
+    MeasurementActions.editLabel(this.props.keyId, this.props.optionId, arg.target.value)
+  },
+
   render: function(){
     return (
-      <div className="field two wide">
+      <div className="field">
         <label>{this.props.label}</label>
-        {this.props.arg.type.toUpperCase()}
+        <input name="graphLabel" onChange={this.handleChange}/>
       </div>
     );
   }
@@ -88,6 +116,7 @@ var GraphConfiguration = React.createClass({
             <GraphType keyId={idx} arg={argument} label="Presentation"/>
             <GraphKey measurement={measurement} keyId={idx} optionId="xAxis" label="X Axis"/>
             <GraphKey measurement={measurement} keyId={idx} optionId="yAxis" label="Y Axis"/>
+            <GraphLabel keyId={idx} optionId="name" label="Label"/>
           </div>
         );
       }
@@ -109,7 +138,7 @@ var GraphConfiguration = React.createClass({
         <div className="ui form">
         {elements}
         <div className="field">
-          <div className="ui left pointing dropdown icon button adder">
+          <div className="ui circular black left pointing dropdown icon button adder">
             <i className="icon plus"></i>
             <div className="menu">
               <div className="item" data-value="bar">

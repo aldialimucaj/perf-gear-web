@@ -4,5 +4,6 @@
 
 var MeasurementActions = Reflux.createActions([
   "selectChart",
-  "selectAxis"
+  "selectAxis",
+  "editLabel"
 ]);

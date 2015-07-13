@@ -1,7 +1,41 @@
-"use strict";
+'use strict';
+
+var GraphType = React.createClass({
+  displayName: 'GraphType',
+
+  render: function render() {
+    var classes = ['ui', 'huge', 'label'];
+    var labelColor;
+    switch (this.props.arg.type) {
+      case 'bar':
+        classes.push('olive');
+        break;
+      case 'line':
+        classes.push('orange');
+        break;
+      default:
+        classes.push('black');
+    }
+
+    return React.createElement(
+      'div',
+      { className: 'ui field two wide' },
+      React.createElement(
+        'label',
+        null,
+        this.props.label
+      ),
+      React.createElement(
+        'div',
+        { className: classes.join(' ') },
+        this.props.arg.type.toUpperFirst()
+      )
+    );
+  }
+});
 
 var GraphKey = React.createClass({
-  displayName: "GraphKey",
+  displayName: 'GraphKey',
 
   getInitialState: function getInitialState() {
     return {};
@@ -17,7 +51,7 @@ var GraphKey = React.createClass({
       var index = 0;
       keys = Object.keys(this.props.measurement).map(function (key) {
         return React.createElement(
-          "option",
+          'option',
           { value: key, key: index++ },
           key
         );
@@ -25,48 +59,52 @@ var GraphKey = React.createClass({
     }
 
     return React.createElement(
-      "div",
-      { className: "field" },
+      'div',
+      { className: 'field' },
       React.createElement(
-        "label",
+        'label',
         null,
         this.props.label
       ),
       React.createElement(
-        "select",
-        { onChange: this.handleChange, className: "ui select dropdown" },
-        React.createElement("option", null),
+        'select',
+        { onChange: this.handleChange, className: 'ui select dropdown' },
+        React.createElement('option', null),
         keys
       )
     );
   }
 });
 
-var GraphType = React.createClass({
-  displayName: "GraphType",
+var GraphLabel = React.createClass({
+  displayName: 'GraphLabel',
+
+  handleChange: function handleChange(arg) {
+    MeasurementActions.editLabel(this.props.keyId, this.props.optionId, arg.target.value);
+  },
 
   render: function render() {
     return React.createElement(
-      "div",
-      { className: "field two wide" },
+      'div',
+      { className: 'field' },
       React.createElement(
-        "label",
+        'label',
         null,
         this.props.label
       ),
-      this.props.arg.type.toUpperCase()
+      React.createElement('input', { name: 'graphLabel', onChange: this.handleChange })
     );
   }
 });
 
 var GraphConfiguration = React.createClass({
-  displayName: "GraphConfiguration",
+  displayName: 'GraphConfiguration',
 
-  mixins: [Reflux.connect(measurementStore, "options")],
+  mixins: [Reflux.connect(measurementStore, 'options')],
 
   willBuildGraph: function willBuildGraph() {
     // add class to set element height needed by echarts
-    $("#chart").addClass("graph-content");
+    $('#chart').addClass('graph-content');
   },
 
   buildGraph: function buildGraph(argument) {
@@ -92,7 +130,7 @@ var GraphConfiguration = React.createClass({
 
   init: function init(argument) {
     var self = this;
-    $(".ui.dropdown.adder").dropdown({
+    $('.ui.dropdown.adder').dropdown({
       action: function action(text, value) {
         self.addElement({ type: value });
       }
@@ -101,23 +139,24 @@ var GraphConfiguration = React.createClass({
 
   getGraphElement: function getGraphElement(measurement, argument, idx) {
     switch (argument.type) {
-      case "bar":
-      case "line":
+      case 'bar':
+      case 'line':
         {
           return React.createElement(
-            "div",
-            { className: "three fields", key: idx },
-            React.createElement(GraphType, { keyId: idx, arg: argument, label: "Presentation" }),
-            React.createElement(GraphKey, { measurement: measurement, keyId: idx, optionId: "xAxis", label: "X Axis" }),
-            React.createElement(GraphKey, { measurement: measurement, keyId: idx, optionId: "yAxis", label: "Y Axis" })
+            'div',
+            { className: 'three fields', key: idx },
+            React.createElement(GraphType, { keyId: idx, arg: argument, label: 'Presentation' }),
+            React.createElement(GraphKey, { measurement: measurement, keyId: idx, optionId: 'xAxis', label: 'X Axis' }),
+            React.createElement(GraphKey, { measurement: measurement, keyId: idx, optionId: 'yAxis', label: 'Y Axis' }),
+            React.createElement(GraphLabel, { keyId: idx, optionId: 'name', label: 'Label' })
           );
         }
       default:
-        console.error("No graph type!");
+        console.error('No graph type!');
         return React.createElement(
-          "div",
+          'div',
           null,
-          "Error"
+          'Error'
         );
     }
   },
@@ -130,42 +169,42 @@ var GraphConfiguration = React.createClass({
     });
 
     return React.createElement(
-      "div",
-      { className: "graphConfiguration" },
+      'div',
+      { className: 'graphConfiguration' },
       React.createElement(
-        "div",
-        { className: "ui form" },
+        'div',
+        { className: 'ui form' },
         elements,
         React.createElement(
-          "div",
-          { className: "field" },
+          'div',
+          { className: 'field' },
           React.createElement(
-            "div",
-            { className: "ui left pointing dropdown icon button adder" },
-            React.createElement("i", { className: "icon plus" }),
+            'div',
+            { className: 'ui circular black left pointing dropdown icon button adder' },
+            React.createElement('i', { className: 'icon plus' }),
             React.createElement(
-              "div",
-              { className: "menu" },
+              'div',
+              { className: 'menu' },
               React.createElement(
-                "div",
-                { className: "item", "data-value": "bar" },
-                "Bar"
+                'div',
+                { className: 'item', 'data-value': 'bar' },
+                'Bar'
               ),
               React.createElement(
-                "div",
-                { className: "item", "data-value": "line" },
-                "Line"
+                'div',
+                { className: 'item', 'data-value': 'line' },
+                'Line'
               )
             )
           )
         ),
         React.createElement(
-          "div",
-          { className: "field" },
+          'div',
+          { className: 'field' },
           React.createElement(
-            "button",
-            { className: "ui primary button centered", onClick: this.buildGraph },
-            "Build Graph"
+            'button',
+            { className: 'ui primary button centered', onClick: this.buildGraph },
+            'Build Graph'
           )
         )
       )
