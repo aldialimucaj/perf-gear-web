@@ -26,6 +26,7 @@
     "chai": "^3.0.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
+    "gulp-concat": "^2.6.0",
     "gulp-nodemon": "^2.0.3",
     "gulp-react": "^3.0.1",
     "gulp-util": "^3.0.6",

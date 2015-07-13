@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var concat = require('gulp-concat');
 var gutil = require('gulp-util');
 var gmon = require('gulp-nodemon');
 var babel = require('gulp-babel');
@@ -11,7 +12,7 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('react', function () {
-    return gulp.src('./public/js/src/**/*.jsx')
+    return gulp.src('./public/jsx/src/**/*.jsx')
         .pipe(babel())
         .pipe(gulp.dest('./public/js/dist'));
 });
@@ -24,6 +25,6 @@ gulp.task('start', function () {
   })
 })
 
-gulp.watch('./public/js/src/**/*.jsx', ['react']);
+gulp.watch('./public/jsx/src/**/*.jsx', ['react']);
 
 gulp.watch('./public/js/src/**/*.js', ['scripts']);
