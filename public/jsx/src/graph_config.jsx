@@ -28,8 +28,26 @@ var GraphKey = React.createClass({
     return {};
   },
 
-  handleChange: function (arg) {
-    MeasurementActions.selectAxis(this.props.keyId, this.props.optionId, arg.target.value)
+  handleChange: function (arg, id) {
+    MeasurementActions.selectAxis(this.props.keyId, this.props.optionId, arg)
+  },
+
+  componentDidMount: function (argument) {
+    var self = this;
+    setTimeout(function(){
+      self.init();
+    }, 500);
+  },
+
+  init: function (argument) {
+    var self = this;
+    var id = this.props.optionId + this.props.keyId;
+    $('#'+id+'.ui.dropdown.axis')
+    .dropdown({
+      onChange: function(text, value) {
+        self.handleChange(value, self.props.optionId);
+      }
+    });
   },
 
   render: function(){
@@ -44,7 +62,7 @@ var GraphKey = React.createClass({
     return (
       <div className="field">
         <label>{this.props.label}</label>
-        <select onChange={this.handleChange} className="ui select dropdown">
+        <select id={this.props.optionId + this.props.keyId} className="ui select dropdown axis">
           <option></option>
           {keys}
         </select>
