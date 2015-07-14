@@ -7,7 +7,10 @@ var GraphType = React.createClass({
         classes.push('olive');
         break;
       case 'line':
-      classes.push('orange');
+        classes.push('orange');
+          break;
+      case 'seq':
+        classes.push('violet');
           break;
       default:
         classes.push('black');
@@ -55,6 +58,11 @@ var GraphKey = React.createClass({
     if(this.props.measurement) {
       var index = 0;
       keys = Object.keys(this.props.measurement).map(function(key){
+        // filtering for known types
+        switch(this.props.type){
+          case 'seq':
+            if (!Array.isArray(this.props.measurement[key])) return null;
+        }
         return(<option value={key} key={index++}>{key}</option>)
       });
     }
@@ -139,6 +147,15 @@ var GraphConfiguration = React.createClass({
           </div>
         );
       }
+      case 'seq': {
+        return (
+          <div className="three fields" key={idx}>
+            <GraphType keyId={idx} arg={argument} label="Presentation"/>
+            <GraphKey measurement={measurement} type={argument.type} keyId={idx} optionId="yAxis" label="Y Axis"/>
+            <GraphLabel keyId={idx} optionId="name" label="Label"/>
+          </div>
+        );
+      }
       default:
         console.error("No graph type!");
         return (<div>Error</div>);
@@ -165,6 +182,9 @@ var GraphConfiguration = React.createClass({
               </div>
               <div className="item" data-value="line">
                   Line
+              </div>
+              <div className="item" data-value="seq">
+                  Sequence
               </div>
             </div>
           </div>
