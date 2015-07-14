@@ -54,14 +54,15 @@ var GraphKey = React.createClass({
   },
 
   render: function(){
+    var self = this;
     var keys = [];
     if(this.props.measurement) {
       var index = 0;
       keys = Object.keys(this.props.measurement).map(function(key){
         // filtering for known types
-        switch(this.props.type){
+        switch(self.props.type){
           case 'seq':
-            if (!Array.isArray(this.props.measurement[key])) return null;
+            if (!Array.isArray(self.props.measurement[key])) return null;
         }
         return(<option value={key} key={index++}>{key}</option>)
       });

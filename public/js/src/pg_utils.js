@@ -116,6 +116,44 @@ PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
 };
 
 
+PGUtils.prototype.buildOptionsFromSingleSeq = function(measurement, selection) {
+  var options = {};
+  options.tooltip = {
+    show: true
+  };
+
+
+  options.xAxis = [{
+    type: 'value',
+  }];
+
+  var legend = [];
+  var temp = measurement.sequence[0].timestamp;
+  options.series = measurement.sequence.map(function(seq){
+    var tstamp = seq.timestamp - temp;
+    temp = seq.timestamp;
+    legend.push(seq.tag);
+    return {
+      "name": seq.tag,
+      "type": 'bar',
+      "stack": 'true',
+      "itemStyle" : { "normal": {"label" : {"show": true, "position": 'insideRight'}}},
+      "data": [tstamp]
+    }
+  });
+
+
+  // add legend
+  options.yAxis = [{
+    type: 'category',
+    data: ['Sequence']
+  }];
+
+
+  return options;
+};
+
+
 /** Create options from measurement and selection and build graph
  *
  */
@@ -123,6 +161,7 @@ PGUtils.prototype.buildGraphFromSingle = function(measurement, selections) {
   var self = this;
   var graphTypes = [];
   var options = {
+    legend: {},
     xAxis: [],
     yAxis: [],
     series: [],
@@ -131,13 +170,28 @@ PGUtils.prototype.buildGraphFromSingle = function(measurement, selections) {
     }
   };
 
-  var optionsArr = Object.keys(selections).map(function(selection) {
-    graphTypes.push('echarts/chart/' + selections[selection].type);
-    var transformed = self.buildOptionsFromSingle(measurement, selections[selection]);
-    options.xAxis = options.xAxis.concat(transformed.xAxis);
-    options.yAxis = options.yAxis.concat(transformed.yAxis);
-    options.series = options.series.concat(transformed.series);
-    return transformed;
+  Object.keys(selections).map(function(selection) {
+    switch (selections[selection].type) {
+      case 'line':
+      case 'bar':
+        graphTypes.push('echarts/chart/' + selections[selection].type);
+        var transformed = self.buildOptionsFromSingle(measurement, selections[selection]);
+        options.xAxis = options.xAxis.concat(transformed.xAxis);
+        options.yAxis = options.yAxis.concat(transformed.yAxis);
+        options.series = options.series.concat(transformed.series);
+        break;
+      case 'seq':
+        graphTypes.push('echarts/chart/bar');
+        var transformed = self.buildOptionsFromSingleSeq(measurement, selections[selection]);
+        options.xAxis = options.xAxis.concat(transformed.xAxis);
+        options.yAxis = options.yAxis.concat(transformed.yAxis);
+        options.series = options.series.concat(transformed.series);
+        options.legend = transformed.legend;
+        break;
+      default:
+
+    }
+
   });
   this.buildGraph(graphTypes, options);
 }
