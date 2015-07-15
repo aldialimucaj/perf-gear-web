@@ -184,7 +184,7 @@ var GraphConfiguration = React.createClass({
             'div',
             { className: 'three fields', key: idx },
             React.createElement(GraphType, { keyId: idx, arg: argument, label: 'Presentation' }),
-            React.createElement(GraphKey, { measurement: measurement, type: argument.type, keyId: idx, optionId: 'yAxis', label: 'Y Axis' }),
+            React.createElement(GraphKey, { measurement: measurement, type: argument.type, keyId: idx, optionId: 'yAxis', label: 'Value Axis' }),
             React.createElement(GraphLabel, { keyId: idx, optionId: 'name', label: 'Label' })
           );
         }

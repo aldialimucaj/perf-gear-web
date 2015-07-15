@@ -152,7 +152,7 @@ var GraphConfiguration = React.createClass({
         return (
           <div className="three fields" key={idx}>
             <GraphType keyId={idx} arg={argument} label="Presentation"/>
-            <GraphKey measurement={measurement} type={argument.type} keyId={idx} optionId="yAxis" label="Y Axis"/>
+            <GraphKey measurement={measurement} type={argument.type} keyId={idx} optionId="yAxis" label="Value Axis"/>
             <GraphLabel keyId={idx} optionId="name" label="Label"/>
           </div>
         );

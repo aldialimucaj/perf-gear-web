@@ -115,13 +115,74 @@ PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
   return options;
 };
 
-
 PGUtils.prototype.buildOptionsFromSingleSeq = function(measurement, selection) {
+  switch (measurement.typeId) {
+    case 2: // timestamp
+      return this.buildOptionsFromSingleTimestamp(measurement, selection);
+    case 3: // RAM
+      return this.buildOptionsFromSingleRAM(measurement, selection);
+    default:
+      return {
+        err: "no sequence"
+      };
+  }
+}
+
+
+PGUtils.prototype.buildOptionsFromSingleRAM = function(measurement, selection) {
   var options = {};
   options.tooltip = {
     show: true
   };
 
+  options.yAxis = [{
+    type: 'value',
+  }];
+
+  var data = [];
+  var temp = measurement.sequence[0].timestamp;
+  var ramData = measurement.sequence.map(function(seq) {
+    var xLabel = seq.tag? (seq.tag + ' (at '+ (seq.timestamp - temp)+ 'ms)'):'at '+ (seq.timestamp - temp)+ 'ms'
+    data.push(xLabel);// TODO: change ms to dynamic value
+    return seq.value
+  });
+
+  options.series = [{
+    "name": 'Sequence',
+    "type": 'line',
+    "stack": 'true',
+    "itemStyle": {
+      "normal": {
+        "label": {
+          "show": true,
+          "position": 'insideRight'
+        }
+      }
+    },
+    "data": ramData,
+    "markLine": {
+      "data": [{
+        "type": 'average',
+        "name": 'Average'
+      }]
+    }
+  }];
+
+  // add x-axis
+  options.xAxis = [{
+    type: 'category',
+    data: data
+  }];
+
+
+  return options;
+};
+
+PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, selection) {
+  var options = {};
+  options.tooltip = {
+    show: true
+  };
 
   options.xAxis = [{
     type: 'value',
@@ -129,7 +190,7 @@ PGUtils.prototype.buildOptionsFromSingleSeq = function(measurement, selection) {
 
   var legend = [];
   var temp = measurement.sequence[0].timestamp;
-  options.series = measurement.sequence.map(function(seq){
+  options.series = measurement.sequence.map(function(seq) {
     var tstamp = seq.timestamp - temp;
     temp = seq.timestamp;
     legend.push(seq.tag);
@@ -137,13 +198,19 @@ PGUtils.prototype.buildOptionsFromSingleSeq = function(measurement, selection) {
       "name": seq.tag,
       "type": 'bar',
       "stack": 'true',
-      "itemStyle" : { "normal": {"label" : {"show": true, "position": 'insideRight'}}},
+      "itemStyle": {
+        "normal": {
+          "label": {
+            "show": true,
+            "position": 'insideRight'
+          }
+        }
+      },
       "data": [tstamp]
     }
   });
 
-
-  // add legend
+  // add y-axis
   options.yAxis = [{
     type: 'category',
     data: ['Sequence']
@@ -181,7 +248,8 @@ PGUtils.prototype.buildGraphFromSingle = function(measurement, selections) {
         options.series = options.series.concat(transformed.series);
         break;
       case 'seq':
-        graphTypes.push('echarts/chart/bar');
+        graphTypes.push('echarts/chart/bar'); // TODO: make it dynamic
+        graphTypes.push('echarts/chart/line');
         var transformed = self.buildOptionsFromSingleSeq(measurement, selections[selection]);
         options.xAxis = options.xAxis.concat(transformed.xAxis);
         options.yAxis = options.yAxis.concat(transformed.yAxis);
@@ -249,5 +317,5 @@ PGUtils.prototype.buildTestGraph = function(first_argument) {
 // EXTERNALS
 
 String.prototype.toUpperFirst = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
+  return this.charAt(0).toUpperCase() + this.slice(1);
 }
