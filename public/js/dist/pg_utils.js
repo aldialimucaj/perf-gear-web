@@ -116,10 +116,10 @@ PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
 };
 
 PGUtils.prototype.buildOptionsFromSingleSeq = function(measurement, selection) {
-  switch (measurement.typeId) {
-    case 2: // timestamp
+  switch (measurement.type) {
+    case "TIME": // timestamp
       return this.buildOptionsFromSingleTimestamp(measurement, selection);
-    case 3: // RAM
+    case "RAM": // RAM
       return this.buildOptionsFromSingleRAM(measurement, selection);
     default:
       return {
