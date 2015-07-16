@@ -115,19 +115,6 @@ PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
   return options;
 };
 
-PGUtils.prototype.buildOptionsFromSingleSeq = function(measurement, selection) {
-  switch (measurement.typeId) {
-    case 2: // timestamp
-      return this.buildOptionsFromSingleTimestamp(measurement, selection);
-    case 3: // RAM
-      return this.buildOptionsFromSingleRAM(measurement, selection);
-    default:
-      return {
-        err: "no sequence"
-      };
-  }
-}
-
 
 PGUtils.prototype.buildOptionsFromSingleRAM = function(measurement, selection) {
   var options = {};
@@ -185,7 +172,7 @@ PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, select
   };
 
   options.xAxis = [{
-    type: 'value',
+    type: 'value'
   }];
 
   var legend = [];
@@ -198,6 +185,7 @@ PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, select
       "name": seq.tag,
       "type": 'bar',
       "stack": 'true',
+      "barMaxWidth": 25,
       "itemStyle": {
         "normal": {
           "label": {
@@ -213,12 +201,27 @@ PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, select
   // add y-axis
   options.yAxis = [{
     type: 'category',
-    data: ['Sequence']
+    data: [measurement.unit.toLowerCase().toUpperFirst()]
   }];
 
 
   return options;
 };
+
+/** Builds options for sequence charts
+*/
+PGUtils.prototype.buildOptionsFromSingleSeq = function(measurement, selection) {
+  switch (measurement.type) {
+    case "TIME": // timestamp
+      return this.buildOptionsFromSingleTimestamp(measurement, selection);
+    case "RAM": // RAM
+      return this.buildOptionsFromSingleRAM(measurement, selection);
+    default:
+      return {
+        err: "no sequence"
+      };
+  }
+}
 
 
 /** Create options from measurement and selection and build graph
