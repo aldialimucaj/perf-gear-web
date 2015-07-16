@@ -22,7 +22,8 @@ gulp.task('browser-sync', ['start'], function() {
   browserSync.init({
     baseDir: "./",
     port: 3000,
-    proxy: "http://localhost:4000"
+    proxy: "http://localhost:4000",
+    open: false
 	});
 
   gulp.watch('./public/jsx/src/**/*.jsx', ['react']).on('change', browserSync.reload);
