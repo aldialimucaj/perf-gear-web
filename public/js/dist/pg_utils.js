@@ -118,6 +118,9 @@ PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
 
 PGUtils.prototype.buildOptionsFromSingleRAM = function(measurement, selection) {
   var options = {};
+
+  options.legend = { data: []};
+
   options.tooltip = {
     show: true
   };
@@ -126,16 +129,17 @@ PGUtils.prototype.buildOptionsFromSingleRAM = function(measurement, selection) {
     type: 'value',
   }];
 
+  options.legend.data.push(selection.yAxis.toUpperFirst());
   var data = [];
   var temp = measurement.sequence[0].timestamp;
   var ramData = measurement.sequence.map(function(seq) {
-    var xLabel = seq.tag? (seq.tag + ' (at '+ (seq.timestamp - temp)+ 'ms)'):'at '+ (seq.timestamp - temp)+ 'ms'
+    var xLabel = seq.tag? (seq.tag + ' (at '+ (seq.timestamp - temp)+ 'µs)'):'at '+ (seq.timestamp - temp)+ 'µs'
     data.push(xLabel);// TODO: change ms to dynamic value
     return seq.value
   });
 
   options.series = [{
-    "name": 'Sequence',
+    "name": selection.yAxis.toUpperFirst(),
     "type": 'line',
     "stack": 'true',
     "itemStyle": {
@@ -167,6 +171,9 @@ PGUtils.prototype.buildOptionsFromSingleRAM = function(measurement, selection) {
 
 PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, selection) {
   var options = {};
+
+  options.legend = {};
+
   options.tooltip = {
     show: true
   };
@@ -175,12 +182,12 @@ PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, select
     type: 'value'
   }];
 
-  var legend = [];
+  options.legend.data = [];
   var temp = measurement.sequence[0].timestamp;
   options.series = measurement.sequence.map(function(seq) {
     var tstamp = seq.timestamp - temp;
     temp = seq.timestamp;
-    legend.push(seq.tag);
+    options.legend.data.push(seq.tag);
     return {
       "name": seq.tag,
       "type": 'bar',
@@ -231,7 +238,7 @@ PGUtils.prototype.buildGraphFromSingle = function(measurement, selections) {
   var self = this;
   var graphTypes = [];
   var options = {
-    legend: {},
+    legend: { data: []},
     xAxis: [],
     yAxis: [],
     series: [],
@@ -266,55 +273,6 @@ PGUtils.prototype.buildGraphFromSingle = function(measurement, selections) {
   });
   this.buildGraph(graphTypes, options);
 }
-
-
-/** Build a test graph -- DELETE
- *
- */
-PGUtils.prototype.buildTestGraph = function(first_argument) {
-  // use
-  require(
-    [
-      'echarts',
-      'echarts/chart/line' // require the specific chart type
-    ],
-    function(ec) {
-      // Initialize after dom ready
-      var myChart = ec.init(document.getElementById('chart'));
-
-      var option = {
-        tooltip: {
-          show: true
-        },
-        legend: {
-          data: ['Sales', 'Buys']
-        },
-        xAxis: [{
-          type: 'category',
-          data: ["Shirts", "Sweaters", "Chiffon Shirts", "Pants", "High Heels", "Socks"]
-        }, {
-          type: 'category',
-          data: ["Jeans", "Hoodies", "Shorts", "Pyjamas", "Shoes", "Panties"]
-        }],
-        yAxis: [{
-          type: 'value'
-        }],
-        series: [{
-          "name": "Sales",
-          "type": "line",
-          "data": [5, 20, 40, 10, 10, 20]
-        }, {
-          "name": "Buys",
-          "type": "line",
-          "data": [15, 2, 10, 1, 17, 30]
-        }]
-      };
-
-      // Load data into the ECharts instance
-      myChart.setOption(option);
-    }
-  );
-};
 
 /* ************************************************************************* */
 // EXTERNALS

@@ -61,8 +61,13 @@ var GraphKey = React.createClass({
       keys = Object.keys(this.props.measurement).map(function(key){
         // filtering for known types
         switch(self.props.type){
+          case 'bar':
+            if(self.props.optionId === "yAxis" && !$.isNumeric(self.props.measurement[key])) return null;
+            if (Array.isArray(self.props.measurement[key])) return null;
+            break;
           case 'seq':
             if (!Array.isArray(self.props.measurement[key])) return null;
+            break;
         }
         return(<option value={key} key={index++}>{key}</option>)
       });
@@ -142,8 +147,8 @@ var GraphConfiguration = React.createClass({
         return (
           <div className="three fields" key={idx}>
             <GraphType keyId={idx} arg={argument} label="Presentation"/>
-            <GraphKey measurement={measurement} keyId={idx} optionId="xAxis" label="X Axis"/>
-            <GraphKey measurement={measurement} keyId={idx} optionId="yAxis" label="Y Axis"/>
+            <GraphKey measurement={measurement} type={argument.type} keyId={idx} optionId="xAxis" label="X Axis"/>
+            <GraphKey measurement={measurement} type={argument.type} keyId={idx} optionId="yAxis" label="Y Axis"/>
             <GraphLabel keyId={idx} optionId="name" label="Label"/>
           </div>
         );
