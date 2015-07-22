@@ -48,7 +48,6 @@ var MeasurementTable = React.createClass({
 
     return (
       <div className="measurementTable">
-        Measurement Table
         <table className="ui celled striped table">
           <thead>
             <tr>
@@ -82,7 +81,6 @@ var MeasurementBox = React.createClass({
   render: function() {
     return (
       <div className="measurementBox">
-        Measurements go here
         <MeasurementTable data={this.state.data} skip={this.state.skip} limit={this.state.limit}/>
       </div>
     );

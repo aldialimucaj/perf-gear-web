@@ -208,7 +208,7 @@ PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, select
   // add y-axis
   options.yAxis = [{
     type: 'category',
-    data: [measurement.unit.toLowerCase().toUpperFirst()]
+    data: [selection.yAxis]
   }];
 
 

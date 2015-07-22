@@ -80,7 +80,6 @@ var MeasurementTable = React.createClass({
     return React.createElement(
       "div",
       { className: "measurementTable" },
-      "Measurement Table",
       React.createElement(
         "table",
         { className: "ui celled striped table" },
@@ -131,7 +130,6 @@ var MeasurementBox = React.createClass({
     return React.createElement(
       "div",
       { className: "measurementBox" },
-      "Measurements go here",
       React.createElement(MeasurementTable, { data: this.state.data, skip: this.state.skip, limit: this.state.limit })
     );
   }
