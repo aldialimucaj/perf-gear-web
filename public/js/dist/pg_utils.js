@@ -179,6 +179,7 @@ PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, select
   };
 
   options.xAxis = [{
+    name: this.unitToSymbol(measurement.unit),
     type: 'value'
   }];
 
@@ -187,7 +188,7 @@ PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, select
   options.series = measurement.sequence.map(function(seq) {
     var tstamp = seq.timestamp - temp;
     temp = seq.timestamp;
-    options.legend.data.push(seq.tag);
+    if(seq.tag) options.legend.data.push(seq.tag);
     return {
       "name": seq.tag,
       "type": 'bar',
@@ -272,6 +273,22 @@ PGUtils.prototype.buildGraphFromSingle = function(measurement, selections) {
 
   });
   this.buildGraph(graphTypes, options);
+}
+
+/** Get symbol for specified unit
+*/
+PGUtils.prototype.unitToSymbol = function(unit) {
+  if(!unit) return null;
+  var symbol = "";
+  switch(unit.toUpperCase()){
+    case "MICROSECONDS":
+      symbol = "µs";
+      break;
+    default:
+      symbol = "@"
+  }
+
+  return symbol;
 }
 
 /* ************************************************************************* */
