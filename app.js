@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var measurements = require('./routes/measurements');
+var analytics = require('./routes/analytics');
 
 /* API */
 var apiMeasurements = require('./api/measurements');
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/measurements', measurements);
+app.use('/analytics', analytics);
 
 /* API Routes */
 app.use('/api/measurements', apiMeasurements);
