@@ -1,4 +1,6 @@
 /* @flow */
+'use strict';
+
 var express = require('express');
 var _ = require('lodash');
 var l = require('winston');
@@ -11,7 +13,9 @@ var rcon = require('../controllers/rethinkConnection');
 router.post('/', dbChecker, function(req, res) {
   l.info(req.body);
   if (!_.isEmpty(req.body)) {
-    r.table('measurements').insert(req.body)
+    let m = _.clone(req.body, true);
+    m.insertDate = new Date();
+    r.table('measurements').insert(m)
       .run(rcon.conn, function(err, result) {
         forwarder(res, err, result, 201);
       });
