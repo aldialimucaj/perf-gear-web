@@ -6,6 +6,8 @@ var _ = require('lodash');
 var l = require('winston');
 var r = require('rethinkdb');
 var router = express.Router();
+
+// internal depencencies
 var rcon = require('../controllers/rethinkConnection');
 
 
@@ -103,35 +105,52 @@ function preCommit(measurement) {
   m._commitDate = new Date();
 
   // adding statistical and arithmetical values
-  switch (m.type.toUpperCase()) {
-    case "TIME":
-      m._calc = calculateStats(m);
-      break;
+  if (m.type) {
+    switch (m.type.toUpperCase()) {
+      case "TIME":
+        m._stats = calculateStats(m);
+        break;
+    }
   }
 
   return m;
 }
 
 /**
- * Returns statistical and arithmetical values over the measurements sequence
+ * Returns statistical and arithmetical values over the measurements sequence.
+ * It counts the difference between two sequences as an item. Not the measurement
+ * itself. So we have a count of sequences - 1.
  */
 function calculateStats(measurement) {
-  var calc = {};
+  var stats = {};
+  let _length = measurement.sequence ? measurement.sequence.length : 0;
 
-  if (measurement.sequence.length > 0) {
+  if (measurement.sequence && _length > 0) {
     let _sum = 0;
     let _tempAvg = measurement.sequence[0].value;
+    let _min = Number.MAX_VALUE;
+    let _max = 0;
 
     measurement.sequence.forEach(function(v, i) {
-      _sum += (v.value -_tempAvg);
+      let _delta = (v.value - _tempAvg);
+      _sum += _delta;
+      // special case if index = 0 then first delta is 0
+      if (i != 0) {
+        _min = Math.min(_min, _delta);
+        _max = Math.max(_max, _delta);
+      }
       _tempAvg = v.value;
     });
 
-    // set the average of sequence
-    calc.average = _sum / (measurement.sequence.length - 1);
+    // set stat values
+    stats.min = _min;
+    stats.max = _max;
+    stats.sum = _sum;
+    stats.count = (_length - 1);
+    stats.average = _sum / (_length - 1);
   }
 
-  return calc;
+  return stats;
 }
 
 /* ========================================================================== */
