@@ -13,6 +13,7 @@ var analytics = require('./routes/analytics');
 
 /* API */
 var apiMeasurements = require('./api/measurements');
+var apiAnalytics = require('./api/analytics');
 
 var rcon = require('./controllers/rethinkConnection');
 
@@ -38,6 +39,7 @@ app.use('/analytics', analytics);
 
 /* API Routes */
 app.use('/api/measurements', apiMeasurements);
+app.use('/api/analytics', apiAnalytics);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
