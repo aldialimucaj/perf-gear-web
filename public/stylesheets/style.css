@@ -21,6 +21,13 @@ code.json.hljs {
   margin-bottom: 1em;
 }
 
+.pg-center {
+  text-align: center;
+}
+.pg-hidden {
+  display: none;
+}
+
 .adder {
 
 }

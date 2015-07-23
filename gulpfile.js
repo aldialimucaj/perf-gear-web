@@ -37,7 +37,7 @@ gulp.task('start', function (cb) {
 
   gmon({
     script: 'bin/www'
-  , ext: 'js html'
+  , ext: 'html'
   , env: { 'NODE_ENV': 'development' }
   }).on('start', function () {
 		if (!started) {

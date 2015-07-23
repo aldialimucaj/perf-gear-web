@@ -139,6 +139,7 @@ var GraphConfiguration = React.createClass({
   },
 
   buildGraph: function buildGraph(argument) {
+    $('#chart-container').show();
     this.willBuildGraph();
     pgUtils.buildGraphFromSingle(this.props.data, this.state.options);
   },
@@ -247,10 +248,10 @@ var GraphConfiguration = React.createClass({
         ),
         React.createElement(
           'div',
-          { className: 'field' },
+          { className: 'field pg-center' },
           React.createElement(
             'button',
-            { className: 'ui primary button centered', onClick: this.buildGraph },
+            { className: 'ui primary button', onClick: this.buildGraph },
             'Build Graph'
           )
         )

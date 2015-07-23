@@ -21,9 +21,9 @@ var MeasurementPreview = React.createClass({
 var GraphPreview = React.createClass({
   render: function() {
     return (
-      <div id="chart" className="">
-
-      </div>
+        <div id="chart-container" className="ui segment pg-hidden">
+          <div id="chart"></div>
+        </div>
     );
   }
 });
