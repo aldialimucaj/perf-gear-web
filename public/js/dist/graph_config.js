@@ -69,18 +69,9 @@ var GraphKey = React.createClass({
     var self = this;
     var keys = [];
     if (this.props.measurement) {
+      var options = pgUtils.getAxisItems(self.props.type, self.props.optionId, this.props.measurement);
       var index = 0;
-      keys = Object.keys(this.props.measurement).map(function (key) {
-        // filtering for known types
-        switch (self.props.type) {
-          case 'bar':
-            if (self.props.optionId === 'yAxis' && !$.isNumeric(self.props.measurement[key])) return null;
-            if (Array.isArray(self.props.measurement[key])) return null;
-            break;
-          case 'seq':
-            if (!Array.isArray(self.props.measurement[key])) return null;
-            break;
-        }
+      keys = options.map(function (key) {
         return React.createElement(
           'option',
           { value: key, key: index++ },

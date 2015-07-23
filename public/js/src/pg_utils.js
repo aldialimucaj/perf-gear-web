@@ -60,6 +60,32 @@ PGUtils.prototype._dataCheckAndReturn = function(data, cb) {
   }
 };
 
+/**
+* Get relevant items to be selected for axis.
+*/
+PGUtils.prototype.getAxisItems = function(type, optionId, mObject, prefix) {
+  var self = this;
+  var keys = Object.keys(mObject).map(function(key){
+    if(_.isPlainObject(mObject[key])) {
+      return self.getAxisItems(type, optionId, mObject[key], key);
+    }
+    // filtering for known types
+    switch(type){
+      case 'bar':
+        if(optionId === "yAxis" && !$.isNumeric(mObject[key])) return null;
+        if (Array.isArray(mObject[key])) return null;
+        break;
+      case 'seq':
+        if (!Array.isArray(mObject[key])) return null;
+        break;
+    }
+
+    return prefix? prefix+'.'+key:key;
+  });
+
+  return _.flattenDeep(keys);
+}
+
 /* ************************************************************************* */
 
 /** Build graph
@@ -99,7 +125,7 @@ PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
   // add legend
   options.xAxis = [{
     type: 'category', // TODO: need to find out data type!!!
-    data: [measurement[selection.xAxis]] //read data from measurement[props.xAxis]. If sequence special case
+    data: [_.get(measurement, selection.xAxis)] //read data from measurement[props.xAxis]. If sequence special case
   }];
 
   options.yAxis = [{
@@ -109,7 +135,7 @@ PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
   options.series = [{
     "name": selection.name || selection.yAxis,
     "type": selection.type,
-    "data": [measurement[selection.yAxis]]
+    "data": [_.get(measurement, selection.yAxis)]
   }]
 
   return options;
