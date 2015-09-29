@@ -136,4 +136,4 @@ var MeasurementBox = React.createClass({
 });
 
 // Render
-React.render(React.createElement(MeasurementBox, { url: "/api/measurements" }), document.getElementById("content"));
+React.render(React.createElement(MeasurementBox, { url: "/api/measurements" }), document.getElementById('content'));

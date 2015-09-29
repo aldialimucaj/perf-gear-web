@@ -11,4 +11,4 @@ var MeasurementBox = React.createClass({
     );
   }
 });
-React.render(React.createElement(MeasurementBox, null), document.getElementById("content"));
+React.render(React.createElement(MeasurementBox, null), document.getElementById('content'));

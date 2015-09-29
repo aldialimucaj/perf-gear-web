@@ -69,15 +69,15 @@ var MeasurementBox = React.createClass({
 
   init: function init() {
     // semantic-ui
-    $(".accordion").accordion({
+    $('.accordion').accordion({
       selector: {
-        trigger: ".title .icon"
+        trigger: '.title .icon'
       }
     });
 
     //highlightjs
     $(document).ready(function () {
-      $("pre code").each(function (i, block) {
+      $('pre code').each(function (i, block) {
         hljs.highlightBlock(block);
       });
     });
@@ -98,5 +98,5 @@ function setMeasurementId(id) {
   MeasurementBox.setState({ measurementId: id });
 }
 
-React.render(React.createElement(MeasurementBox, null), document.getElementById("content"));
+React.render(React.createElement(MeasurementBox, null), document.getElementById('content'));
 /*JSON.stringify(this.state)*/
