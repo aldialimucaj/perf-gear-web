@@ -7,7 +7,7 @@ function PGUtils() {
 /** Fetch data from database
  *
  */
-PGUtils.prototype.fetchMeasurements = function(skip, limit, cb) {
+PGUtils.prototype.fetchMeasurements = function (skip, limit, cb) {
   if (!cb) cb = limit;
   if (!cb) cb = skip;
 
@@ -15,10 +15,10 @@ PGUtils.prototype.fetchMeasurements = function(skip, limit, cb) {
     url: '/api/measurements',
     dataType: 'json',
     cache: false,
-    success: function(data) {
+    success: function (data) {
       this._dataCheckAndReturn(data, cb);
     }.bind(this),
-    error: function(xhr, status, err) {
+    error: function (xhr, status, err) {
       console.error(this.props.url, status, err.toString());
     }.bind(this)
   });
@@ -28,7 +28,7 @@ PGUtils.prototype.fetchMeasurements = function(skip, limit, cb) {
 /** Fetch one measurement by id
  *
  */
-PGUtils.prototype.fetchOneMeasurementById = function(id, cb) {
+PGUtils.prototype.fetchOneMeasurementById = function (id, cb) {
   if (!cb) cb = limit;
   if (!cb) cb = skip;
 
@@ -36,10 +36,10 @@ PGUtils.prototype.fetchOneMeasurementById = function(id, cb) {
     url: '/api/measurements/' + id,
     dataType: 'json',
     cache: false,
-    success: function(data) {
+    success: function (data) {
       this._dataCheckAndReturn(data, cb);
     }.bind(this),
-    error: function(xhr, status, err) {
+    error: function (xhr, status, err) {
       console.error(this.props.url, status, err.toString());
     }.bind(this)
   });
@@ -48,7 +48,7 @@ PGUtils.prototype.fetchOneMeasurementById = function(id, cb) {
 /** Check data if valid and errors.
  * private
  */
-PGUtils.prototype._dataCheckAndReturn = function(data, cb) {
+PGUtils.prototype._dataCheckAndReturn = function (data, cb) {
   if (data && data.ok) {
     cb(null, data.content);
   } else if (data) {
@@ -63,16 +63,16 @@ PGUtils.prototype._dataCheckAndReturn = function(data, cb) {
 /**
 * Get relevant items to be selected for axis.
 */
-PGUtils.prototype.getAxisItems = function(type, optionId, mObject, prefix) {
+PGUtils.prototype.getAxisItems = function (type, optionId, mObject, prefix) {
   var self = this;
-  var keys = Object.keys(mObject).map(function(key){
-    if(_.isPlainObject(mObject[key])) {
+  var keys = Object.keys(mObject).map(function (key) {
+    if (_.isPlainObject(mObject[key])) {
       return self.getAxisItems(type, optionId, mObject[key], key);
     }
     // filtering for known types
-    switch(type){
+    switch (type) {
       case 'bar':
-        if(optionId === "yAxis" && !$.isNumeric(mObject[key])) return null;
+        if (optionId === "yAxis" && !$.isNumeric(mObject[key])) return null;
         if (Array.isArray(mObject[key])) return null;
         break;
       case 'seq':
@@ -80,7 +80,7 @@ PGUtils.prototype.getAxisItems = function(type, optionId, mObject, prefix) {
         break;
     }
 
-    return prefix? prefix+'.'+key:key;
+    return prefix ? prefix + '.' + key : key;
   });
 
   return _.flattenDeep(keys);
@@ -91,7 +91,7 @@ PGUtils.prototype.getAxisItems = function(type, optionId, mObject, prefix) {
 /** Build graph
  *
  */
-PGUtils.prototype.buildGraph = function(graphTypes, options, element) {
+PGUtils.prototype.buildGraph = function (graphTypes, options, element) {
   var chartHolder = document.getElementById(element) || document.getElementById('chart');
   var chartType = ['echarts'].concat(graphTypes);
 
@@ -103,21 +103,21 @@ PGUtils.prototype.buildGraph = function(graphTypes, options, element) {
   console.log(JSON.stringify(options));
 
   require(chartType,
-    function(ec) {
+    function (ec) {
       // Initialize after dom ready
       var myChart = ec.init(chartHolder);
 
       // Load data into the ECharts instance
       myChart.setOption(options);
     }
-  );
+    );
 
 };
 
 /** Generate Graph Options from a single measurement
  *
  */
-PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
+PGUtils.prototype.buildOptionsFromSingle = function (measurement, selection) {
   var options = {};
   options.tooltip = {
     show: true
@@ -142,10 +142,10 @@ PGUtils.prototype.buildOptionsFromSingle = function(measurement, selection) {
 };
 
 
-PGUtils.prototype.buildOptionsFromSingleRAM = function(measurement, selection) {
+PGUtils.prototype.buildOptionsFromSingleRAM = function (measurement, selection) {
   var options = {};
 
-  options.legend = { data: []};
+  options.legend = { data: [] };
 
   options.tooltip = {
     show: true
@@ -158,8 +158,8 @@ PGUtils.prototype.buildOptionsFromSingleRAM = function(measurement, selection) {
   options.legend.data.push(selection.yAxis.toUpperFirst());
   var data = [];
   var temp = measurement.sequence[0].timestamp;
-  var ramData = measurement.sequence.map(function(seq) {
-    var xLabel = seq.tag? (seq.tag + ' (at '+ (seq.timestamp - temp)+ 'µs)'):'at '+ (seq.timestamp - temp)+ 'µs'
+  var ramData = measurement.sequence.map(function (seq) {
+    var xLabel = seq.tag ? (seq.tag + ' (at ' + (seq.timestamp - temp) + 'µs)') : 'at ' + (seq.timestamp - temp) + 'µs'
     data.push(xLabel);// TODO: change ms to dynamic value
     return seq.value
   });
@@ -195,7 +195,7 @@ PGUtils.prototype.buildOptionsFromSingleRAM = function(measurement, selection) {
   return options;
 };
 
-PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, selection) {
+PGUtils.prototype.buildOptionsFromSingleTimestamp = function (measurement, selection) {
   var options = {};
 
   options.legend = {};
@@ -210,7 +210,7 @@ PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, select
 
   options.legend.data = [];
   var temp = measurement.sequence[0].timestamp;
-  options.series = measurement.sequence.map(function(seq) {
+  options.series = measurement.sequence.map(function (seq) {
     var tstamp = seq.timestamp - temp;
     temp = seq.timestamp;
     options.legend.data.push(seq.tag);
@@ -243,7 +243,7 @@ PGUtils.prototype.buildOptionsFromSingleTimestamp = function(measurement, select
 
 /** Builds options for sequence charts
 */
-PGUtils.prototype.buildOptionsFromSingleSeq = function(measurement, selection) {
+PGUtils.prototype.buildOptionsFromSingleSeq = function (measurement, selection) {
   switch (measurement.type) {
     case "TIME": // timestamp
       return this.buildOptionsFromSingleTimestamp(measurement, selection);
@@ -260,11 +260,11 @@ PGUtils.prototype.buildOptionsFromSingleSeq = function(measurement, selection) {
 /** Create options from measurement and selection and build graph
  *
  */
-PGUtils.prototype.buildGraphFromSingle = function(measurement, selections) {
+PGUtils.prototype.buildGraphFromSingle = function (measurement, selections) {
   var self = this;
   var graphTypes = [];
   var options = {
-    legend: { data: []},
+    legend: { data: [] },
     xAxis: [],
     yAxis: [],
     series: [],
@@ -273,7 +273,7 @@ PGUtils.prototype.buildGraphFromSingle = function(measurement, selections) {
     }
   };
 
-  Object.keys(selections).map(function(selection) {
+  Object.keys(selections).map(function (selection) {
     switch (selections[selection].type) {
       case 'line':
       case 'bar':
@@ -300,9 +300,16 @@ PGUtils.prototype.buildGraphFromSingle = function(measurement, selections) {
   this.buildGraph(graphTypes, options);
 }
 
+
+/* ************************************************************************* */
+// ANALYTICS
+PGUtils.prototype.sendAnalyticsQuery = function (jsonQuery) {
+  return { to: "do" };
+}
+
 /* ************************************************************************* */
 // EXTERNALS
 
-String.prototype.toUpperFirst = function() {
+String.prototype.toUpperFirst = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
 }

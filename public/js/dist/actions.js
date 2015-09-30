@@ -7,3 +7,7 @@ var MeasurementActions = Reflux.createActions([
   "selectAxis",
   "editLabel"
 ]);
+
+var AnalyticsActions = Reflux.createActions([
+  "sendQuery"
+]);

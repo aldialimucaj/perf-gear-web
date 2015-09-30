@@ -1,28 +1,52 @@
+var pgUtils = new PGUtils();
+
 var QueryEditor = React.createClass({
   render : function (argument) {
-    return (<div id="queryEditor"></div>)
+    return (<div className="row"><div className="column sixteen wide" id="queryEditor"></div></div>)
   }
 });
 
-var AnalyricsContainer = React.createClass({
+var SendQueryButton = React.createClass({
+  sendQuery: function() {
+    let queryResults = pgUtils.sendAnalyticsQuery();
+    console.log(queryResults);
+  },
+
+  render: function(argument) {
+    return (<div className="right aligned column"><button onClick={this.sendQuery} className="ui olive button">Query</button></div>);
+  }
+});
+
+
+var BottomActions = React.createClass({
+  render: function(argument) {
+    return (<div className="row"><SendQueryButton/></div>);
+  }
+});
+
+var AnalyticsContainer = React.createClass({
+  mixins: [Reflux.connect(analyticsStore,"configuration")],
+  
   componentDidMount: function() {
     var myCodeMirror = CodeMirror(document.getElementById('queryEditor'), {
       value: "{\n  $groupBy: ''\n}",
-      mode:  "javascript",
+      mode:  "application/json",
       json: true,
+      matchBrackets: true,
       lineNumbers: true
     });
   },
     
   render : function (argument) {
-    return (<div>
-      <h2>AnalyricsContainer</h2>
+    return (<div className="ui grid">
+      <h2>AnalyticsContainer</h2>
       <QueryEditor/>
+      <BottomActions/>
     </div>);
   }
 });
 
 React.render(
-  <AnalyricsContainer />,
+  <AnalyticsContainer />,
   document.getElementById('content')
 );

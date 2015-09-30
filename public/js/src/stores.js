@@ -35,3 +35,19 @@ var measurementStore = Reflux.createStore({
   }
 
 });
+
+
+var analyticsStore = Reflux.createStore({
+  listenables: [AnalyticsActions],
+  
+  getInitialState: function() {
+    this.configuration = {};
+    
+    return this.configuration;
+  },
+  
+  onSendQuery: function(jsonQuery) {
+    console.log(jsonQuery);
+  }
+  
+});
