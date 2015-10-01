@@ -47,7 +47,9 @@ var analyticsStore = Reflux.createStore({
   },
   
   onSendQuery: function(jsonQuery) {
-    console.log(jsonQuery);
+    var queryResults = pgUtils.sendAnalyticsQuery();
+    console.log(queryResults);
+    
   }
   
 });

@@ -5,11 +5,19 @@ var pgUtils = new PGUtils();
 var QueryEditor = React.createClass({
   displayName: "QueryEditor",
 
+  handleChange: function handleChange(event) {
+    console.log("queryJson changed");
+  },
+
   render: function render(argument) {
     return React.createElement(
       "div",
       { className: "row" },
-      React.createElement("div", { className: "column sixteen wide", id: "queryEditor" })
+      React.createElement(
+        "div",
+        { className: "column sixteen wide" },
+        React.createElement("textarea", { id: "queryEditor", value: "{ groupBy: '' }", onChange: this.handleChange })
+      )
     );
   }
 });
@@ -18,8 +26,9 @@ var SendQueryButton = React.createClass({
   displayName: "SendQueryButton",
 
   sendQuery: function sendQuery() {
-    var queryResults = pgUtils.sendAnalyticsQuery();
-    console.log(queryResults);
+    var jsonQuery = this.props.configuration.editor.getValue();
+    console.log(jsonQuery);
+    AnalyticsActions.sendQuery(jsonQuery);
   },
 
   render: function render(argument) {
@@ -42,7 +51,7 @@ var BottomActions = React.createClass({
     return React.createElement(
       "div",
       { className: "row" },
-      React.createElement(SendQueryButton, null)
+      React.createElement(SendQueryButton, { configuration: this.props.configuration })
     );
   }
 });
@@ -53,12 +62,16 @@ var AnalyticsContainer = React.createClass({
   mixins: [Reflux.connect(analyticsStore, "configuration")],
 
   componentDidMount: function componentDidMount() {
-    var myCodeMirror = CodeMirror(document.getElementById('queryEditor'), {
-      value: "{\n  $groupBy: ''\n}",
+    this.state.configuration.editor = CodeMirror.fromTextArea(document.getElementById('queryEditor'), {
       mode: "application/json",
       json: true,
       matchBrackets: true,
-      lineNumbers: true
+      lineNumbers: true,
+      extraKeys: {
+        "Ctrl-Enter": function CtrlEnter(cm) {
+          AnalyticsActions.sendQuery(cm.getValue());
+        }
+      }
     });
   },
 
@@ -72,7 +85,7 @@ var AnalyticsContainer = React.createClass({
         "AnalyticsContainer"
       ),
       React.createElement(QueryEditor, null),
-      React.createElement(BottomActions, null)
+      React.createElement(BottomActions, { configuration: this.state.configuration })
     );
   }
 });
