@@ -16,7 +16,7 @@ var QueryEditor = React.createClass({
       React.createElement(
         "div",
         { className: "column sixteen wide" },
-        React.createElement("textarea", { id: "queryEditor", value: "{ groupBy: '' }", onChange: this.handleChange })
+        React.createElement("textarea", { id: "queryEditor", value: "{ \"groupBy\": \"path\" }", onChange: this.handleChange })
       )
     );
   }

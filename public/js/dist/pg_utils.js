@@ -303,8 +303,23 @@ PGUtils.prototype.buildGraphFromSingle = function (measurement, selections) {
 
 /* ************************************************************************* */
 // ANALYTICS
-PGUtils.prototype.sendAnalyticsQuery = function (jsonQuery) {
-  return { to: "do" };
+PGUtils.prototype.sendAnalyticsQuery = function (jsonQuery, cb) {
+  
+  $.ajax({
+    type: 'POST',
+    url: '/api/analytics/query',
+    dataType: 'json',
+    contentType: "application/json; charset=utf-8",
+    data: JSON.stringify(jsonQuery),
+    //cache: false,
+    success: function (data) {
+      cb(data);
+    }.bind(this),
+    error: function (xhr, status, err) {
+      console.error(status, err.toString());
+    }.bind(this)
+  });
+  
 }
 
 /* ************************************************************************* */
