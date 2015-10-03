@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "iojs"
+  - "4.1"
 before_install:
   - source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list && wget -qO- http://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
   - sudo apt-get update -qq
@@ -8,6 +8,7 @@ before_install:
   - npm install -g mocha
 
 before_script:
+    - rethinkdb --version
     - rethinkdb --daemon
     - npm uninstall rethinkdb # travis on precise only has redb 1.12
     - npm install rethinkdb@1.12.0-1
