@@ -36,7 +36,6 @@ router.get('/', dbChecker, function (req, res) {
 
 /* POST - quyre measurements */
 router.post('/query', dbChecker, function (req, res) {
-  console.log("query")
   var reql = r.table('measurements');
 
   queryParser.parse(req.body, reql)
