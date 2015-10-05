@@ -46,7 +46,7 @@ describe("Query Parser", function () {
 	describe("PARSE", function () {
 		it("should return measurements grouped by path", function () {
 			var t = r.table('measurements');
-			var query = { groupBy: 'path' };
+			var query = { group: 'path' };
 			qparser.parse(query, t)
 				.then((table) => {
 					table.run(rcon.conn, function (err, cursor) {

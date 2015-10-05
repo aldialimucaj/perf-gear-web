@@ -48,7 +48,7 @@ describe("Analytics", function () {
 				.post('/api/analytics/query')
 				.set('Accept', 'application/json')
 				.send({
-					groupBy: 'path'
+					group: 'path'
 				})
 				.expect('Content-Type', /json/)
 				.expect(200)

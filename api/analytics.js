@@ -34,13 +34,13 @@ router.get('/', dbChecker, function (req, res) {
 
 
 
-/* POST - quyre measurements */
+/* POST - query measurements */
 router.post('/query', dbChecker, function (req, res) {
   var reql = r.table('measurements');
 
   queryParser.parse(req.body, reql)
     .then((r) => {
-      r.run(rcon.conn, function (err, cursor) {
+      r[0].run(rcon.conn, function (err, cursor) {
         if (cursor) cursor.toArray(function (err, result) {
           pgUtils.forwarder(res, err, result);
         });
