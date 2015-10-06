@@ -40,11 +40,11 @@ router.post('/query', dbChecker, function (req, res) {
 
   queryParser.parse(req.body, reql)
     .then((r) => {
-      r[0].run(rcon.conn, function (err, cursor) {
-        if (cursor) cursor.toArray(function (err, result) {
+      r.run(rcon.conn, function (err, cursor) {
+        if (cursor && cursor.toArray) cursor.toArray(function (err, result) {
           pgUtils.forwarder(res, err, result);
         });
-        else pgUtils.forwarder(res, err, []);
+        else pgUtils.forwarder(res, err, cursor);
       });
     })
     .catch((err) => {
