@@ -1,5 +1,6 @@
 var pgUtils = new PGUtils();
 
+// ============================================================================
 var QueryEditor = React.createClass({
   handleChange: function(event) {
     console.log("queryJson changed");
@@ -14,6 +15,7 @@ var QueryEditor = React.createClass({
   }
 });
 
+// ============================================================================
 var SendQueryButton = React.createClass({
   sendQuery: function() {
     let jsonQuery = this.props.configuration.editor.getValue();
@@ -26,15 +28,37 @@ var SendQueryButton = React.createClass({
   }
 });
 
-
+// ============================================================================
 var BottomActions = React.createClass({
   render: function(argument) {
     return (<div className="row"><SendQueryButton configuration={this.props.configuration}/></div>);
   }
 });
 
+// ============================================================================
 var AnalyticsContainer = React.createClass({
   mixins: [Reflux.connect(analyticsStore,"configuration")],
+  
+  componentDidUpdate: function() {
+    this.init();
+  },
+
+  init: function() {
+    // semantic-ui
+    $('.accordion')
+    .accordion({
+      selector: {
+        trigger: '.title .icon'
+      }
+    });
+
+    //highlightjs
+    $(document).ready(function() {
+    $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });
+  },
   
   componentDidMount: function() {
     this.state.configuration.editor = CodeMirror.fromTextArea(document.getElementById('queryEditor'), {
@@ -46,6 +70,8 @@ var AnalyticsContainer = React.createClass({
         "Ctrl-Enter" : function(cm){ AnalyticsActions.sendQuery(cm.getValue());}
       }
     });
+    
+    this.init();
   },
     
   render : function (argument) {
@@ -53,10 +79,12 @@ var AnalyticsContainer = React.createClass({
       <h2>AnalyticsContainer</h2>
       <QueryEditor/>
       <BottomActions configuration={this.state.configuration}/>
+      <JsonPreview data={this.state.configuration.result}/>
     </div>);
   }
 });
 
+// ============================================================================
 React.render(
   <AnalyticsContainer />,
   document.getElementById('content')

@@ -1,23 +1,6 @@
 var pgUtils = new PGUtils();
 
-var MeasurementPreview = React.createClass({
-  render: function() {
-    var preview = JSON.stringify(this.props.data, null, 2);
-    return (
-      <div className="ui styled accordion full-width">
-        <div className="title">
-          <i className="dropdown icon"></i>
-          JSON content
-        </div>
-        <div className="content">
-          <pre><code className="json">{preview}</code></pre>
-        </div>
-      </div>
-    );
-  }
-});
-
-
+// ============================================================================
 var GraphPreview = React.createClass({
   render: function() {
     return (
@@ -28,7 +11,7 @@ var GraphPreview = React.createClass({
   }
 });
 
-
+// ============================================================================
 var MeasurementBox = React.createClass({
   mixins: [Reflux.connect(measurementStore,"options")],
 
@@ -69,7 +52,7 @@ var MeasurementBox = React.createClass({
   render: function() {
     return (
       <div className="measurementBox">
-        <MeasurementPreview data={this.state.measurement} options={this.state.options}/>
+        <JsonPreview data={this.state.measurement} options={this.state.options}/>
         <GraphConfiguration data={this.state.measurement} options={this.state.options} />
         <GraphPreview data={this.state.measurement} options={this.state.options}/>
          {/*JSON.stringify(this.state)*/}
@@ -82,6 +65,7 @@ function setMeasurementId(id) {
   MeasurementBox.setState({measurementId: id})
 }
 
+// ============================================================================
 React.render(
   <MeasurementBox />,
   document.getElementById('content')

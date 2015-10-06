@@ -2,37 +2,7 @@
 
 var pgUtils = new PGUtils();
 
-var MeasurementPreview = React.createClass({
-  displayName: "MeasurementPreview",
-
-  render: function render() {
-    var preview = JSON.stringify(this.props.data, null, 2);
-    return React.createElement(
-      "div",
-      { className: "ui styled accordion full-width" },
-      React.createElement(
-        "div",
-        { className: "title" },
-        React.createElement("i", { className: "dropdown icon" }),
-        "JSON content"
-      ),
-      React.createElement(
-        "div",
-        { className: "content" },
-        React.createElement(
-          "pre",
-          null,
-          React.createElement(
-            "code",
-            { className: "json" },
-            preview
-          )
-        )
-      )
-    );
-  }
-});
-
+// ============================================================================
 var GraphPreview = React.createClass({
   displayName: "GraphPreview",
 
@@ -45,6 +15,7 @@ var GraphPreview = React.createClass({
   }
 });
 
+// ============================================================================
 var MeasurementBox = React.createClass({
   displayName: "MeasurementBox",
 
@@ -87,7 +58,7 @@ var MeasurementBox = React.createClass({
     return React.createElement(
       "div",
       { className: "measurementBox" },
-      React.createElement(MeasurementPreview, { data: this.state.measurement, options: this.state.options }),
+      React.createElement(JsonPreview, { data: this.state.measurement, options: this.state.options }),
       React.createElement(GraphConfiguration, { data: this.state.measurement, options: this.state.options }),
       React.createElement(GraphPreview, { data: this.state.measurement, options: this.state.options })
     );
@@ -98,5 +69,6 @@ function setMeasurementId(id) {
   MeasurementBox.setState({ measurementId: id });
 }
 
+// ============================================================================
 React.render(React.createElement(MeasurementBox, null), document.getElementById('content'));
 /*JSON.stringify(this.state)*/

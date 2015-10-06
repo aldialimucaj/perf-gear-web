@@ -36,25 +36,31 @@ var measurementStore = Reflux.createStore({
 
 });
 
-
+// ============================================================================
 var analyticsStore = Reflux.createStore({
   listenables: [AnalyticsActions],
   
   getInitialState: function() {
-    this.configuration = {};
+    this.config = { query: {}, result: {}};
     
-    return this.configuration;
+    return this.config;
   },
   
   onSendQuery: function(query) {
     try {
       var jsonQuery = $.parseJSON(query);
       pgUtils.sendAnalyticsQuery(jsonQuery, (data) => {
+        this.config.result = data.content;
+        this.updateConfiguration(this.config);
         console.log(data);
       });
     }catch(e) {
       console.error(e);
     }
+  },
+
+  updateConfiguration: function(obj){
+    this.trigger(obj);
   }
   
 });
