@@ -112,7 +112,15 @@ var AnalyticsContainer = React.createClass({
       ),
       React.createElement(QueryEditor, null),
       React.createElement(BottomActions, { configuration: this.state.configuration }),
-      React.createElement(JsonPreview, { data: this.state.configuration.result })
+      React.createElement(
+        "div",
+        { className: "row" },
+        React.createElement(
+          "div",
+          { className: "column sixteen wide" },
+          React.createElement(JsonPreview, { data: this.state.configuration.result })
+        )
+      )
     );
   }
 });

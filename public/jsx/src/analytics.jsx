@@ -79,7 +79,11 @@ var AnalyticsContainer = React.createClass({
       <h2>AnalyticsContainer</h2>
       <QueryEditor/>
       <BottomActions configuration={this.state.configuration}/>
-      <JsonPreview data={this.state.configuration.result}/>
+      <div className="row">
+        <div className="column sixteen wide">
+          <JsonPreview data={this.state.configuration.result}/>
+        </div>
+      </div>
     </div>);
   }
 });
