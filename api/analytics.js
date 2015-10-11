@@ -36,20 +36,21 @@ router.get('/', dbChecker, function (req, res) {
 
 /* POST - query measurements */
 router.post('/query', dbChecker, function (req, res) {
-  var reql = r.table('measurements');
-
-  queryParser.parse(req.body, reql)
-    .then((r) => {
-      r.run(rcon.conn, function (err, cursor) {
-        if (cursor && cursor.toArray) cursor.toArray(function (err, result) {
-          pgUtils.forwarder(res, err, result);
-        });
-        else pgUtils.forwarder(res, err, cursor);
+  var measurements = r.table('measurements');
+  var m = measurements;
+  var reql = null;
+  var query = req.body.query;
+  try {
+    eval("reql = " + query);
+    reql.run(rcon.conn, function (err, cursor) {
+      if (cursor && cursor.toArray) cursor.toArray(function (err, result) {
+        pgUtils.forwarder(res, err, result);
       });
-    })
-    .catch((err) => {
-      pgUtils.forwarder(res, err, []);
+      else pgUtils.forwarder(res, err, cursor);
     });
+  } catch (e) {
+    pgUtils.forwarder(res, e);
+  }
 });
 
 /**

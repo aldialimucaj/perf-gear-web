@@ -5,7 +5,7 @@ var gmon = require('gulp-nodemon');
 var babel = require('gulp-babel');
 var browserSync = require('browser-sync').create();
 
-gulp.task('default', ['browser-sync']);
+gulp.task('default', ['scripts', 'react','browser-sync']);
 
 gulp.task('scripts', function () {
   return gulp.src('./public/js/src/**/*.js')

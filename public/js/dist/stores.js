@@ -48,8 +48,7 @@ var analyticsStore = Reflux.createStore({
   
   onSendQuery: function(query) {
     try {
-      var jsonQuery = $.parseJSON(query);
-      pgUtils.sendAnalyticsQuery(jsonQuery, (data) => {
+      pgUtils.sendAnalyticsQuery(query, (data) => {
         this.config.result = data.content;
         this.updateConfiguration(this.config);
         console.log(data);

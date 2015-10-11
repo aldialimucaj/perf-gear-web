@@ -17,7 +17,7 @@ var QueryEditor = React.createClass({
       React.createElement(
         "div",
         { className: "column sixteen wide" },
-        React.createElement("textarea", { id: "queryEditor", value: "{ \"group\": \"path\" }", onChange: this.handleChange })
+        React.createElement("textarea", { id: "queryEditor", value: "m.count();", onChange: this.handleChange })
       )
     );
   }
@@ -87,8 +87,7 @@ var AnalyticsContainer = React.createClass({
 
   componentDidMount: function componentDidMount() {
     this.state.configuration.editor = CodeMirror.fromTextArea(document.getElementById('queryEditor'), {
-      mode: "application/json",
-      json: true,
+      mode: "text/javascript",
       matchBrackets: true,
       lineNumbers: true,
       extraKeys: {
