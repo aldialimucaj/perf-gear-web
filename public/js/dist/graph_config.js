@@ -4,7 +4,7 @@ var GraphType = React.createClass({
   displayName: 'GraphType',
 
   render: function render() {
-    var classes = ['ui', 'huge', 'label'];
+    var classes = ['ui', 'label'];
     var labelColor;
     switch (this.props.arg.type) {
       case 'bar':

@@ -1,6 +1,6 @@
 var GraphType = React.createClass({
   render: function(){
-    var classes = ['ui','huge', 'label'];
+    var classes = ['ui', 'label'];
     var labelColor;
     switch (this.props.arg.type) {
       case 'bar':
