@@ -12,7 +12,6 @@ var router = express.Router();
 // internal depencencies
 var rcon = require('../controllers/rethinkConnection');
 var pgUtils = require('../controllers/pgUtils');
-var queryParser = require('../controllers/query_parser');
 
 /* ========================================================================== */
 
@@ -36,9 +35,12 @@ router.get('/', dbChecker, function (req, res) {
 
 /* POST - query measurements */
 router.post('/query', dbChecker, function (req, res) {
+  // create two variables, we expect m and measurement 
   var measurements = r.table('measurements');
   var m = measurements;
   var reql = null;
+  
+  // the string query
   var query = req.body.query;
   try {
     eval("reql = " + query);
