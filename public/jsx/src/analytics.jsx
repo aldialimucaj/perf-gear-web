@@ -65,17 +65,22 @@ var AnalyticsContainer = React.createClass({
       mode:  "text/javascript",
       matchBrackets: true,
       lineNumbers: true,
+      theme: "neo",
       extraKeys: {
         "Ctrl-Enter" : function(cm){ AnalyticsActions.sendQuery(cm.getValue());}
       }
     });
+    
+    this.state.configuration.editor.setSize('100%', 'auto')
     
     this.init();
   },
     
   render : function (argument) {
     return (<div className="ui grid">
-      <h2>AnalyticsContainer</h2>
+      <div className="pg-block-center">
+        <h3>Analytics Container</h3>
+      </div>
       <QueryEditor/>
       <BottomActions configuration={this.state.configuration}/>
       <div className="row">

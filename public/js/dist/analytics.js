@@ -90,12 +90,15 @@ var AnalyticsContainer = React.createClass({
       mode: "text/javascript",
       matchBrackets: true,
       lineNumbers: true,
+      theme: "neo",
       extraKeys: {
         "Ctrl-Enter": function CtrlEnter(cm) {
           AnalyticsActions.sendQuery(cm.getValue());
         }
       }
     });
+
+    this.state.configuration.editor.setSize('100%', 'auto');
 
     this.init();
   },
@@ -105,9 +108,13 @@ var AnalyticsContainer = React.createClass({
       "div",
       { className: "ui grid" },
       React.createElement(
-        "h2",
-        null,
-        "AnalyticsContainer"
+        "div",
+        { className: "pg-block-center" },
+        React.createElement(
+          "h3",
+          null,
+          "Analytics Container"
+        )
       ),
       React.createElement(QueryEditor, null),
       React.createElement(BottomActions, { configuration: this.state.configuration }),

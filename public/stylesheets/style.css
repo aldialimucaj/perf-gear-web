@@ -28,6 +28,13 @@ code.json.hljs {
   display: none;
 }
 
+.pg-block-center {
+  padding-top: 1em;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
 .adder {
 
 }
