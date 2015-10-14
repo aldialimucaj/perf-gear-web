@@ -83,6 +83,15 @@ var AnalyticsContainer = React.createClass({
       </div>
       <QueryEditor/>
       <BottomActions configuration={this.state.configuration}/>
+      
+      <div className="row">
+        <div className="column sixteen wide">
+        <div className="content">
+          <GraphConfiguration data={this.state.configuration.mockMeasurement} options={this.state.options} />
+          <GraphPreview />
+        </div>
+        </div>
+      </div>
       <div className="row">
         <div className="column sixteen wide">
           <JsonPreview data={this.state.configuration.result}/>

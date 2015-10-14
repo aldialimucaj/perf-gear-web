@@ -124,6 +124,20 @@ var AnalyticsContainer = React.createClass({
         React.createElement(
           "div",
           { className: "column sixteen wide" },
+          React.createElement(
+            "div",
+            { className: "content" },
+            React.createElement(GraphConfiguration, { data: this.state.configuration.mockMeasurement, options: this.state.options }),
+            React.createElement(GraphPreview, null)
+          )
+        )
+      ),
+      React.createElement(
+        "div",
+        { className: "row" },
+        React.createElement(
+          "div",
+          { className: "column sixteen wide" },
           React.createElement(JsonPreview, { data: this.state.configuration.result })
         )
       )

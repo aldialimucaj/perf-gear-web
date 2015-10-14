@@ -250,3 +250,16 @@ var GraphConfiguration = React.createClass({
     );
   }
 });
+
+// ============================================================================
+var GraphPreview = React.createClass({
+  displayName: 'GraphPreview',
+
+  render: function render() {
+    return React.createElement(
+      'div',
+      { id: 'chart-container', className: 'ui segment pg-hidden' },
+      React.createElement('div', { id: 'chart' })
+    );
+  }
+});

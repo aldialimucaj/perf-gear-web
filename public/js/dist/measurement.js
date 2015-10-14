@@ -1,23 +1,10 @@
-"use strict";
+'use strict';
 
 var pgUtils = new PGUtils();
 
 // ============================================================================
-var GraphPreview = React.createClass({
-  displayName: "GraphPreview",
-
-  render: function render() {
-    return React.createElement(
-      "div",
-      { id: "chart-container", className: "ui segment pg-hidden" },
-      React.createElement("div", { id: "chart" })
-    );
-  }
-});
-
-// ============================================================================
 var MeasurementBox = React.createClass({
-  displayName: "MeasurementBox",
+  displayName: 'MeasurementBox',
 
   mixins: [Reflux.connect(measurementStore, "options")],
 
@@ -56,11 +43,11 @@ var MeasurementBox = React.createClass({
 
   render: function render() {
     return React.createElement(
-      "div",
-      { className: "measurementBox" },
+      'div',
+      { className: 'measurementBox' },
       React.createElement(JsonPreview, { data: this.state.measurement, options: this.state.options }),
       React.createElement(GraphConfiguration, { data: this.state.measurement, options: this.state.options }),
-      React.createElement(GraphPreview, { data: this.state.measurement, options: this.state.options })
+      React.createElement(GraphPreview, null)
     );
   }
 });
@@ -71,4 +58,3 @@ function setMeasurementId(id) {
 
 // ============================================================================
 React.render(React.createElement(MeasurementBox, null), document.getElementById('content'));
-/*JSON.stringify(this.state)*/
