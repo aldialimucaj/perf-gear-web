@@ -44,15 +44,7 @@ var analyticsStore = Reflux.createStore({
     this.config = {
       query: {},
       result: {},
-      mockMeasurement: {
-        "_commitDate": "2015-10-11T19:32:59.928Z",
-        "hitValue": 392911,
-        "id": "630e1aff-8191-4bcf-b359-ab33eaa9a615",
-        "path": "examples/c/example2/fibonacci_at",
-        "sequence": [],
-        "type": "HIT",
-        "unit": "HITS"
-      }
+      mockMeasurement: {}
     };
 
     return this.config;
@@ -63,15 +55,24 @@ var analyticsStore = Reflux.createStore({
       pgUtils.sendAnalyticsQuery(query, (data) => {
         this.config.result = data.content;
         this.updateConfiguration(this.config);
-        console.log(data);
+        this.transformResultsToMeasurement(data.content);
       });
     } catch (e) {
       console.error(e);
     }
   },
+  
+  transformResultsToMeasurement: function(qResult) {
+    var self = this;
+    pgUtils.queryResultsToMeasurement(qResult, function(err, result) {
+      self.config.mockMeasurement = result;
+      self.updateConfiguration(self.config);
+    });
+  },
 
   updateConfiguration: function (obj) {
     this.trigger(obj);
+    console.log(obj);
   }
 
 });

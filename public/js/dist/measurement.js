@@ -6,7 +6,7 @@ var pgUtils = new PGUtils();
 var MeasurementBox = React.createClass({
   displayName: 'MeasurementBox',
 
-  mixins: [Reflux.connect(measurementStore, "options")],
+  mixins: [Reflux.connect(measurementStore, 'options')],
 
   getInitialState: function getInitialState() {
     return { measurementId: 0 };

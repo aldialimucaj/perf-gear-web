@@ -122,7 +122,7 @@ var GraphLabel = React.createClass({
 var GraphConfiguration = React.createClass({
   displayName: 'GraphConfiguration',
 
-  mixins: [Reflux.connect(measurementStore, "options")],
+  mixins: [Reflux.connect(measurementStore, 'options')],
 
   willBuildGraph: function willBuildGraph() {
     // add class to set element height needed by echarts
@@ -156,7 +156,7 @@ var GraphConfiguration = React.createClass({
     var dropdown = $('.ui.dropdown.adder').dropdown({
       action: function action(text, value) {
         self.addElement({ type: value });
-        dropdown.dropdown("hide");
+        dropdown.dropdown('hide');
       }
     });
   },
@@ -186,7 +186,7 @@ var GraphConfiguration = React.createClass({
           );
         }
       default:
-        console.error("No graph type!");
+        console.error('No graph type!');
         return React.createElement(
           'div',
           null,

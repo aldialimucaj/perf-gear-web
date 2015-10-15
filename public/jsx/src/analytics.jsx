@@ -9,7 +9,7 @@ var QueryEditor = React.createClass({
   render : function (argument) {
     return (<div className="row">
       <div className="column sixteen wide">
-        <textarea id="queryEditor" value='m.count();' onChange={this.handleChange}></textarea>
+        <textarea id="queryEditor" value='m.group("path");' onChange={this.handleChange}></textarea>
         </div>
       </div>)
   }

@@ -304,13 +304,13 @@ PGUtils.prototype.buildGraphFromSingle = function (measurement, selections) {
 /* ************************************************************************* */
 // ANALYTICS
 PGUtils.prototype.sendAnalyticsQuery = function (query, cb) {
-  
+
   $.ajax({
     type: 'POST',
     url: '/api/analytics/query',
     dataType: 'json',
     //contentType: "application/json; charset=utf-8",
-    data: {'query': query},
+    data: { 'query': query },
     //cache: false,
     success: function (data) {
       cb(data);
@@ -319,7 +319,24 @@ PGUtils.prototype.sendAnalyticsQuery = function (query, cb) {
       console.error(status, err.toString());
     }.bind(this)
   });
-  
+
+}
+
+PGUtils.prototype.queryResultsToMeasurement = function (result, cb) {
+  var template = {};
+  var err = null;
+  // only if it is an array it needs transformation
+  if (_.isArray(result)) {
+    _.forEach(result, function (n) {
+      _.forEach(n.reduction, function (m) {
+        _.assign(template, m);
+      });
+    });
+  } else {
+    template.value = result;
+  }
+
+  cb(err, template);
 }
 
 /* ************************************************************************* */
