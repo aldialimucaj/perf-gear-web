@@ -102,7 +102,9 @@ var GraphConfiguration = React.createClass({
   buildGraph: function (argument) {
     $('#chart-container').show();
     this.willBuildGraph();
-    pgUtils.buildGraphFromSingle(this.props.data, this.state.options);
+    var results = this.props.results? this.props.results:this.props.data;
+    
+    pgUtils[this.props.plotFunc](results, this.state.options);
   },
 
   addElement: function (argument) {

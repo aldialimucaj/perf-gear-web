@@ -328,16 +328,64 @@ PGUtils.prototype.queryResultsToMeasurement = function (result, cb) {
   // only if it is an array it needs transformation
   if (_.isArray(result)) {
     _.forEach(result, function (n) {
-      _.forEach(n.reduction, function (m) {
-        _.assign(template, m);
-      });
+      if (_.isArray(n.reduction)) {
+        _.forEach(n.reduction, function (m) {
+          _.assign(template, m);
+        });
+      } else {
+        _.assign(template, n);
+      }
     });
+  } else if (_.isPlainObject(result)) {
+    template = result;
   } else {
     template.value = result;
   }
 
   cb(err, template);
 }
+
+/** Generate Graph Options from a multiple measurements
+ *
+ */
+PGUtils.prototype.buildGraphFromMultiple = function (measurement, selections) {
+  var self = this;
+  var graphTypes = [];
+  var options = {
+    legend: { data: [] },
+    xAxis: [],
+    yAxis: [],
+    series: [],
+    tooltip: {
+      show: true
+    }
+  };
+
+  Object.keys(selections).map(function (selection) {
+    switch (selections[selection].type) {
+      case 'line':
+      case 'bar':
+        graphTypes.push('echarts/chart/' + selections[selection].type);
+        var transformed = self.buildOptionsFromSingle(measurement, selections[selection]);
+        options.xAxis = options.xAxis.concat(transformed.xAxis);
+        options.yAxis = options.yAxis.concat(transformed.yAxis);
+        options.series = options.series.concat(transformed.series);
+        break;
+      case 'seq':
+        graphTypes.push('echarts/chart/bar'); // TODO: make it dynamic
+        graphTypes.push('echarts/chart/line');
+        var transformed = self.buildOptionsFromSingleSeq(measurement, selections[selection]);
+        options.xAxis = options.xAxis.concat(transformed.xAxis);
+        options.yAxis = options.yAxis.concat(transformed.yAxis);
+        options.series = options.series.concat(transformed.series);
+        options.legend = transformed.legend;
+        break;
+      default:
+    }
+  });
+
+  this.buildGraph(graphTypes, options);
+};
 
 /* ************************************************************************* */
 // EXTERNALS

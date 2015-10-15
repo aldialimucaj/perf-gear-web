@@ -42,7 +42,7 @@ var MeasurementBox = React.createClass({
     return (
       <div className="measurementBox">
         <JsonPreview data={this.state.measurement} options={this.state.options}/>
-        <GraphConfiguration data={this.state.measurement} options={this.state.options} />
+        <GraphConfiguration data={this.state.measurement} plotFunc={"buildGraphFromSingle"} />
         <GraphPreview />
       </div>
     );

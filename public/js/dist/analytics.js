@@ -127,7 +127,7 @@ var AnalyticsContainer = React.createClass({
           React.createElement(
             "div",
             { className: "content" },
-            React.createElement(GraphConfiguration, { data: this.state.configuration.mockMeasurement, options: this.state.options }),
+            React.createElement(GraphConfiguration, { data: this.state.configuration.mockMeasurement, results: this.state.configuration.result, plotFunc: "buildGraphFromMultiple" }),
             React.createElement(GraphPreview, null)
           )
         )
