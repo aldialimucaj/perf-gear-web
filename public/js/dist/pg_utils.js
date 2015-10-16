@@ -348,12 +348,15 @@ PGUtils.prototype.queryResultsToMeasurement = function (result, cb) {
 /** Generate Graph Options from a multiple measurements
  *
  */
-PGUtils.prototype.buildGraphFromMultiple = function (measurement, selections) {
+PGUtils.prototype.buildGraphFromMultiple = function (measurements, selections) {
   var self = this;
   var graphTypes = [];
   var options = {
     legend: { data: [] },
-    xAxis: [],
+    xAxis: [{
+        "type": "category",
+        "data": []
+    }],
     yAxis: [],
     series: [],
     tooltip: {
@@ -365,11 +368,17 @@ PGUtils.prototype.buildGraphFromMultiple = function (measurement, selections) {
     switch (selections[selection].type) {
       case 'line':
       case 'bar':
-        graphTypes.push('echarts/chart/' + selections[selection].type);
-        var transformed = self.buildOptionsFromSingle(measurement, selections[selection]);
-        options.xAxis = options.xAxis.concat(transformed.xAxis);
-        options.yAxis = options.yAxis.concat(transformed.yAxis);
-        options.series = options.series.concat(transformed.series);
+        _.forEach(measurements, function (m) {
+          graphTypes.push('echarts/chart/' + selections[selection].type);
+          var transformed = self.buildOptionsFromSingle(m, selections[selection]);
+          options.xAxis[0].data.push(transformed.xAxis[0].data[0]);
+          options.yAxis = transformed.yAxis;
+          if(options.series.length == 0){
+            options.series = options.series.concat(transformed.series);
+          } else {
+            options.series[0].data.push(transformed.series[0].data[0]);
+          }
+        });
         break;
       case 'seq':
         graphTypes.push('echarts/chart/bar'); // TODO: make it dynamic
