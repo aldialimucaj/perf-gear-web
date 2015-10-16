@@ -71,22 +71,22 @@ var AnalyticsContainer = React.createClass({
 
   init: function init() {
     // semantic-ui
-    $(".accordion").accordion({
+    $('.accordion').accordion({
       selector: {
-        trigger: ".title .icon"
+        trigger: '.title .icon'
       }
     });
 
     //highlightjs
     $(document).ready(function () {
-      $("pre code").each(function (i, block) {
+      $('pre code').each(function (i, block) {
         hljs.highlightBlock(block);
       });
     });
   },
 
   componentDidMount: function componentDidMount() {
-    this.state.configuration.editor = CodeMirror.fromTextArea(document.getElementById("queryEditor"), {
+    this.state.configuration.editor = CodeMirror.fromTextArea(document.getElementById('queryEditor'), {
       mode: "text/javascript",
       matchBrackets: true,
       lineNumbers: true,
@@ -98,7 +98,7 @@ var AnalyticsContainer = React.createClass({
       }
     });
 
-    this.state.configuration.editor.setSize("100%", "auto");
+    this.state.configuration.editor.setSize('100%', 'auto');
 
     this.init();
   },
@@ -146,4 +146,4 @@ var AnalyticsContainer = React.createClass({
 });
 
 // ============================================================================
-React.render(React.createElement(AnalyticsContainer, null), document.getElementById("content"));
+React.render(React.createElement(AnalyticsContainer, null), document.getElementById('content'));

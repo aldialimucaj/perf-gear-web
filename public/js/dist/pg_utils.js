@@ -1,5 +1,11 @@
 // pg_utils.js
 /* @flow */
+(function(module){
+
+if(module && require) { // put the requires here
+  _ = require("lodash");
+}
+
 function PGUtils() {
   // constructor
 }
@@ -348,6 +354,8 @@ PGUtils.prototype.queryResultsToMeasurement = function (result, cb) {
 /** Generate Graph Options from a multiple measurements
  *
  */
+
+  
 PGUtils.prototype.buildGraphFromMultiple = function (measurements, selections) {
   var self = this;
   var graphTypes = [];
@@ -402,3 +410,8 @@ PGUtils.prototype.buildGraphFromMultiple = function (measurements, selections) {
 String.prototype.toUpperFirst = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
+if(module) module.exports = PGUtils;
+else window.PGUtils = PGUtils;
+
+})(typeof module === 'undefined'? null: module);
