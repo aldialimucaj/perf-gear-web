@@ -168,7 +168,14 @@ var GraphConfiguration = React.createClass({
     var elements = this.state.graphElements.map(function (element, idx) {
       return self.getGraphElement(measurement, element, idx);
     });
-
+    
+    var seqClasses = ["item"];
+    
+    // analytics dont get sequences
+    if(this.props.plotFunc === "buildGraphFromMultiple") {
+      seqClasses.push("pg-hidden");
+    }
+    
     return (
       <div className="graphConfiguration">
         <div className="ui form">
@@ -183,7 +190,7 @@ var GraphConfiguration = React.createClass({
               <div className="item" data-value="line">
                   Line
               </div>
-              <div className="item" data-value="seq">
+              <div className={seqClasses.join(" ")}  data-value="seq">
                   Sequence
               </div>
             </div>
