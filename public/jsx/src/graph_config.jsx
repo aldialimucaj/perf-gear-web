@@ -100,7 +100,7 @@ var GraphConfiguration = React.createClass({
   },
 
   buildGraph: function (argument) {
-    $('#chart-container').show();
+    $('#chart-container').removeClass('pg-hidden');
     this.willBuildGraph();
     var results = this.props.results? this.props.results:this.props.data;
     
