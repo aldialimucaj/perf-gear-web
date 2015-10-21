@@ -1,4 +1,4 @@
-perf-gear:
+perf-gear-web:
   build: ./
   volumes:
     - "./:/perf-gear"
@@ -12,3 +12,4 @@ rethinkdb:
     ports:
       - "8080:8080"
       - "28015:28015"
+      - "29015:29015"

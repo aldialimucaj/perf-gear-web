@@ -1,0 +1,4 @@
+Database:
+  host: rethinkdb
+  db: dev
+  port: 28015
