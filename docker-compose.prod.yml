@@ -1,0 +1,13 @@
+perf-gear-web:
+  image: mjeshtri/perf-gear-web
+  ports:
+    - "3001:4000"
+  links:
+   - rethinkdb
+   
+rethinkdb:
+    image: rethinkdb:latest
+    ports:
+      - "8081:8080"
+      - "28025:28015"
+      - "29025:29015"
