@@ -18,6 +18,9 @@ describe("Public.PG_UTILS", function () {
 			var yKeyList = pg_utils.getAxisItems("bar","yAxis",fix.getAxisItems.m1);
 			expect(yKeyList).to.be.eql(fix.getAxisItems.e1_2);
 			
+			
+		});
+		it("should compile a list of itmes out of a complex object and sequence", function(){
 			// complex object with subobject, recursion test
 			var xKeyList = pg_utils.getAxisItems("bar","xAxis",fix.getAxisItems.m2);
 			expect(xKeyList).to.be.eql(fix.getAxisItems.e2);
@@ -28,14 +31,31 @@ describe("Public.PG_UTILS", function () {
 			// sequence
 			var xKeyList = pg_utils.getAxisItems("seq","xAxis",fix.getAxisItems.m2);
 			expect(xKeyList).to.be.eql(fix.getAxisItems.e2_1);
-		});
+		})
 	});
 
 	/* ======================================================================== */
+	describe("Build graph options from single measurement", function () {
+		it("should transform a single measurement", function () {
+			var options = pg_utils.buildOptionsFromSingle(fix.buildOptionsFromSingle.m1, fix.buildOptionsFromSingle.s1);
+			expect(options).not.to.be.null;
+			expect(options).to.be.eql(fix.buildOptionsFromSingle.e1);
+		});
+	});
+	
+	/* ======================================================================== */
+	describe("Build graph options from single sequencial TIME measurement", function () {
+		it("should transform a single measurement", function () {
+			var options2 = pg_utils.buildOptionsFromSingleTimestamp(fix.buildOptionsFromSingle.m1, fix.buildOptionsFromSingle.s1_2);
+			expect(options2).not.to.be.null;
+			expect(options2).to.be.eql(fix.buildOptionsFromSingle.e1_2);
+		});
+	});
+	
+	/* ======================================================================== */
 	describe("Results to Graph Configuration", function () {
 		it("should transform a single bar chart", function () {
-			var options = pg_utils.buildOptionsFromSingle(fix.m1, fix.s1);
-			expect(options).not.to.be.null;
+			
 		});
 	});
 	
@@ -44,9 +64,10 @@ describe("Public.PG_UTILS", function () {
 	before(function () {
 		pg_utils = new PGUtils();
 		// -----
-		fix.m1 = { "_commitDate": "2015-10-11T19:32:59.907Z", 
+		fix.buildOptionsFromSingle = {};
+		fix.buildOptionsFromSingle.m1 = { "_commitDate": "2015-10-11T19:32:59.907Z", 
 			"_stats": { "average": 0, "count": 2, "max": 0, "min": 0, "sum": 0 }, 
-			"hitValue": 0, 
+			"hitValue": 5, 
 			"id": "e6bb1502-dfe3-4b36-86f7-315c74483fbf", 
 			"path": "examples/c/example2/mat_mul", 
 			"sequence": [
@@ -56,7 +77,11 @@ describe("Public.PG_UTILS", function () {
 			], 
 			"type": "TIME", "unit": "MICROSECONDS" 
 		};
-		fix.s1 = {"type":"bar","xAxis":"path","yAxis":"_stats.count"};
+		fix.buildOptionsFromSingle.s1 = {"type":"bar","xAxis":"path","yAxis":"hitValue"};
+		fix.buildOptionsFromSingle.s1_2 = {"type":"seq","yAxis":"sequence"};
+		fix.buildOptionsFromSingle.e1 = {"xAxis":[{"type":"category","data":["examples/c/example2/mat_mul"]}],"yAxis":[{"type":"value"}],"series":[{"name":"hitValue","type":"bar","data":[5]}],"tooltip":{"show":true}};
+		fix.buildOptionsFromSingle.e1_2 = {"legend":{"data":["start","created","end"]},"xAxis":[{"type":"value"}],"yAxis":[{"type":"category","data":["sequence"]}],"series":[{"name":"start","type":"bar","stack":"true","barMaxWidth":25,"itemStyle":{"normal":{"label":{"show":true,"position":"insideRight"}}},"data":[0]},{"name":"created","type":"bar","stack":"true","barMaxWidth":25,"itemStyle":{"normal":{"label":{"show":true,"position":"insideRight"}}},"data":[2]},{"name":"end","type":"bar","stack":"true","barMaxWidth":25,"itemStyle":{"normal":{"label":{"show":true,"position":"insideRight"}}},"data":[1]}],"tooltip":{"show":true}};
+		
 		// -#-#-#-#-
 		fix.getAxisItems = {};
 		fix.getAxisItems.m1 = {

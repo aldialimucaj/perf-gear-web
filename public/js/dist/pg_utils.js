@@ -10,7 +10,8 @@
     // constructor
   }
 
-  /** Fetch data from database
+  /** 
+   * Fetch data from database
    *
    */
   PGUtils.prototype.fetchMeasurements = function (skip, limit, cb) {
@@ -31,7 +32,8 @@
   };
 
 
-  /** Fetch one measurement by id
+  /** 
+   * Fetch one measurement by id
    *
    */
   PGUtils.prototype.fetchOneMeasurementById = function (id, cb) {
@@ -51,7 +53,8 @@
     });
   };
 
-  /** Check data if valid and errors.
+  /** 
+   * Check data if valid and errors.
    * private
    */
   PGUtils.prototype._dataCheckAndReturn = function (data, cb) {
@@ -102,7 +105,8 @@
 
   /* ************************************************************************* */
 
-  /** Build graph
+  /** 
+   * Build graph
    *
    */
   PGUtils.prototype.buildGraph = function (graphTypes, options, element) {
@@ -128,7 +132,9 @@
 
   };
 
-  /** Generate Graph Options from a single measurement
+  /** 
+   * Generate Graph Options from a single measurement.
+   * This function only build options for non sequencial graphs.
    *
    */
   PGUtils.prototype.buildOptionsFromSingle = function (measurement, selection) {
@@ -155,7 +161,10 @@
     return options;
   };
 
-
+  /**
+   * Generate Graph Options for single RAM measurements
+   * This function generates options for sequential memory measurements.
+   */
   PGUtils.prototype.buildOptionsFromSingleRAM = function (measurement, selection) {
     var options = {};
 
@@ -208,7 +217,11 @@
 
     return options;
   };
-
+  
+  /**
+   * Generate Graph Options for single TIME measurements
+   * This function generates options for sequential timestamp measurements.
+   */
   PGUtils.prototype.buildOptionsFromSingleTimestamp = function (measurement, selection) {
     var options = {};
 
@@ -255,8 +268,9 @@
     return options;
   };
 
-  /** Builds options for sequence charts
-  */
+  /** 
+   * Builds options for sequence charts
+   */
   PGUtils.prototype.buildOptionsFromSingleSeq = function (measurement, selection) {
     switch (measurement.type) {
       case "TIME": // timestamp
@@ -271,7 +285,8 @@
   }
 
 
-  /** Create options from measurement and selection and build graph
+  /** 
+   * Create options from measurement and selection and build graph
    *
    */
   PGUtils.prototype.buildGraphFromSingle = function (measurement, selections) {
