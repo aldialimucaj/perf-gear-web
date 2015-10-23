@@ -6,7 +6,7 @@ var pgUtils = new PGUtils();
 var MeasurementBox = React.createClass({
   displayName: 'MeasurementBox',
 
-  mixins: [Reflux.connect(measurementStore, "options")],
+  mixins: [Reflux.connect(measurementStore, 'options')],
 
   getInitialState: function getInitialState() {
     return { measurementId: 0 };
@@ -46,7 +46,7 @@ var MeasurementBox = React.createClass({
       'div',
       { className: 'measurementBox' },
       React.createElement(JsonPreview, { data: this.state.measurement, options: this.state.options }),
-      React.createElement(GraphConfiguration, { data: this.state.measurement, plotFunc: "buildGraphFromSingle" }),
+      React.createElement(GraphConfiguration, { data: this.state.measurement, plotFunc: 'buildGraphFromSingle' }),
       React.createElement(GraphPreview, null)
     );
   }

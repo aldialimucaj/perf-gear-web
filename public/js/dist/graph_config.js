@@ -69,9 +69,9 @@ var GraphKey = React.createClass({
     var self = this;
     var keys = [];
     if (this.props.measurement) {
-      var options = pgUtils.getAxisItems(self.props.type, self.props.optionId, this.props.measurement);
+      var keyList = pgUtils.getAxisItems(self.props.type, self.props.optionId, this.props.measurement);
       var index = 0;
-      keys = options.map(function (key) {
+      keys = keyList.map(function (key) {
         return React.createElement(
           'option',
           { value: key, key: index++ },
@@ -122,7 +122,7 @@ var GraphLabel = React.createClass({
 var GraphConfiguration = React.createClass({
   displayName: 'GraphConfiguration',
 
-  mixins: [Reflux.connect(measurementStore, "options")],
+  mixins: [Reflux.connect(measurementStore, 'keyList')],
 
   willBuildGraph: function willBuildGraph() {
     // add class to set element height needed by echarts
@@ -134,7 +134,7 @@ var GraphConfiguration = React.createClass({
     this.willBuildGraph();
     var results = this.props.results ? this.props.results : this.props.data;
 
-    pgUtils[this.props.plotFunc](results, this.state.options);
+    pgUtils[this.props.plotFunc](results, this.state.keyList);
   },
 
   addElement: function addElement(argument) {
@@ -158,7 +158,7 @@ var GraphConfiguration = React.createClass({
     var dropdown = $('.ui.dropdown.adder').dropdown({
       action: function action(text, value) {
         self.addElement({ type: value });
-        dropdown.dropdown("hide");
+        dropdown.dropdown('hide');
       }
     });
   },
@@ -188,7 +188,7 @@ var GraphConfiguration = React.createClass({
           );
         }
       default:
-        console.error("No graph type!");
+        console.error('No graph type!');
         return React.createElement(
           'div',
           null,
@@ -204,11 +204,11 @@ var GraphConfiguration = React.createClass({
       return self.getGraphElement(measurement, element, idx);
     });
 
-    var seqClasses = ["item"];
+    var seqClasses = ['item'];
 
     // analytics dont get sequences
-    if (this.props.plotFunc === "buildGraphFromMultiple") {
-      seqClasses.push("pg-hidden");
+    if (this.props.plotFunc === 'buildGraphFromMultiple') {
+      seqClasses.push('pg-hidden');
     }
 
     return React.createElement(
@@ -240,7 +240,7 @@ var GraphConfiguration = React.createClass({
               ),
               React.createElement(
                 'div',
-                { className: seqClasses.join(" "), 'data-value': 'seq' },
+                { className: seqClasses.join(' '), 'data-value': 'seq' },
                 'Sequence'
               )
             )

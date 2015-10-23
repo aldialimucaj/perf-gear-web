@@ -57,9 +57,9 @@ var GraphKey = React.createClass({
     var self = this;
     var keys = [];
     if(this.props.measurement) {
-      var options = pgUtils.getAxisItems(self.props.type, self.props.optionId, this.props.measurement);
+      var keyList = pgUtils.getAxisItems(self.props.type, self.props.optionId, this.props.measurement);
       var index = 0;
-      keys = options.map(function(key) {
+      keys = keyList.map(function(key) {
         return(<option value={key} key={index++}>{key}</option>)
       });
     }
@@ -92,7 +92,7 @@ var GraphLabel = React.createClass({
 });
 
 var GraphConfiguration = React.createClass({
-  mixins: [Reflux.connect(measurementStore,"options")],
+  mixins: [Reflux.connect(measurementStore,"keyList")],
 
   willBuildGraph: function() {
     // add class to set element height needed by echarts
@@ -104,7 +104,7 @@ var GraphConfiguration = React.createClass({
     this.willBuildGraph();
     var results = this.props.results? this.props.results:this.props.data;
     
-    pgUtils[this.props.plotFunc](results, this.state.options);
+    pgUtils[this.props.plotFunc](results, this.state.keyList);
   },
 
   addElement: function (argument) {

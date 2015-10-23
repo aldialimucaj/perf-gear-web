@@ -68,6 +68,13 @@
 
   /**
   * Get relevant items to be selected for axis.
+  * We generate the keys for the axes based on the object structure.
+  * Here is where we parse the object and compile the relevant list.
+  * type = string, bar/line/seq
+  * optionId = string, axis option that was chosen. xAxis/yAxis
+  * mObject = measurement object to be parsed
+  * prefix = string, called recursively in case of sub objects like "key1"
+  *
   */
   PGUtils.prototype.getAxisItems = function (type, optionId, mObject, prefix) {
     var self = this;
@@ -77,8 +84,9 @@
       }
       // filtering for known types
       switch (type) {
+        case 'line':
         case 'bar':
-          if (optionId === "yAxis" && !$.isNumeric(mObject[key])) return null;
+          if (optionId === "yAxis" && !_.isNumber(mObject[key])) return null;
           if (Array.isArray(mObject[key])) return null;
           break;
         case 'seq':
@@ -89,7 +97,7 @@
       return prefix ? prefix + '.' + key : key;
     });
 
-    return _.flattenDeep(keys);
+    return _.filter(_.flattenDeep(keys), (n) => _.isString(n));
   }
 
   /* ************************************************************************* */
