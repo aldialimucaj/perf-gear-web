@@ -73,9 +73,11 @@ describe("Public.PG_UTILS", function () {
 	});
 	
 	/* ======================================================================== */
-	describe("Results to Graph Configuration", function () {
-		it("should transform a single bar chart", function () {
-			
+	describe("Build graph from multiple results", function () {
+		it("should transform multiple results to chart options", function () {
+			var options = pg_utils.buildOptionsFromMultiple(fix.buildOptionsFromMultiple.m1, fix.buildOptionsFromMultiple.s1);
+			expect(options).not.to.be.null;
+			expect(options).to.be.eql(fix.buildOptionsFromMultiple.e1);
 		});
 	});
 	
@@ -183,7 +185,7 @@ describe("Public.PG_UTILS", function () {
 			},
 			{
 				"_commitDate": "2015-10-24T16:22:25.592Z",
-				"hitValue": 1,
+				"hitValue": 3,
 				"id": "649c170c-faa4-4a2f-a900-0c02aad01dac",
 				"path": "test/api/params",
 				"sequence": [],
@@ -192,10 +194,9 @@ describe("Public.PG_UTILS", function () {
 				"unit": "HITS",
 				"someRandom": true
 			}];
-			
 			fix.queryResultsToMeasurement.e1 = {
 				"_commitDate": "2015-10-24T16:22:25.592Z",
-				"hitValue": 1,
+				"hitValue": 3,
 				"id": "649c170c-faa4-4a2f-a900-0c02aad01dac",
 				"path": "test/api/params",
 				"sequence": [],
@@ -206,6 +207,41 @@ describe("Public.PG_UTILS", function () {
 				"AnIntKey" : 0,
 				"someRandom": true
 			}
+			
+			// -#-#-#-#-
+			fix.buildOptionsFromMultiple = {};
+			fix.buildOptionsFromMultiple.m1 = [
+			{
+				"_commitDate": "2015-10-24T16:23:33.174Z",
+				"hitValue": 1,
+				"id": "384aa805-a476-4114-ac28-7ddaeba926c7",
+				"path": "test/api/constructor",
+				"sequence": [],
+				"type": "HIT",
+				"unit": "HITS"
+			},
+			{
+				"_commitDate": "2015-10-11T19:32:59.928Z",
+				"hitValue": 5,
+				"id": "630e1aff-8191-4bcf-b359-ab33eaa9a615",
+				"path": "examples/c/example2/fibonacci_at",
+				"sequence": [],
+				"type": "HIT",
+				"unit": "HITS"
+			},
+			{
+				"_commitDate": "2015-10-24T16:22:25.592Z",
+				"hitValue": 3,
+				"id": "649c170c-faa4-4a2f-a900-0c02aad01dac",
+				"path": "test/api/params",
+				"sequence": [],
+				"test": "dynamic params",
+				"type": "HIT",
+				"unit": "HITS"
+			}];
+			
+			fix.buildOptionsFromMultiple.s1 = {"type":"bar","xAxis":"path","yAxis":"hitValue"};
+			fix.buildOptionsFromMultiple.e1 = {"xAxis":[{"type":"category","data":["test/api/constructor","examples/c/example2/fibonacci_at","test/api/params"]}],"yAxis":[{"type":"value"}],"series":[{"name":"hitValue","type":"bar","data":[1,5,3]}],"tooltip":{"show":true}};
 		
 	});
 
