@@ -53,6 +53,15 @@ describe("Public.PG_UTILS", function () {
 	});
 	
 	/* ======================================================================== */
+	describe("Build graph options from single sequencial RAM measurement", function () {
+		it("should transform a single measurement", function () {
+			var options = pg_utils.buildOptionsFromSingleRAM(fix.buildOptionsFromSingleRAM.m1, fix.buildOptionsFromSingleRAM.s1);
+			expect(options).not.to.be.null;
+			expect(options).to.be.eql(fix.buildOptionsFromSingleRAM.e1);
+		});
+	});
+	
+	/* ======================================================================== */
 	describe("Results to Graph Configuration", function () {
 		it("should transform a single bar chart", function () {
 			
@@ -83,6 +92,33 @@ describe("Public.PG_UTILS", function () {
 		fix.buildOptionsFromSingle.e1_2 = {"legend":{"data":["start","created","end"]},"xAxis":[{"type":"value"}],"yAxis":[{"type":"category","data":["sequence"]}],"series":[{"name":"start","type":"bar","stack":"true","barMaxWidth":25,"itemStyle":{"normal":{"label":{"show":true,"position":"insideRight"}}},"data":[0]},{"name":"created","type":"bar","stack":"true","barMaxWidth":25,"itemStyle":{"normal":{"label":{"show":true,"position":"insideRight"}}},"data":[2]},{"name":"end","type":"bar","stack":"true","barMaxWidth":25,"itemStyle":{"normal":{"label":{"show":true,"position":"insideRight"}}},"data":[1]}],"tooltip":{"show":true}};
 		
 		// -#-#-#-#-
+		fix.buildOptionsFromSingleRAM = {};
+		fix.buildOptionsFromSingleRAM.m1 = {
+					"_commitDate": "2015-10-24T16:24:40.781Z",
+					"hitValue": 3,
+					"id": "e24c9d38-fcf0-446d-bfde-d5f0d6ef11e4",
+					"path": "test/api/ram_usage",
+					"sequence": [
+						{
+						"timestamp": 1445703880412600,
+						"value": 6196
+						},
+						{
+						"timestamp": 1445703880595118,
+						"value": 6608
+						},
+						{
+						"timestamp": 1445703880770565,
+						"value": 6640
+						}
+					],
+					"type": "RAM",
+					"unit": "KIBIBYTE"
+				}
+		fix.buildOptionsFromSingleRAM.s1 = {"type":"seq","yAxis":"sequence"};
+		fix.buildOptionsFromSingleRAM.e1 ={"legend":{"data":["Sequence"]},"xAxis":[{"type":"category","data":["at 0µs","at 182518µs","at 357965µs"]}],"yAxis":[{"type":"value"}],"series":[{"name":"Sequence","type":"line","stack":"true","itemStyle":{"normal":{"label":{"show":true,"position":"insideRight"}}},"data":[6196,6608,6640],"markLine":{"data":[{"type":"average","name":"Average"}]}}],"tooltip":{"show":true}}
+		
+		// -#-#-#-#-
 		fix.getAxisItems = {};
 		fix.getAxisItems.m1 = {
 			"_commitDate": "2015-10-15T07:03:33.761Z",
@@ -110,6 +146,7 @@ describe("Public.PG_UTILS", function () {
 		};
 		fix.getAxisItems.e2 = ["_commitDate","_stats.average","_stats.count","_stats.max","_stats.min","_stats.sum","hitValue","id","path","type","unit"];
 		fix.getAxisItems.e2_1 = ["sequence"];
+		
 	});
 
 	after(function () {
