@@ -62,6 +62,17 @@ describe("Public.PG_UTILS", function () {
 	});
 	
 	/* ======================================================================== */
+	describe("Create phantom measurement to match graph axes options", function () {
+		it("should transform all measurements to one phaton measurement", function (done) {
+			pg_utils.queryResultsToMeasurement(fix.queryResultsToMeasurement.m1, (err, phantom) => {
+				expect(phantom).not.to.be.null;
+				expect(phantom).to.be.eql(fix.queryResultsToMeasurement.e1);
+				done();
+			});
+		});
+	});
+	
+	/* ======================================================================== */
 	describe("Results to Graph Configuration", function () {
 		it("should transform a single bar chart", function () {
 			
@@ -146,6 +157,55 @@ describe("Public.PG_UTILS", function () {
 		};
 		fix.getAxisItems.e2 = ["_commitDate","_stats.average","_stats.count","_stats.max","_stats.min","_stats.sum","hitValue","id","path","type","unit"];
 		fix.getAxisItems.e2_1 = ["sequence"];
+		
+		// -#-#-#-#-
+		fix.queryResultsToMeasurement = {};
+		fix.queryResultsToMeasurement.m1 = [
+			{
+				"_commitDate": "2015-10-24T16:23:33.174Z",
+				"hitValue": 1,
+				"id": "384aa805-a476-4114-ac28-7ddaeba926c7",
+				"path": "test/api/constructor",
+				"sequence": [],
+				"type": "HIT",
+				"unit": "HITS",
+				"extra": "this should be there"
+			},
+			{
+				"_commitDate": "2015-10-11T19:32:59.928Z",
+				"hitValue": 5,
+				"id": "630e1aff-8191-4bcf-b359-ab33eaa9a615",
+				"path": "examples/c/example2/fibonacci_at",
+				"sequence": [],
+				"type": "HIT",
+				"unit": "HITS",
+				"AnIntKey" : 0
+			},
+			{
+				"_commitDate": "2015-10-24T16:22:25.592Z",
+				"hitValue": 1,
+				"id": "649c170c-faa4-4a2f-a900-0c02aad01dac",
+				"path": "test/api/params",
+				"sequence": [],
+				"test": "dynamic params",
+				"type": "HIT",
+				"unit": "HITS",
+				"someRandom": true
+			}];
+			
+			fix.queryResultsToMeasurement.e1 = {
+				"_commitDate": "2015-10-24T16:22:25.592Z",
+				"hitValue": 1,
+				"id": "649c170c-faa4-4a2f-a900-0c02aad01dac",
+				"path": "test/api/params",
+				"sequence": [],
+				"test": "dynamic params",
+				"type": "HIT",
+				"unit": "HITS",
+				"extra": "this should be there",
+				"AnIntKey" : 0,
+				"someRandom": true
+			}
 		
 	});
 

@@ -332,6 +332,10 @@
 
   /* ************************************************************************* */
   // ANALYTICS
+  
+  /**
+   * Sends query to backend API to request ReQL results
+   */
   PGUtils.prototype.sendAnalyticsQuery = function (query, cb) {
 
     $.ajax({
@@ -351,6 +355,11 @@
 
   }
 
+  /**
+   * Pick up results out of returend results. This is done in order to
+   * build the x and y axes. It creates a phantom template which has
+   * all keys from all returend measurements. 
+   */
   PGUtils.prototype.queryResultsToMeasurement = function (result, cb) {
     var template = {};
     var err = null;
@@ -375,7 +384,8 @@
   }
 
 
-  /** Generate Graph Options from a multiple measurement
+  /** 
+   * Generate Graph Options from a multiple measurement
    *
    */
   PGUtils.prototype.buildOptionsFromMultiple = function (measurements, selection) {
@@ -448,7 +458,8 @@
     return options;
   };
 
-  /** Generate Graph Options from a multiple measurements
+  /** 
+   * Generate Graph Options from a multiple measurements
    *
    */
   PGUtils.prototype.buildGraphFromMultiple = function (measurements, selections) {
