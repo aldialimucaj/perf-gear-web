@@ -10,19 +10,12 @@ html
     script(src='/bower_components/react/react-with-addons.js')
     script(src='/bower_components/semantic-ui/dist/semantic.js')
     script(src='/bower_components/lodash/lodash.min.js')
+    script(src="/bower_components/reflux/dist/reflux.js")
+    script(src="/js/dist/actions.js")
+    script(src="/js/dist/stores.js")
   body
     #main.ui.raised
       script(src='/js/dist/pg_utils.js')
-      div.ui.menu
-        a.item(href="/")
-          i.home.icon
-          | Home
-        a.item(href="/measurements")
-          i.bar.chart.icon
-          | Measurements
-        a.item(href="/analytics")
-          i.bar.cubes.icon
-          | Analytics
-        a.right.item(href="/help")
-          i.help.circle.icon
+      #menu
+      script(src='/js/dist/menu.js')
       block content

@@ -74,3 +74,36 @@ var analyticsStore = Reflux.createStore({
   }
 
 });
+
+
+// ============================================================================
+var collectionStore = Reflux.createStore({
+  listenables: [CollectionActions],
+
+  getInitialState: function () {
+    this.collection = {
+      collectionList: [],
+      currentCollection: null
+    };
+
+    return this.collection;
+  },
+
+  onGetCollectionList: function (query) {
+    let self = this;
+    pgUtils.fetchCollections((data) => {
+      
+      self.updateConfiguration(self.config);
+    });
+  },
+  
+  onSetCurrentCollection: function (query) {
+    this.updateConfiguration(this.config);
+  },
+
+  updateConfiguration: function (obj) {
+    this.trigger(obj);
+    console.log(obj);
+  }
+
+});

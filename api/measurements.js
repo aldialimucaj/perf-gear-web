@@ -10,15 +10,36 @@ var router = express.Router();
 // internal depencencies
 var rcon = require('../controllers/rethinkConnection');
 
+const DEFAULT_COLLECTION = 'default';
 
-/* POST measurement posting */
+/* POST measurement to default collection */
 router.post('/', dbChecker, function(req, res) {
   l.info(req.body);
   if (!_.isEmpty(req.body)) {
     // pre commit operations to add date, calc, ...
     let m = preCommit(req.body);
 
-    r.table('measurements').insert(m)
+    r.table(DEFAULT_COLLECTION).insert(m)
+      .run(rcon.conn, function(err, result) {
+        forwarder(res, err, result, 201);
+      });
+  } else {
+    res.status(200).send({
+      ok: false,
+      err: 'Measurement payload was empty'
+    });
+  }
+});
+
+/* POST measurement to variable collection */
+router.post('/:collection', dbChecker, function(req, res) {
+  l.info(req.body);
+  let collection = req.params.collection;
+  if (!_.isEmpty(req.body)) {
+    // pre commit operations to add date, calc, ...
+    let m = preCommit(req.body);
+
+    r.table(collection).insert(m)
       .run(rcon.conn, function(err, result) {
         forwarder(res, err, result, 201);
       });
@@ -33,8 +54,9 @@ router.post('/', dbChecker, function(req, res) {
 /* ========================================================================== */
 
 /* GET measurements fetching */
-router.get('/', dbChecker, function(req, res) {
-  var reql = r.table('measurements');
+router.get('/:collection', dbChecker, function(req, res) {
+  let collection = req.params.collection || DEFAULT_COLLECTION;
+  var reql = r.table(collection);
   // add skip
   if (req.query.skip && parseInt(req.query.skip)) reql = reql.skip(parseInt(req.query.skip));
   // add limit
@@ -51,8 +73,9 @@ router.get('/', dbChecker, function(req, res) {
 /* ========================================================================== */
 
 /* GET single measurement fetching */
-router.get('/:id', dbChecker, function(req, res) {
-  var reql = r.table('measurements').get(req.params.id);
+router.get('/:collection/:id', dbChecker, function(req, res) {
+  let collection = req.params.collection || DEFAULT_COLLECTION;
+  var reql = r.table(collection).get(req.params.id);
 
   reql.run(rcon.conn, function(err, result) {
     forwarder(res, err, result);

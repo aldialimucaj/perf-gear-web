@@ -1,14 +1,14 @@
 "use strict";
 
-var MeasurementBox = React.createClass({
-  displayName: "MeasurementBox",
+var MainBox = React.createClass({
+  displayName: "MainBox",
 
   render: function render() {
     return React.createElement(
       "div",
-      { className: "measurementBox" },
+      { className: "mainBox" },
       "Measurements go here"
     );
   }
 });
-React.render(React.createElement(MeasurementBox, null), document.getElementById("content"));
+React.render(React.createElement(MainBox, null), document.getElementById('content'));

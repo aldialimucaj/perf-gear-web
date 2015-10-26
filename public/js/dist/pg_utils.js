@@ -10,23 +10,27 @@
     // constructor
   }
 
+  /* ************************************************************************* */
+  // NET
+  
+
   /** 
    * Fetch data from database
    *
    */
-  PGUtils.prototype.fetchMeasurements = function (skip, limit, cb) {
+  PGUtils.prototype.fetchMeasurements = function (collection, skip, limit, cb) {
     if (!cb) cb = limit;
     if (!cb) cb = skip;
 
     $.ajax({
-      url: '/api/measurements',
+      url: '/api/measurements/'+ collection,
       dataType: 'json',
       cache: false,
       success: function (data) {
         this._dataCheckAndReturn(data, cb);
       }.bind(this),
       error: function (xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+        console.error(collection, status, err.toString());
       }.bind(this)
     });
   };
@@ -49,6 +53,25 @@
       }.bind(this),
       error: function (xhr, status, err) {
         console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  };
+  
+    /** 
+   * Fetch data from database
+   *
+   */
+  PGUtils.prototype.fetchCollections = function (cb) {
+    
+    $.ajax({
+      url: '/api/collections/',
+      dataType: 'json',
+      cache: false,
+      success: function (data) {
+        this._dataCheckAndReturn(data, cb);
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(collection, status, err.toString());
       }.bind(this)
     });
   };

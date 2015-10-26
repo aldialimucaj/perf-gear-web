@@ -121,7 +121,7 @@ var MeasurementBox = React.createClass({
 
   componentDidMount: function componentDidMount() {
     var self = this;
-    pgUtils.fetchMeasurements(0, 0, function (err, data) {
+    pgUtils.fetchMeasurements(this.props.defaultCollection, 0, 0, function (err, data) {
       self.setState({ data: data, skip: self.state.skip, limit: self.state.limit });
     });
   },
@@ -136,4 +136,4 @@ var MeasurementBox = React.createClass({
 });
 
 // Render
-React.render(React.createElement(MeasurementBox, { url: "/api/measurements" }), document.getElementById("content"));
+React.render(React.createElement(MeasurementBox, { defaultCollection: "measurements" }), document.getElementById('content'));

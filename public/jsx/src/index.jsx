@@ -1,13 +1,13 @@
-var MeasurementBox = React.createClass({
+var MainBox = React.createClass({
   render: function() {
     return (
-      <div className="measurementBox">
+      <div className="mainBox">
         Measurements go here
       </div>
     );
   }
 });
 React.render(
-  <MeasurementBox />,
+  <MainBox />,
   document.getElementById('content')
 );

@@ -11,3 +11,9 @@ var MeasurementActions = Reflux.createActions([
 var AnalyticsActions = Reflux.createActions([
   "sendQuery"
 ]);
+
+var CollectionActions = Reflux.createActions([
+  "getCollectionList",
+  "setCurrentCollection"
+]);
+
