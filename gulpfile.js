@@ -29,6 +29,7 @@ gulp.task('browser-sync', ['start'], function() {
   gulp.watch('./public/jsx/src/**/*.jsx', ['react']).on('change', browserSync.reload);
   gulp.watch('./public/js/src/**/*.js', ['scripts']).on('change', browserSync.reload);
   gulp.watch("./public/stylesheets/**/*.css").on('change', browserSync.reload);
+  gulp.watch("./views/**/*.jade").on('change', browserSync.reload);
 
 });
 

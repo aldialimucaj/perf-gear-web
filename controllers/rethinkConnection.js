@@ -23,4 +23,20 @@ exports.connect = function() {
   }
 }
 
+
+/**
+ * Check db conenection
+ */
+exports.dbChecker = function(req, res, next) {
+  if (exports.conn) {
+    next();
+  } else {
+    winston.error('DB Connection not ready');
+    res.status(200).send({
+      ok: false
+    });
+  }
+}
+
+
 exports.connect();

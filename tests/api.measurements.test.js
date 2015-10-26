@@ -13,9 +13,9 @@ describe("Measurements", function() {
   before(function(done) {
     setTimeout(function() {
       r.dbCreate(dbConfig.db).run(rcon.conn, function(err, resultDb) {
-        r.db(dbConfig.db).tableCreate('measurements').run(rcon.conn, function(err, resultDb) {
+        r.db(dbConfig.db).tableCreate('collection1').run(rcon.conn, function(err, resultDb) {
           // adding new measurement
-          r.table('measurements').insert([{
+          r.table('collection1').insert([{
               path: 'measurements/tests/get/id/1'
             }, {
               path: 'measurements/tests/get/id/2'
@@ -35,7 +35,7 @@ describe("Measurements", function() {
   });
 
   after(function() {
-    r.table('measurements').delete().run(rcon.conn, function(err, result) {
+    r.table('collection1').delete().run(rcon.conn, function(err, result) {
       // body...
     })
   });
@@ -45,7 +45,7 @@ describe("Measurements", function() {
   describe(" / GET measurements (many)", function() {
     it("should return all measurements", function(done) {
       request(app)
-        .get('/api/measurements')
+        .get('/api/measurements/collection1')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
@@ -59,7 +59,7 @@ describe("Measurements", function() {
 
     it("should return only one measurement", function(done) {
       request(app)
-        .get('/api/measurements')
+        .get('/api/measurements/collection1')
         .set('Accept', 'application/json')
         .query({
           limit: 1
@@ -76,7 +76,7 @@ describe("Measurements", function() {
 
     it("should return only three measurements", function(done) {
       request(app)
-        .get('/api/measurements')
+        .get('/api/measurements/collection1')
         .set('Accept', 'application/json')
         .query({
           limit: 3
@@ -93,7 +93,7 @@ describe("Measurements", function() {
 
     it("should skip some measurements", function(done) {
       request(app)
-        .get('/api/measurements')
+        .get('/api/measurements/collection1')
         .set('Accept', 'application/json')
         .query({
           skip: 2
@@ -114,7 +114,7 @@ describe("Measurements", function() {
   describe(" / GET measurement (one)", function() {
     it("should return one measurement", function(done) {
       request(app)
-        .get('/api/measurements/' + ids[0])
+        .get('/api/measurements/collection1/' + ids[0])
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
@@ -132,7 +132,7 @@ describe("Measurements", function() {
   describe(" / POST new measurement", function() {
     it("should accept new measurements", function(done) {
       request(app)
-        .post('/api/measurements')
+        .post('/api/measurements/collection1')
         .set('Accept', 'application/json')
         .send({
           path: 'measurements/tests/post/new'
@@ -143,7 +143,7 @@ describe("Measurements", function() {
 
     it("should fail on empty measurements", function(done) {
       request(app)
-        .post('/api/measurements')
+        .post('/api/measurements/collection1')
         .set('Accept', 'application/json')
         .send({})
         .expect('Content-Type', /json/)

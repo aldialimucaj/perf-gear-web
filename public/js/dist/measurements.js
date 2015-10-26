@@ -43,9 +43,11 @@ var MeasurementTablePagination = React.createClass({
 var MeasurementNode = React.createClass({
   displayName: "MeasurementNode",
 
+  mixins: [Reflux.connect(collectionStore, "collection")],
+
   render: function render() {
-    var shortId = this.props.data.id.substr(-5);
-    var itemHref = "/measurements/" + this.props.data.id;
+    var shortId = this.props.data.id.substr(-7);
+    var itemHref = "/measurements/" + this.state.collection.currentCollection + "/" + this.props.data.id;
     return React.createElement(
       "tr",
       null,
@@ -114,6 +116,8 @@ var MeasurementTable = React.createClass({
 
 var MeasurementBox = React.createClass({
   displayName: "MeasurementBox",
+
+  mixins: [Reflux.connect(collectionStore, "collection")],
 
   getInitialState: function getInitialState() {
     return { data: [], skip: 0, limit: 0 };

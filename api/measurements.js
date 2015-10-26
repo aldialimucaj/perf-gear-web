@@ -13,7 +13,7 @@ var rcon = require('../controllers/rethinkConnection');
 const DEFAULT_COLLECTION = 'default';
 
 /* POST measurement to default collection */
-router.post('/', dbChecker, function(req, res) {
+router.post('/', function(req, res) {
   l.info(req.body);
   if (!_.isEmpty(req.body)) {
     // pre commit operations to add date, calc, ...
@@ -32,7 +32,7 @@ router.post('/', dbChecker, function(req, res) {
 });
 
 /* POST measurement to variable collection */
-router.post('/:collection', dbChecker, function(req, res) {
+router.post('/:collection', function(req, res) {
   l.info(req.body);
   let collection = req.params.collection;
   if (!_.isEmpty(req.body)) {
@@ -54,7 +54,7 @@ router.post('/:collection', dbChecker, function(req, res) {
 /* ========================================================================== */
 
 /* GET measurements fetching */
-router.get('/:collection', dbChecker, function(req, res) {
+router.get('/:collection', function(req, res) {
   let collection = req.params.collection || DEFAULT_COLLECTION;
   var reql = r.table(collection);
   // add skip
@@ -73,7 +73,7 @@ router.get('/:collection', dbChecker, function(req, res) {
 /* ========================================================================== */
 
 /* GET single measurement fetching */
-router.get('/:collection/:id', dbChecker, function(req, res) {
+router.get('/:collection/:id', function(req, res) {
   let collection = req.params.collection || DEFAULT_COLLECTION;
   var reql = r.table(collection).get(req.params.id);
 
@@ -102,21 +102,6 @@ function forwarder(res, err, result, statusCode) {
     });
   }
 }
-
-/**
- * Check db conenection
- */
-function dbChecker(req, res, next) {
-  if (rcon.conn) {
-    next();
-  } else {
-    l.error('DB Connection not ready');
-    res.status(200).send({
-      ok: false
-    });
-  }
-}
-
 
 /**
  * Measurement pre commit editor. It adds various optional fields to the

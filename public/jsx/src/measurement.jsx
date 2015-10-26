@@ -2,7 +2,7 @@ var pgUtils = new PGUtils();
 
 // ============================================================================
 var MeasurementBox = React.createClass({
-  mixins: [Reflux.connect(measurementStore,"options")],
+  mixins: [Reflux.connect(measurementStore,"options"), Reflux.connect(collectionStore,"collection")],
 
   getInitialState: function() {
     return {measurementId: 0};
@@ -11,7 +11,7 @@ var MeasurementBox = React.createClass({
   componentDidMount: function() {
     var self = this;
     self.setState({measurementId: params.id});
-    pgUtils.fetchOneMeasurementById(params.id, function (err, data) {
+    pgUtils.fetchOneMeasurementById(this.state.collection.currentCollection, params.id, function (err, data) {
       self.setState({measurement: data});
     });
 

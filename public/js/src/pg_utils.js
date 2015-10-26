@@ -40,12 +40,12 @@
    * Fetch one measurement by id
    *
    */
-  PGUtils.prototype.fetchOneMeasurementById = function (id, cb) {
+  PGUtils.prototype.fetchOneMeasurementById = function (collection, id, cb) {
     if (!cb) cb = limit;
     if (!cb) cb = skip;
 
     $.ajax({
-      url: '/api/measurements/' + id,
+      url: '/api/measurements/' + collection + '/' + id,
       dataType: 'json',
       cache: false,
       success: function (data) {
@@ -366,7 +366,7 @@
       url: '/api/analytics/query',
       dataType: 'json',
       //contentType: "application/json; charset=utf-8",
-      data: { 'query': query },
+      data: query,
       //cache: false,
       success: function (data) {
         cb(data);

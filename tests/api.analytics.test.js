@@ -48,7 +48,8 @@ describe("Analytics", function () {
 				.post('/api/analytics/query')
 				.set('Accept', 'application/json')
 				.send({
-					query: 'm.group("path");'
+					query: 'm.group("path");',
+					collection: 'measurements'
 				})
 				.expect('Content-Type', /json/)
 				.expect(200)

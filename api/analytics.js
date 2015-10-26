@@ -13,30 +13,15 @@ var router = express.Router();
 var rcon = require('../controllers/rethinkConnection');
 var pgUtils = require('../controllers/pgUtils');
 
+const DEFAULT_COLLECTION = 'default';
+
 /* ========================================================================== */
 
-/* GET - measurements fetching */
-router.get('/', dbChecker, function (req, res) {
-  var reql = r.table('measurements');
-  // add skip
-  if (req.query.skip && parseInt(req.query.skip)) reql = reql.skip(parseInt(req.query.skip));
-  // add limit
-  if (req.query.limit && parseInt(req.query.limit)) reql = reql.limit(parseInt(req.query.limit));
-
-  reql.run(rcon.conn, function (err, cursor) {
-    if (cursor) cursor.toArray(function (err, result) {
-      pgUtils.forwarder(res, err, result);
-    });
-    else pgUtils.forwarder(res, err, []);
-  });
-});
-
-
-
 /* POST - query measurements */
-router.post('/query', dbChecker, function (req, res) {
+router.post('/query', function (req, res) {
+  let collection = req.body.collection || DEFAULT_COLLECTION;
   // create two variables, we expect m and measurement 
-  var measurements = r.table('measurements');
+  var measurements = r.table(collection);
   var m = measurements;
   var reql = null;
   
@@ -54,19 +39,5 @@ router.post('/query', dbChecker, function (req, res) {
     pgUtils.forwarder(res, e);
   }
 });
-
-/**
- * Check db conenection
- */
-function dbChecker(req, res, next) {
-  if (rcon.conn) {
-    next();
-  } else {
-    l.error('DB Connection not ready');
-    res.status(200).send({
-      ok: false
-    });
-  }
-}
 
 module.exports = router;

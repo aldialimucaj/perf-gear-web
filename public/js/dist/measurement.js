@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
 var pgUtils = new PGUtils();
 
 // ============================================================================
 var MeasurementBox = React.createClass({
-  displayName: 'MeasurementBox',
+  displayName: "MeasurementBox",
 
-  mixins: [Reflux.connect(measurementStore, "options")],
+  mixins: [Reflux.connect(measurementStore, "options"), Reflux.connect(collectionStore, "collection")],
 
   getInitialState: function getInitialState() {
     return { measurementId: 0 };
@@ -15,7 +15,7 @@ var MeasurementBox = React.createClass({
   componentDidMount: function componentDidMount() {
     var self = this;
     self.setState({ measurementId: params.id });
-    pgUtils.fetchOneMeasurementById(params.id, function (err, data) {
+    pgUtils.fetchOneMeasurementById(this.state.collection.currentCollection, params.id, function (err, data) {
       self.setState({ measurement: data });
     });
 
@@ -43,8 +43,8 @@ var MeasurementBox = React.createClass({
 
   render: function render() {
     return React.createElement(
-      'div',
-      { className: 'measurementBox' },
+      "div",
+      { className: "measurementBox" },
       React.createElement(JsonPreview, { data: this.state.measurement, options: this.state.options }),
       React.createElement(GraphConfiguration, { data: this.state.measurement, plotFunc: "buildGraphFromSingle" }),
       React.createElement(GraphPreview, null)

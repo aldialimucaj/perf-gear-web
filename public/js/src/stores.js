@@ -51,8 +51,13 @@ var analyticsStore = Reflux.createStore({
   },
 
   onSendQuery: function (query) {
+    var q = {
+      query: query, 
+      collection: collectionStore.collection.currentCollection
+    };
+    
     try {
-      pgUtils.sendAnalyticsQuery(query, (data) => {
+      pgUtils.sendAnalyticsQuery(q, (data) => {
         this.config.result = data.content;
         this.updateConfiguration(this.config);
         this.transformResultsToMeasurement(data.content);
@@ -81,24 +86,26 @@ var collectionStore = Reflux.createStore({
   listenables: [CollectionActions],
 
   getInitialState: function () {
+    
     this.collection = {
-      collectionList: [],
-      currentCollection: null
+      list: [],
+      currentCollection: localStorage.currentCollection
     };
 
     return this.collection;
   },
-
-  onGetCollectionList: function (query) {
+  
+  onGetCollectionList: function () {
     let self = this;
-    pgUtils.fetchCollections((data) => {
-      
-      self.updateConfiguration(self.config);
+    pgUtils.fetchCollections((err, data) => {
+      self.collection.list = data;
+      self.updateConfiguration(self.collection);
     });
   },
   
-  onSetCurrentCollection: function (query) {
-    this.updateConfiguration(this.config);
+  onSetCurrentCollection: function (value) {
+    this.collection.currentCollection = value;
+    localStorage.currentCollection = value;
   },
 
   updateConfiguration: function (obj) {

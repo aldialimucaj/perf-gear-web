@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var l = require('winston');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
@@ -12,8 +13,9 @@ var measurements = require('./routes/measurements');
 var analytics = require('./routes/analytics');
 
 /* API */
-var apiMeasurements = require('./api/measurements');
 var apiAnalytics = require('./api/analytics');
+var apiCollections = require('./api/collections');
+var apiMeasurements = require('./api/measurements');
 
 var rcon = require('./controllers/rethinkConnection');
 
@@ -34,12 +36,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 /* Routes */
 app.use('/', routes);
 app.use('/users', users);
-app.use('/measurements', measurements);
 app.use('/analytics', analytics);
+app.use('/measurements', measurements);
 
 /* API Routes */
-app.use('/api/measurements', apiMeasurements);
-app.use('/api/analytics', apiAnalytics);
+app.use('/api/analytics', rcon.dbChecker, apiAnalytics);
+app.use('/api/collections', rcon.dbChecker, apiCollections);
+app.use('/api/measurements', rcon.dbChecker, apiMeasurements);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -71,6 +74,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
