@@ -326,7 +326,7 @@
       }
 
     });
-    this.buildGraph(graphTypes, options);
+    return {graphTypes: graphTypes, options: options};
   }
 
 
@@ -380,7 +380,7 @@
       template.value = result;
     }
 
-    cb(err, template);
+    return {template:template, err: err};
   }
 
 
@@ -499,7 +499,7 @@
       }
     });
 
-    this.buildGraph(graphTypes, options);
+    return {graphTypes: graphTypes, options: options};
   };
 
   /* ************************************************************************* */

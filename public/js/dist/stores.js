@@ -63,11 +63,9 @@ var analyticsStore = Reflux.createStore({
   },
   
   transformResultsToMeasurement: function(qResult) {
-    var self = this;
-    pgUtils.queryResultsToMeasurement(qResult, function(err, result) {
-      self.config.mockMeasurement = result;
-      self.updateConfiguration(self.config);
-    });
+    var result = pgUtils.queryResultsToMeasurement(qResult) // TODO: check and display errors
+    this.config.mockMeasurement = result.template;
+    this.updateConfiguration(this.config);
   },
 
   updateConfiguration: function (obj) {

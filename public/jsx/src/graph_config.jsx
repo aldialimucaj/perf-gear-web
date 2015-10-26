@@ -104,7 +104,8 @@ var GraphConfiguration = React.createClass({
     this.willBuildGraph();
     var results = this.props.results? this.props.results:this.props.data;
     
-    pgUtils[this.props.plotFunc](results, this.state.keyList);
+    var config = pgUtils[this.props.plotFunc](results, this.state.keyList);
+    pgUtils.buildGraph(config.graphTypes, config. options);
   },
 
   addElement: function (argument) {

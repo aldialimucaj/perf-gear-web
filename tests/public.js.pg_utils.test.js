@@ -63,12 +63,10 @@ describe("Public.PG_UTILS", function () {
 	
 	/* ======================================================================== */
 	describe("Create phantom measurement to match graph axes options", function () {
-		it("should transform all measurements to one phaton measurement", function (done) {
-			pg_utils.queryResultsToMeasurement(fix.queryResultsToMeasurement.m1, (err, phantom) => {
-				expect(phantom).not.to.be.null;
-				expect(phantom).to.be.eql(fix.queryResultsToMeasurement.e1);
-				done();
-			});
+		it("should transform all measurements to one phaton measurement", function () {
+			var result = pg_utils.queryResultsToMeasurement(fix.queryResultsToMeasurement.m1)
+				expect(result.template).not.to.be.null;
+				expect(result.template).to.be.eql(fix.queryResultsToMeasurement.e1);
 		});
 	});
 	
