@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET Measurements home page. */
 router.get('/:collection', function (req, res, next) {
-  res.render('measurements', null);
+  res.render('measurements', { params: req.params });
 });
 
 /* GET measurement by id. */

@@ -171,6 +171,7 @@ var collectionStore = Reflux.createStore({
   onSetCurrentCollection: function (value) {
     this.collection.current = value;
     localStorage.current = value;
+    location.reload();
   },
 
   updateConfiguration: function (obj) {

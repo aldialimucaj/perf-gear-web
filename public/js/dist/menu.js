@@ -42,7 +42,7 @@ var CollectionDD = React.createClass({
 		// semantic-ui
 		$('#collectionList').dropdown({
 			onChange: function onChange(text, value, $selectedItem) {
-				self.handleChange(text, value);
+				if (text !== self.state.collection.current) self.handleChange(text, value);
 			}
 		});
 	},
