@@ -53,7 +53,7 @@ var analyticsStore = Reflux.createStore({
   onSendQuery: function (query) {
     var q = {
       query: query, 
-      collection: collectionStore.collection.currentCollection
+      collection: collectionStore.collection.current
     };
     
     try {
@@ -89,15 +89,15 @@ var collectionStore = Reflux.createStore({
     
     this.collection = {
       list: [],
-      currentCollection: localStorage.currentCollection
+      current: localStorage.current
     };
 
     return this.collection;
   },
   
   checkDefault: function() {
-    if(!this.collection.currentCollection && this.collection.list.length > 0){
-      this.collection.currentCollection = this.collection.list[0];
+    if(!this.collection.current && this.collection.list.length > 0){
+      this.collection.current = this.collection.list[0];
       this.updateConfiguration(this.collection);
     }
   },
@@ -112,8 +112,8 @@ var collectionStore = Reflux.createStore({
   },
   
   onSetCurrentCollection: function (value) {
-    this.collection.currentCollection = value;
-    localStorage.currentCollection = value;
+    this.collection.current = value;
+    localStorage.current = value;
   },
 
   updateConfiguration: function (obj) {

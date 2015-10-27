@@ -22,7 +22,7 @@ var CollectionDD = React.createClass ({
           		<CollectionItem key={k} name={item}/>
         	);
       	});
-		$('#collectionList').dropdown('set selected', this.state.collection.currentCollection);
+		$('#collectionList').dropdown('set selected', this.state.collection.current);
 	
 	},
 	
@@ -60,7 +60,7 @@ var MenuBox = React.createClass ({
 	mixins: [Reflux.connect(collectionStore,"collection")],
 	
 	render: function() {
-		let measurementsHref = "/measurements/" + this.state.collection.currentCollection;
+		let measurementsHref = "/measurements/" + this.state.collection.current;
 		return (
 		<div className="ui menu">
 			<a href="/" className="item"><i className="home icon"></i>Home</a>

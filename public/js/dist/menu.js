@@ -30,7 +30,7 @@ var CollectionDD = React.createClass({
 		this.collectionItems = this.state.collection.list.map(function (item, k) {
 			return React.createElement(CollectionItem, { key: k, name: item });
 		});
-		$('#collectionList').dropdown('set selected', this.state.collection.currentCollection);
+		$('#collectionList').dropdown('set selected', this.state.collection.current);
 	},
 
 	handleChange: function handleChange(text, value) {
@@ -72,7 +72,7 @@ var MenuBox = React.createClass({
 	mixins: [Reflux.connect(collectionStore, "collection")],
 
 	render: function render() {
-		var measurementsHref = "/measurements/" + this.state.collection.currentCollection;
+		var measurementsHref = "/measurements/" + this.state.collection.current;
 		return React.createElement(
 			"div",
 			{ className: "ui menu" },

@@ -27,7 +27,7 @@ var MeasurementNode = React.createClass({
   
   render: function() {
     let shortId = this.props.data.id.substr(-7);
-    let itemHref = "/measurements/"+this.state.collection.currentCollection+"/"+this.props.data.id;
+    let itemHref = "/measurements/"+this.state.collection.current+"/"+this.props.data.id;
     return (
       <tr>
         <td><a href={itemHref}>{shortId}</a></td>

@@ -47,7 +47,7 @@ var MeasurementNode = React.createClass({
 
   render: function render() {
     var shortId = this.props.data.id.substr(-7);
-    var itemHref = "/measurements/" + this.state.collection.currentCollection + "/" + this.props.data.id;
+    var itemHref = "/measurements/" + this.state.collection.current + "/" + this.props.data.id;
     return React.createElement(
       "tr",
       null,

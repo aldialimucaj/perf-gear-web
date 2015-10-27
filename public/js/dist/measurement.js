@@ -15,7 +15,7 @@ var MeasurementBox = React.createClass({
   componentDidMount: function componentDidMount() {
     var self = this;
     self.setState({ measurementId: params.id });
-    pgUtils.fetchOneMeasurementById(this.state.collection.currentCollection, params.id, function (err, data) {
+    pgUtils.fetchOneMeasurementById(this.state.collection.current, params.id, function (err, data) {
       self.setState({ measurement: data });
     });
 
