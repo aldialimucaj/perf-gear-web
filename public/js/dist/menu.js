@@ -50,7 +50,7 @@ var CollectionDD = React.createClass({
 	render: function render() {
 		return React.createElement(
 			"div",
-			{ id: "collectionList", className: "ui floating dropdown labeled search icon button" },
+			{ id: "collectionList", className: "ui floating basic dropdown labeled search icon button" },
 			React.createElement("i", { className: "database icon" }),
 			React.createElement(
 				"span",
@@ -75,7 +75,7 @@ var MenuBox = React.createClass({
 		var measurementsHref = "/measurements/" + this.state.collection.current;
 		return React.createElement(
 			"div",
-			{ className: "ui menu" },
+			{ className: "ui large menu" },
 			React.createElement(
 				"a",
 				{ href: "/", className: "item" },

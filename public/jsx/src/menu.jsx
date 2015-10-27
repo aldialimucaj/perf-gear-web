@@ -44,7 +44,7 @@ var CollectionDD = React.createClass ({
 	
 	render() {
 		return (
-		<div id="collectionList" className="ui floating dropdown labeled search icon button">
+		<div id="collectionList" className="ui floating basic dropdown labeled search icon button">
 			<i className="database icon"></i>
 			<span className="text">Select Collection</span>
 			<div className="menu">
@@ -62,7 +62,7 @@ var MenuBox = React.createClass ({
 	render: function() {
 		let measurementsHref = "/measurements/" + this.state.collection.current;
 		return (
-		<div className="ui menu">
+		<div className="ui large menu">
 			<a href="/" className="item"><i className="home icon"></i>Home</a>
 			<a href={measurementsHref} className="item"><i className="bar chart icon"></i>Measurements</a>
 			<a href="/analytics" className="item"><i className="bar cubes icon"></i>Analytics</a>
