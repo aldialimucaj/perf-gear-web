@@ -70,6 +70,16 @@ router.get('/:collection', function(req, res) {
   });
 });
 
+/* GET measurements count */
+router.get('/:collection/count', function(req, res) {
+  let collection = req.params.collection || DEFAULT_COLLECTION;
+  var reql = r.table(collection).count();
+
+  reql.run(rcon.conn, function(err, result) {
+    forwarder(res, err, result);
+  });
+});
+
 /* ========================================================================== */
 
 /* GET single measurement fetching */

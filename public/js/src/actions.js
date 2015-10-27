@@ -8,6 +8,15 @@ var MeasurementActions = Reflux.createActions([
   "editLabel"
 ]);
 
+var MeasurementsActions = Reflux.createActions([
+  "getMeasurements",
+  "getMeasurementsCount",
+  "nextPage",
+  "prevPage",
+  "setPage"
+]);
+
+
 var AnalyticsActions = Reflux.createActions([
   "sendQuery"
 ]);

@@ -37,6 +37,63 @@ var measurementStore = Reflux.createStore({
 });
 
 // ============================================================================
+
+var measurementsStore = Reflux.createStore({
+  listenables: [MeasurementsActions],
+
+  getInitialState: function () {
+    this.measurements = {
+      data: [],
+      count: 0,
+      pages: 1,
+      page: 1,
+      skip: 0,
+      limit: 10
+    };
+
+    return this.measurements;
+  },
+
+  onGetMeasurements: function (collection, skip, limit) {
+    let self = this;
+    pgUtils.fetchMeasurements(collection, skip, limit, function (err, data) {
+      self.measurements.data = data;
+      self.update(self.measurements);
+    });
+  },
+  
+  onGetMeasurementsCount: function (collection) {
+    let self = this;
+    pgUtils.fetchMeasurementsCount(collection, function (err, data) {
+      self.measurements.count = data;
+      self.measurements.pages = Math.ceil(data / self.measurements.limit);
+      self.update(self.measurements);
+    });
+  },
+  
+  onNextPage: function (){
+    
+  },
+  
+  onPrevPage: function (){
+    
+  },
+  
+  onSetPage: function (pageNr){
+    this.measurements.page = pageNr;
+    this.measurements.skip = (this.measurements.page - 1) * this.measurements.limit;
+    this.onGetMeasurements(collectionStore.collection.current, this.measurements.skip, this.measurements.limit);
+    this.update(this.measurements);
+  },
+
+  update: function (obj) {
+    this.trigger(obj);
+    console.log(obj);
+  }
+
+});
+
+// ============================================================================
 var analyticsStore = Reflux.createStore({
   listenables: [AnalyticsActions],
 

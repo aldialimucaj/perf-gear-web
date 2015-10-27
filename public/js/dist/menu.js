@@ -75,7 +75,7 @@ var MenuBox = React.createClass({
 		var measurementsHref = "/measurements/" + this.state.collection.current;
 		return React.createElement(
 			"div",
-			{ className: "ui large menu" },
+			{ className: "ui menu" },
 			React.createElement(
 				"a",
 				{ href: "/", className: "item" },

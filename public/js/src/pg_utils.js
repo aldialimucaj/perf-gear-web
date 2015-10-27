@@ -21,11 +21,13 @@
   PGUtils.prototype.fetchMeasurements = function (collection, skip, limit, cb) {
     if (!cb) cb = limit;
     if (!cb) cb = skip;
-
+    
     $.ajax({
       url: '/api/measurements/'+ collection,
       dataType: 'json',
       cache: false,
+      data: {skip: skip, limit: limit},
+      type: 'GET',
       success: function (data) {
         this._dataCheckAndReturn(data, cb);
       }.bind(this),
@@ -53,6 +55,25 @@
       }.bind(this),
       error: function (xhr, status, err) {
         console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  };
+  
+  /** 
+   * Fetch measurements count from database
+   *
+   */
+  PGUtils.prototype.fetchMeasurementsCount = function (collection, cb) {
+
+    $.ajax({
+      url: '/api/measurements/'+ collection+'/count',
+      dataType: 'json',
+      cache: false,
+      success: function (data) {
+        this._dataCheckAndReturn(data, cb);
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(collection, status, err.toString());
       }.bind(this)
     });
   };

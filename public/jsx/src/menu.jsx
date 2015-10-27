@@ -62,7 +62,7 @@ var MenuBox = React.createClass ({
 	render: function() {
 		let measurementsHref = "/measurements/" + this.state.collection.current;
 		return (
-		<div className="ui large menu">
+		<div className="ui menu">
 			<a href="/" className="item"><i className="home icon"></i>Home</a>
 			<a href={measurementsHref} className="item"><i className="bar chart icon"></i>Measurements</a>
 			<a href="/analytics" className="item"><i className="bar cubes icon"></i>Analytics</a>

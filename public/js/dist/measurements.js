@@ -1,37 +1,107 @@
-"use strict";
+'use strict';
 
 var pgUtils = new PGUtils();
 
-var MeasurementTablePagination = React.createClass({
-  displayName: "MeasurementTablePagination",
+var PaginationItem = React.createClass({
+  displayName: 'PaginationItem',
+
+  handlePageChange: function handlePageChange(e) {
+    var pageIdx = Math.abs(e.currentTarget.text);
+    MeasurementsActions.setPage(pageIdx);
+  },
 
   render: function render() {
+    var classes = ['item'];
+    if (this.props.measurements.page == this.props.index) {
+      classes.push('active');
+    }
     return React.createElement(
-      "tfoot",
+      'a',
+      { className: classes.join(' '), onClick: this.handlePageChange },
+      this.props.index
+    );
+  }
+});
+
+var MeasurementTablePagination = React.createClass({
+  displayName: 'MeasurementTablePagination',
+
+  mixins: [Reflux.connect(measurementsStore, "measurements")],
+  paginationItems: [],
+  maxPaginationSide: 5,
+
+  handlePrevPageChange: function handlePrevPageChange() {
+    var page = --this.state.measurements.page;
+    page = page > 0 ? page : 1;
+    MeasurementsActions.setPage(page);
+  },
+
+  handleNextPageChange: function handleNextPageChange() {
+    var page = ++this.state.measurements.page;
+    page = page > this.state.measurements.pages ? this.state.measurements.pages : page;
+    MeasurementsActions.setPage(page);
+  },
+
+  createPageIndexes: function createPageIndexes() {
+    var items = [];
+    var pages = this.state.measurements.pages;
+    var current = this.state.measurements.page <= pages ? this.state.measurements.page : pages;
+
+    var leftLowBound = current > 1 ? current - 1 : current;
+    var leftUpBound = this.maxPaginationSide + current - 1;
+    leftUpBound = leftUpBound <= pages ? leftUpBound : pages;
+
+    var rightLowBound = pages - this.maxPaginationSide + current;
+    var rightUpBound = pages;
+
+    if (pages <= this.maxPaginationSide * 2) {
+      for (var i = 1; i <= pages; i++) {
+        items.push(React.createElement(PaginationItem, { measurements: this.state.measurements, key: i, index: i }));
+      }
+    } else {
+      for (var i = leftLowBound; i <= leftUpBound; i++) {
+        items.push(React.createElement(PaginationItem, { measurements: this.state.measurements, key: i, index: i }));
+      }
+
+      items.push(React.createElement(
+        'a',
+        { key: 'none', className: 'disabled item' },
+        '...'
+      ));
+
+      for (var i = rightLowBound; i <= rightUpBound; i++) {
+        items.push(React.createElement(PaginationItem, { measurements: this.state.measurements, key: i, index: i }));
+      }
+    }
+
+    return items;
+  },
+
+  render: function render() {
+    this.paginationItems = this.createPageIndexes();
+
+    return React.createElement(
+      'tfoot',
       null,
       React.createElement(
-        "tr",
+        'tr',
         null,
         React.createElement(
-          "th",
-          { colSpan: "2" },
+          'th',
+          { colSpan: '2' },
           React.createElement(
-            "div",
-            { className: "ui right floated pagination menu" },
+            'div',
+            { className: 'ui right floated pagination menu' },
             React.createElement(
-              "a",
-              { className: "icon item" },
-              React.createElement("i", { className: "left chevron icon" })
+              'a',
+              { className: 'icon item' },
+              React.createElement('i', { className: 'left chevron icon', onClick: this.handlePrevPageChange })
             ),
+            this.paginationItems,
             React.createElement(
-              "a",
-              { className: "item" },
-              "1"
-            ),
-            React.createElement(
-              "a",
-              { className: "icon item" },
-              React.createElement("i", { className: "right chevron icon" })
+              'a',
+              { className: 'icon item' },
+              React.createElement('i', { className: 'right chevron icon', onClick: this.handleNextPageChange })
             )
           )
         )
@@ -41,7 +111,7 @@ var MeasurementTablePagination = React.createClass({
 });
 
 var MeasurementNode = React.createClass({
-  displayName: "MeasurementNode",
+  displayName: 'MeasurementNode',
 
   mixins: [Reflux.connect(collectionStore, "collection")],
 
@@ -49,19 +119,19 @@ var MeasurementNode = React.createClass({
     var shortId = this.props.data.id.substr(-7);
     var itemHref = "/measurements/" + this.state.collection.current + "/" + this.props.data.id;
     return React.createElement(
-      "tr",
+      'tr',
       null,
       React.createElement(
-        "td",
+        'td',
         null,
         React.createElement(
-          "a",
+          'a',
           { href: itemHref },
           shortId
         )
       ),
       React.createElement(
-        "td",
+        'td',
         null,
         this.props.data.path
       )
@@ -70,43 +140,46 @@ var MeasurementNode = React.createClass({
 });
 
 var MeasurementTable = React.createClass({
-  displayName: "MeasurementTable",
+  displayName: 'MeasurementTable',
+
+  mixins: [Reflux.connect(measurementsStore, "measurements")],
+  measurementNodes: [],
 
   render: function render() {
-    if (this.props.data) {
-      var measurementNodes = this.props.data.map(function (measurement) {
+    if (this.state.measurements.data) {
+      this.measurementNodes = this.state.measurements.data.map(function (measurement) {
         return React.createElement(MeasurementNode, { key: measurement.id, data: measurement });
       });
     }
 
     return React.createElement(
-      "div",
-      { className: "measurementTable" },
+      'div',
+      { className: 'measurementTable' },
       React.createElement(
-        "table",
-        { className: "ui celled striped table" },
+        'table',
+        { className: 'ui celled striped table' },
         React.createElement(
-          "thead",
+          'thead',
           null,
           React.createElement(
-            "tr",
+            'tr',
             null,
             React.createElement(
-              "th",
+              'th',
               null,
-              "#ID"
+              '#ID'
             ),
             React.createElement(
-              "th",
+              'th',
               null,
-              "Path"
+              'Path'
             )
           )
         ),
         React.createElement(
-          "tbody",
+          'tbody',
           null,
-          measurementNodes
+          this.measurementNodes
         )
       ),
       React.createElement(MeasurementTablePagination, null)
@@ -115,29 +188,23 @@ var MeasurementTable = React.createClass({
 });
 
 var MeasurementBox = React.createClass({
-  displayName: "MeasurementBox",
+  displayName: 'MeasurementBox',
 
-  mixins: [Reflux.connect(collectionStore, "collection")],
-
-  getInitialState: function getInitialState() {
-    return { data: [], skip: 0, limit: 0 };
-  },
+  mixins: [Reflux.connect(collectionStore, "collection"), Reflux.connect(measurementsStore, "measurements")],
 
   componentDidMount: function componentDidMount() {
-    var self = this;
-    pgUtils.fetchMeasurements(this.props.defaultCollection, 0, 0, function (err, data) {
-      self.setState({ data: data, skip: self.state.skip, limit: self.state.limit });
-    });
+    MeasurementsActions.getMeasurements(this.state.collection.current, 0, this.state.measurements.limit);
+    MeasurementsActions.getMeasurementsCount(this.state.collection.current);
   },
 
   render: function render() {
     return React.createElement(
-      "div",
-      { className: "measurementBox" },
-      React.createElement(MeasurementTable, { data: this.state.data, skip: this.state.skip, limit: this.state.limit })
+      'div',
+      { className: 'measurementBox' },
+      React.createElement(MeasurementTable, null)
     );
   }
 });
 
 // Render
-React.render(React.createElement(MeasurementBox, { defaultCollection: "measurements" }), document.getElementById('content'));
+React.render(React.createElement(MeasurementBox, null), document.getElementById('content'));
