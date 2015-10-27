@@ -95,11 +95,19 @@ var collectionStore = Reflux.createStore({
     return this.collection;
   },
   
+  checkDefault: function() {
+    if(!this.collection.currentCollection && this.collection.list.length > 0){
+      this.collection.currentCollection = this.collection.list[0];
+      this.updateConfiguration(this.collection);
+    }
+  },
+  
   onGetCollectionList: function () {
     let self = this;
     pgUtils.fetchCollections((err, data) => {
       self.collection.list = data;
       self.updateConfiguration(self.collection);
+      self.checkDefault();
     });
   },
   
