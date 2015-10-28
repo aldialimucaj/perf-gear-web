@@ -79,16 +79,17 @@ router.get('/:id/:collection/options', function(req, res) {
   reql.run(rcon.conn, function(err, chart) {
     switch(chart.type) {
       case TYPE_ANALYTICS: {
-        request.post({uri: 'http://localhost:4000/api/analytics/query', multipart: [
+        request(
           {
-            'content-type': 'application/json',
-            body: JSON.stringify({query: chart.query, collection: collection})
-          }
-        ]}, function(err, response, body) {
-          console.log(JSON.stringify(body));
-          let result = body.content;
-          let buildOptions = graphBuilder.buildOptionsFromMultiple(result, chart.selection);
-          pgUtils.forwarder(res, err, buildOptions);
+            url: 'http://localhost:4000/api/analytics/query',
+            method: "POST",
+            json: true,
+            body: {query: chart.query, collection: collection}
+          }, 
+          function(err, response, body) {
+            let result = body.content;
+            let buildOptions = graphBuilder.buildGraphFromMultiple(result, chart.selection);
+            pgUtils.forwarder(res, err, buildOptions);
         });        
         break;
       }

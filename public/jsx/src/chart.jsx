@@ -15,8 +15,11 @@ var ChartBox = React.createClass({
 
     this.init();
   },
+  
   componentDidUpdate: function() {
     if(this.state.graphTypes && this.state.options) {
+      $('#chart-container').removeClass('pg-hidden');
+      $('#chart').addClass('graph-content');
       pgUtils.buildGraph(this.state.graphTypes, this.state.options);
     }
   },

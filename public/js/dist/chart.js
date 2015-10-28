@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
 var pgUtils = new PGUtils();
 
 // ============================================================================
 var ChartBox = React.createClass({
-  displayName: "ChartBox",
+  displayName: 'ChartBox',
 
   getInitialState: function getInitialState() {
     return { chartId: 0 };
@@ -19,8 +19,11 @@ var ChartBox = React.createClass({
 
     this.init();
   },
+
   componentDidUpdate: function componentDidUpdate() {
     if (this.state.graphTypes && this.state.options) {
+      $('#chart-container').removeClass('pg-hidden');
+      $('#chart').addClass('graph-content');
       pgUtils.buildGraph(this.state.graphTypes, this.state.options);
     }
   },
@@ -29,8 +32,8 @@ var ChartBox = React.createClass({
 
   render: function render() {
     return React.createElement(
-      "div",
-      { className: "chartBox" },
+      'div',
+      { className: 'chartBox' },
       React.createElement(GraphPreview, null)
     );
   }
