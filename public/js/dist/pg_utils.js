@@ -121,6 +121,25 @@
   };
   
   /** 
+    * Fetch data from database
+    *
+    */
+  PGUtils.prototype.fetchChartOptionsById = function (id, collection, cb) {
+    $.ajax({
+      url: '/api/charts/' + id+ '/' + collection +  '/options',
+      dataType: 'json',
+      cache: false,
+      type: 'GET',
+      success: function (data) {
+        this._dataCheckAndReturn(data, cb);
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(id, status, err.toString());
+      }.bind(this)
+    });
+  };
+  
+  /**  
     * Fetch charts count from database
     *
     */
@@ -475,8 +494,9 @@
    *
    */
   PGUtils.prototype.buildOptionsFromMultiple = function (measurements, selection) {
+    console.log(_.isPlainObject)
     // results can still return single element through m.get(ID)
-    if (!_.isArray(measurements) && _.isPainObject(measurements)) return this.buildOptionsFromSingle(measurements, selection);
+    if (!_.isArray(measurements) && _.isPlainObject(measurements)) return this.buildOptionsFromSingle(measurements, selection);
 
     var options = {
       series: []

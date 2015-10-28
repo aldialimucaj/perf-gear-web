@@ -15,7 +15,7 @@ router.get('/:collection', function (req, res, next) {
 
 /* GET Charts by id. */
 router.get('/:collection/:id', function (req, res, next) {
-  res.render('charts', { params: req.params });
+  res.render('chart', { params: req.params });
 });
 
 module.exports = router;

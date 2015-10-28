@@ -25,7 +25,12 @@ var ChartNode = React.createClass({
       React.createElement(
         "td",
         null,
-        this.props.data.path
+        this.props.data.title
+      ),
+      React.createElement(
+        "td",
+        null,
+        this.props.data.query
       )
     );
   }
@@ -64,7 +69,12 @@ var ChartsTable = React.createClass({
             React.createElement(
               "th",
               null,
-              "Path"
+              "Title"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "Query"
             )
           )
         ),

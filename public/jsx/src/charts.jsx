@@ -9,7 +9,8 @@ var ChartNode = React.createClass({
     return (
       <tr>
         <td><a href={itemHref}>{shortId}</a></td>
-        <td>{this.props.data.path}</td>
+        <td>{this.props.data.title}</td>
+        <td>{this.props.data.query}</td>
       </tr>
     );
   }
@@ -35,7 +36,8 @@ var ChartsTable = React.createClass({
           <thead>
             <tr>
               <th>#ID</th>
-              <th>Path</th>
+              <th>Title</th>
+              <th>Query</th>
             </tr>
           </thead>
         <tbody>

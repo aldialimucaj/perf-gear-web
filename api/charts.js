@@ -5,7 +5,11 @@ var express = require('express');
 var _ = require('lodash');
 var l = require('winston');
 var r = require('rethinkdb');
+var request = require('request');
 var router = express.Router();
+
+var PGUtils = require("../public/js/src/pg_utils");
+var graphBuilder = new PGUtils();
 
 // internal depencencies
 var rcon = require('../controllers/rethinkConnection');
@@ -13,6 +17,8 @@ var pgUtils = require('../controllers/pgUtils');
 
 const DEFAULT_COLLECTION = 'default';
 const DEFAULT_CHART_TABLE = 'charts';
+const TYPE_ANALYTICS = 'analytics';
+const TYPE_MEASUREMENT = 'single_measurement';
 
 /* POST chart to default collection */
 router.post('/', function(req, res) {
@@ -66,14 +72,33 @@ router.get('/:collection/count', function(req, res) {
 /* ========================================================================== */
 
 /* GET single chart fetching */
-router.get('/:collection/:id', function(req, res) {
+router.get('/:id/:collection/options', function(req, res) {
   let collection = req.params.collection || DEFAULT_COLLECTION;
-  var reql = r.table(collection).get(req.params.id);
+  var reql = r.table(DEFAULT_CHART_TABLE).get(req.params.id);
 
-  reql.run(rcon.conn, function(err, result) {
-    pgUtils.forwarder(res, err, result);
+  reql.run(rcon.conn, function(err, chart) {
+    switch(chart.type) {
+      case TYPE_ANALYTICS: {
+        request.post({uri: 'http://localhost:4000/api/analytics/query', multipart: [
+          {
+            'content-type': 'application/json',
+            body: JSON.stringify({query: chart.query, collection: collection})
+          }
+        ]}, function(err, response, body) {
+          console.log(JSON.stringify(body));
+          let result = body.content;
+          let buildOptions = graphBuilder.buildOptionsFromMultiple(result, chart.selection);
+          pgUtils.forwarder(res, err, buildOptions);
+        });        
+        break;
+      }
+      default:
+        pgUtils.forwarder(res, "Wrong Chart Type", []);
+    }
   })
 });
+
+
 
 /* ========================================================================== */
 /* HELPERS */

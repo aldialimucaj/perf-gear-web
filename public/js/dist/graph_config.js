@@ -37,6 +37,7 @@ var GraphType = React.createClass({
   }
 });
 
+// ============================================================================
 var GraphKey = React.createClass({
   displayName: 'GraphKey',
 
@@ -98,6 +99,7 @@ var GraphKey = React.createClass({
   }
 });
 
+// ============================================================================
 var GraphLabel = React.createClass({
   displayName: 'GraphLabel',
 
@@ -119,6 +121,7 @@ var GraphLabel = React.createClass({
   }
 });
 
+// ============================================================================
 var GraphConfiguration = React.createClass({
   displayName: 'GraphConfiguration',
 

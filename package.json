@@ -16,10 +16,11 @@
     "express": "~4.12.4",
     "jade": "~1.9.2",
     "js-yaml": "^3.3.1",
-    "lodash": "^3.9.3",
+    "lodash": "^3.10.1",
     "morgan": "~1.5.3",
     "promise": "^7.0.4",
     "react": "^0.13.3",
+    "request": "^2.65.0",
     "rethinkdb": "^2.0.2",
     "serve-favicon": "~2.2.1",
     "winston": "^1.0.1"

@@ -25,6 +25,7 @@ var GraphType = React.createClass({
   }
 });
 
+// ============================================================================
 var GraphKey = React.createClass({
 
   getInitialState: function() {
@@ -76,6 +77,7 @@ var GraphKey = React.createClass({
   }
 });
 
+// ============================================================================
 var GraphLabel = React.createClass({
   handleChange: function (arg) {
     MeasurementActions.editLabel(this.props.keyId, this.props.optionId, arg.target.value)
@@ -91,6 +93,7 @@ var GraphLabel = React.createClass({
   }
 });
 
+// ============================================================================
 var GraphConfiguration = React.createClass({
   mixins: [Reflux.connect(measurementStore,"keyList")],
 
@@ -105,7 +108,7 @@ var GraphConfiguration = React.createClass({
     var results = this.props.results? this.props.results:this.props.data;
     
     var config = pgUtils[this.props.plotFunc](results, this.state.keyList);
-    pgUtils.buildGraph(config.graphTypes, config. options);
+    pgUtils.buildGraph(config.graphTypes, config.options);
   },
 
   addElement: function (argument) {
