@@ -155,6 +155,7 @@ var collectionStore = Reflux.createStore({
   checkDefault: function() {
     if(!this.collection.current && this.collection.list.length > 0){
       this.collection.current = this.collection.list[0];
+      localStorage.current = this.collection.list[0];
       this.updateConfiguration(this.collection);
     }
   },
@@ -163,8 +164,8 @@ var collectionStore = Reflux.createStore({
     let self = this;
     pgUtils.fetchCollections((err, data) => {
       self.collection.list = data;
-      self.updateConfiguration(self.collection);
       self.checkDefault();
+      self.updateConfiguration(self.collection);
     });
   },
   

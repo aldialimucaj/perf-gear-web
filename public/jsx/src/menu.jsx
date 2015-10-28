@@ -60,7 +60,7 @@ var MenuBox = React.createClass ({
 	mixins: [Reflux.connect(collectionStore,"collection")],
 	
 	render: function() {
-		let measurementsHref = "/measurements/" + this.state.collection.current;
+		let measurementsHref = "/measurements";
 		return (
 		<div className="ui menu">
 			<a href="/" className="item"><i className="home icon"></i>Home</a>

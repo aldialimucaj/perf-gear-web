@@ -72,7 +72,7 @@ var MenuBox = React.createClass({
 	mixins: [Reflux.connect(collectionStore, "collection")],
 
 	render: function render() {
-		var measurementsHref = "/measurements/" + this.state.collection.current;
+		var measurementsHref = "/measurements";
 		return React.createElement(
 			"div",
 			{ className: "ui menu" },

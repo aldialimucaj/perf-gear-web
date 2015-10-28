@@ -1,6 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
+
+/* GET Measurements home page. */
+router.get('/', function (req, res, next) {
+  res.render('measurements', { params: req.params });
+});
+
+
 /* GET Measurements home page. */
 router.get('/:collection', function (req, res, next) {
   res.render('measurements', { params: req.params });
