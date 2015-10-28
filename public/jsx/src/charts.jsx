@@ -1,5 +1,6 @@
 var pgUtils = new PGUtils();
 
+// ============================================================================
 var ChartNode = React.createClass({
   mixins: [Reflux.connect(collectionStore,"collection")],
   
@@ -16,7 +17,7 @@ var ChartNode = React.createClass({
   }
 });
 
-
+// ============================================================================
 var ChartsTable = React.createClass({
   mixins: [Reflux.connect(chartsStore,"charts")],
   chartNodes: [],
@@ -50,7 +51,7 @@ var ChartsTable = React.createClass({
   }
 });
 
-
+// ============================================================================
 var ChartsBox = React.createClass({
   mixins: [Reflux.connect(collectionStore,"collection"), Reflux.connect(chartsStore,"charts")],
 

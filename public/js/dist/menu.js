@@ -2,6 +2,7 @@
 
 var pgUtils = new PGUtils();
 
+// ============================================================================
 var CollectionItem = React.createClass({
 	displayName: "CollectionItem",
 
@@ -14,6 +15,7 @@ var CollectionItem = React.createClass({
 	}
 });
 
+// ============================================================================
 var CollectionDD = React.createClass({
 	displayName: "CollectionDD",
 
@@ -66,6 +68,7 @@ var CollectionDD = React.createClass({
 	}
 });
 
+// ============================================================================
 var MenuBox = React.createClass({
 	displayName: "MenuBox",
 
@@ -123,4 +126,5 @@ var MenuBox = React.createClass({
 	}
 });
 
+// ============================================================================
 React.render(React.createElement(MenuBox, null), document.getElementById('menu'));

@@ -216,7 +216,21 @@ var GraphPreview = React.createClass({
     return (
         <div id="chart-container" className="ui segment pg-hidden">
           <div id="chart"></div>
+          <div className="ui floated">
+            <GraphPersistence />
+          </div>
         </div>
+    );
+  }
+});
+
+// ============================================================================
+var GraphPersistence = React.createClass({
+  render: function() {
+    return(
+      <div className="ui small basic icon buttons">
+        <button className="ui button"><i className="save icon"></i></button>
+      </div>
     );
   }
 });

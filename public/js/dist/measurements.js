@@ -2,6 +2,7 @@
 
 var pgUtils = new PGUtils();
 
+// ============================================================================
 var MeasurementNode = React.createClass({
   displayName: "MeasurementNode",
 
@@ -31,6 +32,7 @@ var MeasurementNode = React.createClass({
   }
 });
 
+// ============================================================================
 var MeasurementTable = React.createClass({
   displayName: "MeasurementTable",
 
@@ -79,6 +81,7 @@ var MeasurementTable = React.createClass({
   }
 });
 
+// ============================================================================
 var MeasurementBox = React.createClass({
   displayName: "MeasurementBox",
 

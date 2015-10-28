@@ -2,6 +2,7 @@
 
 var pgUtils = new PGUtils();
 
+// ============================================================================
 var ChartNode = React.createClass({
   displayName: "ChartNode",
 
@@ -36,6 +37,7 @@ var ChartNode = React.createClass({
   }
 });
 
+// ============================================================================
 var ChartsTable = React.createClass({
   displayName: "ChartsTable",
 
@@ -89,6 +91,7 @@ var ChartsTable = React.createClass({
   }
 });
 
+// ============================================================================
 var ChartsBox = React.createClass({
   displayName: "ChartsBox",
 

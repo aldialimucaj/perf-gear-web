@@ -31,6 +31,7 @@ var JsonPreview = React.createClass({
   }
 });
 
+// ============================================================================
 var PaginationItem = React.createClass({
   displayName: "PaginationItem",
 
@@ -52,6 +53,7 @@ var PaginationItem = React.createClass({
   }
 });
 
+// ============================================================================
 var TablePagination = React.createClass({
   displayName: "TablePagination",
 

@@ -15,6 +15,7 @@ var JsonPreview = React.createClass({
   }
 });
 
+// ============================================================================
 var PaginationItem = React.createClass({
   
   handlePageChange: function(e) {
@@ -31,8 +32,7 @@ var PaginationItem = React.createClass({
   }
 });
 
-
-
+// ============================================================================
 var TablePagination = React.createClass({
   paginationItems: [],
   maxPaginationSide: 5,

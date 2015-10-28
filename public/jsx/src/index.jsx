@@ -7,6 +7,8 @@ var MainBox = React.createClass({
     );
   }
 });
+
+// ============================================================================
 React.render(
   <MainBox />,
   document.getElementById('content')

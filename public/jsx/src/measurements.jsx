@@ -1,5 +1,6 @@
 var pgUtils = new PGUtils();
 
+// ============================================================================
 var MeasurementNode = React.createClass({
   mixins: [Reflux.connect(collectionStore,"collection")],
   
@@ -15,7 +16,7 @@ var MeasurementNode = React.createClass({
   }
 });
 
-
+// ============================================================================
 var MeasurementTable = React.createClass({
   mixins: [Reflux.connect(measurementsStore,"measurements")],
   measurementNodes: [],
@@ -48,7 +49,7 @@ var MeasurementTable = React.createClass({
   }
 });
 
-
+// ============================================================================
 var MeasurementBox = React.createClass({
   mixins: [Reflux.connect(collectionStore,"collection"), Reflux.connect(measurementsStore,"measurements")],
 

@@ -11,4 +11,6 @@ var MainBox = React.createClass({
     );
   }
 });
+
+// ============================================================================
 React.render(React.createElement(MainBox, null), document.getElementById('content'));

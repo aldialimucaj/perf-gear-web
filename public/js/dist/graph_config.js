@@ -272,7 +272,29 @@ var GraphPreview = React.createClass({
     return React.createElement(
       'div',
       { id: 'chart-container', className: 'ui segment pg-hidden' },
-      React.createElement('div', { id: 'chart' })
+      React.createElement('div', { id: 'chart' }),
+      React.createElement(
+        'div',
+        { className: 'ui floated' },
+        React.createElement(GraphPersistence, null)
+      )
+    );
+  }
+});
+
+// ============================================================================
+var GraphPersistence = React.createClass({
+  displayName: 'GraphPersistence',
+
+  render: function render() {
+    return React.createElement(
+      'div',
+      { className: 'ui small basic icon buttons' },
+      React.createElement(
+        'button',
+        { className: 'ui button' },
+        React.createElement('i', { className: 'save icon' })
+      )
     );
   }
 });

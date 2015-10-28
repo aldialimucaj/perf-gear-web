@@ -1,11 +1,13 @@
 var pgUtils = new PGUtils();
 
+// ============================================================================
 var CollectionItem = React.createClass({
 	render: function() {
 		return (<div className="item" data-value={this.props.key}>{this.props.name}</div>);
 	}
 });
 
+// ============================================================================
 var CollectionDD = React.createClass ({
 	mixins: [Reflux.connect(collectionStore,"collection")],
 	collectionItems: null,
@@ -55,7 +57,7 @@ var CollectionDD = React.createClass ({
 	}
 });
 
-
+// ============================================================================
 var MenuBox = React.createClass ({
 	mixins: [Reflux.connect(collectionStore,"collection")],
 	
@@ -77,6 +79,7 @@ var MenuBox = React.createClass ({
 	}
 });
 
+// ============================================================================
 React.render(
   <MenuBox />,
   document.getElementById('menu')
