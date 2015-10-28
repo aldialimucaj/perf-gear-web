@@ -12,29 +12,10 @@ var rcon = require('../controllers/rethinkConnection');
 
 const DEFAULT_COLLECTION = 'default';
 
-/* POST measurement to default collection */
-router.post('/', function(req, res) {
-  l.info(req.body);
-  if (!_.isEmpty(req.body)) {
-    // pre commit operations to add date, calc, ...
-    let m = preCommit(req.body);
-
-    r.table(DEFAULT_COLLECTION).insert(m)
-      .run(rcon.conn, function(err, result) {
-        forwarder(res, err, result, 201);
-      });
-  } else {
-    res.status(200).send({
-      ok: false,
-      err: 'Measurement payload was empty'
-    });
-  }
-});
-
 /* POST measurement to variable collection */
-router.post('/:collection', function(req, res) {
+router.post('/:collection?', function(req, res) {
   l.info(req.body);
-  let collection = req.params.collection;
+  let collection = req.params.collection || DEFAULT_COLLECTION;
   if (!_.isEmpty(req.body)) {
     // pre commit operations to add date, calc, ...
     let m = preCommit(req.body);

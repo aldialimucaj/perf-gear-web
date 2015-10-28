@@ -95,12 +95,23 @@ var MenuBox = React.createClass({
 				"Analytics"
 			),
 			React.createElement(
+				"a",
+				{ href: "/charts", className: "item" },
+				React.createElement("i", { className: "pie chart icon" }),
+				"Charts"
+			),
+			React.createElement(
 				"div",
 				{ className: "right menu" },
 				React.createElement(
 					"div",
 					{ className: "right item" },
 					React.createElement(CollectionDD, null)
+				),
+				React.createElement(
+					"a",
+					{ href: "/help", className: "right item" },
+					React.createElement("i", { className: "setting icon" })
 				),
 				React.createElement(
 					"a",

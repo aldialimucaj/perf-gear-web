@@ -66,9 +66,11 @@ var MenuBox = React.createClass ({
 			<a href="/" className="item"><i className="home icon"></i>Home</a>
 			<a href={measurementsHref} className="item"><i className="bar chart icon"></i>Measurements</a>
 			<a href="/analytics" className="item"><i className="bar cubes icon"></i>Analytics</a>
+			<a href="/charts" className="item"><i className="pie chart icon"></i>Charts</a>
 			<div className="right menu">
-			<div className="right item"><CollectionDD /></div>
-			<a href="/help" className="right item"><i className="help circle icon"></i></a>
+				<div className="right item"><CollectionDD /></div>
+				<a href="/help" className="right item"><i className="setting icon"></i></a>
+				<a href="/help" className="right item"><i className="help circle icon"></i></a>
 			</div>
 		</div>
 		)

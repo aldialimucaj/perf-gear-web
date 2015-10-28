@@ -16,6 +16,14 @@ var MeasurementsActions = Reflux.createActions([
   "setPage"
 ]);
 
+var ChartsActions = Reflux.createActions([
+  "getCharts",
+  "getChartsCount",
+  "nextPage",
+  "prevPage",
+  "setPage"
+]);
+
 
 var AnalyticsActions = Reflux.createActions([
   "sendQuery"

@@ -7,13 +7,15 @@ var l = require('winston');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var analytics = require('./routes/analytics');
+var charts = require('./routes/charts');
+var measurements = require('./routes/measurements');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var measurements = require('./routes/measurements');
-var analytics = require('./routes/analytics');
 
 /* API */
 var apiAnalytics = require('./api/analytics');
+var apiCharts = require('./api/charts');
 var apiCollections = require('./api/collections');
 var apiMeasurements = require('./api/measurements');
 
@@ -36,11 +38,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 /* Routes */
 app.use('/', routes);
 app.use('/users', users);
+app.use('/charts', charts);
 app.use('/analytics', analytics);
 app.use('/measurements', measurements);
 
 /* API Routes */
 app.use('/api/analytics', rcon.dbChecker, apiAnalytics);
+app.use('/api/charts', rcon.dbChecker, apiCharts);
 app.use('/api/collections', rcon.dbChecker, apiCollections);
 app.use('/api/measurements', rcon.dbChecker, apiMeasurements);
 

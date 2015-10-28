@@ -94,6 +94,64 @@ var measurementsStore = Reflux.createStore({
 });
 
 // ============================================================================
+
+var chartsStore = Reflux.createStore({
+  listenables: [ChartsActions],
+
+  getInitialState: function () {
+    this.charts = {
+      data: [],
+      count: 0,
+      pages: 1,
+      page: 1,
+      skip: 0,
+      limit: 10
+    };
+
+    return this.charts;
+  },
+
+  onGetCharts: function (collection, skip, limit) {
+    let self = this;
+    pgUtils.fetchCharts(collection, skip, limit, function (err, data) {
+      self.charts.data = data;
+      self.update(self.charts);
+    });
+  },
+  
+  onGetChartsCount: function (collection) {
+    let self = this;
+    pgUtils.fetchChartsCount(collection, function (err, data) {
+      self.charts.count = data;
+      self.charts.pages = Math.ceil(data / self.charts.limit);
+      self.update(self.charts);
+    });
+  },
+  
+  onNextPage: function (){
+    
+  },
+  
+  onPrevPage: function (){
+    
+  },
+  
+  onSetPage: function (pageNr){
+    this.charts.page = pageNr;
+    this.charts.skip = (this.charts.page - 1) * this.charts.limit;
+    this.onGetCharts(collectionStore.collection.current, this.charts.skip, this.charts.limit);
+    this.update(this.charts);
+  },
+
+  update: function (obj) {
+    this.trigger(obj);
+    console.log(obj);
+  }
+
+});
+
+
+// ============================================================================
 var analyticsStore = Reflux.createStore({
   listenables: [AnalyticsActions],
 

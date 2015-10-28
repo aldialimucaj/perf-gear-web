@@ -21,12 +21,12 @@
   PGUtils.prototype.fetchMeasurements = function (collection, skip, limit, cb) {
     if (!cb) cb = limit;
     if (!cb) cb = skip;
-    
+
     $.ajax({
-      url: '/api/measurements/'+ collection,
+      url: '/api/measurements/' + collection,
       dataType: 'json',
       cache: false,
-      data: {skip: skip, limit: limit},
+      data: { skip: skip, limit: limit },
       type: 'GET',
       success: function (data) {
         this._dataCheckAndReturn(data, cb);
@@ -66,7 +66,7 @@
   PGUtils.prototype.fetchMeasurementsCount = function (collection, cb) {
 
     $.ajax({
-      url: '/api/measurements/'+ collection+'/count',
+      url: '/api/measurements/' + collection + '/count',
       dataType: 'json',
       cache: false,
       success: function (data) {
@@ -78,14 +78,56 @@
     });
   };
   
-    /** 
-   * Fetch data from database
-   *
-   */
+  /** 
+ * Fetch data from database
+ *
+ */
   PGUtils.prototype.fetchCollections = function (cb) {
-    
+
     $.ajax({
       url: '/api/collections/',
+      dataType: 'json',
+      cache: false,
+      success: function (data) {
+        this._dataCheckAndReturn(data, cb);
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(collection, status, err.toString());
+      }.bind(this)
+    });
+  };
+  
+  /** 
+    * Fetch data from database
+    *
+    */
+  PGUtils.prototype.fetchCharts = function (collection, skip, limit, cb) {
+    if (!cb) cb = limit;
+    if (!cb) cb = skip;
+
+    $.ajax({
+      url: '/api/charts/' + collection,
+      dataType: 'json',
+      cache: false,
+      data: { skip: skip, limit: limit },
+      type: 'GET',
+      success: function (data) {
+        this._dataCheckAndReturn(data, cb);
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(collection, status, err.toString());
+      }.bind(this)
+    });
+  };
+  
+  /** 
+    * Fetch charts count from database
+    *
+    */
+  PGUtils.prototype.fetchChartsCount = function (collection, cb) {
+
+    $.ajax({
+      url: '/api/charts/' + collection + '/count',
       dataType: 'json',
       cache: false,
       success: function (data) {
@@ -370,7 +412,7 @@
       }
 
     });
-    return {graphTypes: graphTypes, options: options};
+    return { graphTypes: graphTypes, options: options };
   }
 
 
@@ -424,7 +466,7 @@
       template.value = result;
     }
 
-    return {template:template, err: err};
+    return { template: template, err: err };
   }
 
 
@@ -543,7 +585,7 @@
       }
     });
 
-    return {graphTypes: graphTypes, options: options};
+    return { graphTypes: graphTypes, options: options };
   };
 
   /* ************************************************************************* */
