@@ -295,18 +295,22 @@ var GraphPersistence = React.createClass({
 
   init: function init() {
     var self = this;
+    // ESC
     $('#persistence-container').keyup(function (e) {
       if (e.keyCode == 27) {
         self.toggleContainer();
       }
     });
 
+    // CLTR + S
     $('#persistence-container').keydown(function (e) {
       if (e.keyCode == 83 && e.ctrlKey) {
         PersistenceActions.saveChart();
+        e.preventDefault();
       }
     });
 
+    // every key should update
     $('#persistence-container').keyup(function (e) {
       self.state.chart.title = $('#iPersistenceTitle').val();
       self.state.chart.type = self.props.type;
