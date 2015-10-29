@@ -78,6 +78,29 @@
     });
   };
   
+  /**
+   * Save chart configuration.
+   * 
+   */
+  PGUtils.prototype.saveChart = function (chart, cb) {
+
+    $.ajax({
+      type: 'POST',
+      url: '/api/charts',
+      dataType: 'json',
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(chart),
+      //cache: false,
+      success: function (data) {
+        cb(data);
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(status, err.toString());
+      }.bind(this)
+    });
+
+  }
+  
   /** 
  * Fetch data from database
  *

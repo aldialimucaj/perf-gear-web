@@ -98,6 +98,10 @@ var AnalyticsContainer = React.createClass({
       }
     });
 
+    this.state.configuration.editor.on('keyup', function (cm) {
+      AnalyticsActions.updateAnalyticsQuery(cm.getValue());
+    });
+
     this.state.configuration.editor.setSize('100%', 'auto');
 
     this.init();
@@ -109,11 +113,11 @@ var AnalyticsContainer = React.createClass({
       { className: "ui grid" },
       React.createElement(
         "div",
-        { className: "pg-block-center" },
+        { className: "centered row" },
         React.createElement(
-          "h3",
-          null,
-          "Analytics Container"
+          "div",
+          { className: "right floated right aligned sixteen wide column" },
+          React.createElement(GraphPersistence, { type: "analytics" })
         )
       ),
       React.createElement(QueryEditor, null),

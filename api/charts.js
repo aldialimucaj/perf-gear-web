@@ -24,10 +24,10 @@ const TYPE_MEASUREMENT = 'single_measurement';
 router.post('/', function(req, res) {
   l.info(req.body);
   if (!_.isEmpty(req.body)) {
-    // pre commit operations to add date, calc, ...
+    // pre commit operations to add date, ...
     let m = preCommit(req.body);
 
-    r.table(DEFAULT_COLLECTION).insert(m)
+    r.table(DEFAULT_CHART_TABLE).insert(m)
       .run(rcon.conn, function(err, result) {
         pgUtils.forwarder(res, err, result, 201);
       });

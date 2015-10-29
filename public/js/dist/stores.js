@@ -3,6 +3,10 @@
 'use strict';
 
 // this goes to window.*
+
+// ============================================================================
+// MEASUREMENT_STORE
+
 var measurementStore = Reflux.createStore({
   listenables: [MeasurementActions],
 
@@ -31,12 +35,14 @@ var measurementStore = Reflux.createStore({
   },
 
   updateOptions: function (obj) {
+    MeasurementActions.measurementsUpdated(obj);
     this.trigger(obj);
   }
 
 });
 
 // ============================================================================
+// MEASUREMENTS_STORE
 
 var measurementsStore = Reflux.createStore({
   listenables: [MeasurementsActions],
@@ -94,6 +100,7 @@ var measurementsStore = Reflux.createStore({
 });
 
 // ============================================================================
+// CHARTS_STORE
 
 var chartsStore = Reflux.createStore({
   listenables: [ChartsActions],
@@ -150,8 +157,57 @@ var chartsStore = Reflux.createStore({
 
 });
 
+// ============================================================================
+// PERSISTENCE_STORE
+
+var persistenceStore = Reflux.createStore({
+  listenables: [PersistenceActions, AnalyticsActions,MeasurementActions],
+
+  getInitialState: function () {
+    this.chart = {
+      title: null,
+      description: null,
+      type: null,
+      collection: null,
+      query: null,
+      selection: null
+    };
+    return this.chart;
+  },
+  
+  onSaveChart: function() {
+    pgUtils.saveChart(this.chart, function(err, msg){
+      console.log(err);
+    });
+  },
+  
+  onUpdatePersistenceConfig: function(update) {
+    this.chart = _.assign(this.chart, update);
+    this.chart.collection = collectionStore.collection.current;
+    this.updateChart(this.chart);
+  },
+  
+  onUpdateAnalyticsQuery: function(query) {
+    this.chart.query = query;
+    this.chart.collection = collectionStore.collection.current;
+    this.updateChart(this.chart);
+  },
+
+  onMeasurementsUpdated: function (obj) {
+    this.chart.selection = obj;
+    this.updateChart(this.chart);
+  },
+
+  updateChart: function (obj) {
+    this.trigger(obj);
+    console.log(obj);
+  }
+
+});
 
 // ============================================================================
+// ANALYTICS_STORE
+
 var analyticsStore = Reflux.createStore({
   listenables: [AnalyticsActions],
 
@@ -180,6 +236,7 @@ var analyticsStore = Reflux.createStore({
     } catch (e) {
       console.error(e);
     }
+    AnalyticsActions.updateAnalyticsQuery(query);
   },
   
   transformResultsToMeasurement: function(qResult) {
@@ -197,6 +254,8 @@ var analyticsStore = Reflux.createStore({
 
 
 // ============================================================================
+// COLLECTION_STORE
+
 var collectionStore = Reflux.createStore({
   listenables: [CollectionActions],
 
@@ -239,3 +298,4 @@ var collectionStore = Reflux.createStore({
   }
 
 });
+

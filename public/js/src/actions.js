@@ -5,7 +5,8 @@
 var MeasurementActions = Reflux.createActions([
   "selectChart",
   "selectAxis",
-  "editLabel"
+  "editLabel",
+  "measurementsUpdated"
 ]);
 
 var MeasurementsActions = Reflux.createActions([
@@ -26,11 +27,19 @@ var ChartsActions = Reflux.createActions([
 
 
 var AnalyticsActions = Reflux.createActions([
-  "sendQuery"
+  "sendQuery",
+  "updateAnalyticsQuery"
 ]);
 
 var CollectionActions = Reflux.createActions([
   "getCollectionList",
   "setCurrentCollection"
 ]);
+
+var PersistenceActions = Reflux.createActions([
+  "getChart",
+  "saveChart",
+  "updatePersistenceConfig"
+]);
+
 

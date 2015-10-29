@@ -272,12 +272,7 @@ var GraphPreview = React.createClass({
     return React.createElement(
       'div',
       { id: 'chart-container', className: 'ui segment pg-hidden' },
-      React.createElement('div', { id: 'chart' }),
-      React.createElement(
-        'div',
-        { className: 'ui floated' },
-        React.createElement(GraphPersistence, null)
-      )
+      React.createElement('div', { id: 'chart' })
     );
   }
 });
@@ -286,14 +281,64 @@ var GraphPreview = React.createClass({
 var GraphPersistence = React.createClass({
   displayName: 'GraphPersistence',
 
+  mixins: [Reflux.connect(persistenceStore, "chart")],
+
+  componentDidMount: function componentDidMount() {
+    this.init();
+  },
+
+  toggleContainer: function toggleContainer() {
+    $('#persistence-container').toggleClass('pg-hidden');
+    $('#btnToggleContainer').toggleClass('pg-hidden');
+    $('#iPersistenceTitle').focus();
+  },
+
+  init: function init() {
+    var self = this;
+    $('#persistence-container').keyup(function (e) {
+      if (e.keyCode == 27) {
+        self.toggleContainer();
+      }
+    });
+
+    $('#persistence-container').keydown(function (e) {
+      if (e.keyCode == 83 && e.ctrlKey) {
+        PersistenceActions.saveChart();
+      }
+    });
+
+    $('#persistence-container').keyup(function (e) {
+      self.state.chart.title = $('#iPersistenceTitle').val();
+      self.state.chart.type = self.props.type;
+      PersistenceActions.updatePersistenceConfig(self.state.chart);
+    });
+  },
+
   render: function render() {
     return React.createElement(
       'div',
-      { className: 'ui small basic icon buttons' },
+      { className: 'ui' },
       React.createElement(
-        'button',
-        { className: 'ui button' },
-        React.createElement('i', { className: 'save icon' })
+        'div',
+        { className: 'ui small basic icon buttons' },
+        React.createElement(
+          'button',
+          { id: 'btnToggleContainer', className: 'ui button', onClick: this.toggleContainer },
+          React.createElement('i', { className: 'save icon' })
+        )
+      ),
+      React.createElement(
+        'div',
+        { id: 'persistence-container', className: 'ui vertical segment pg-hidden' },
+        React.createElement(
+          'form',
+          { className: 'ui form' },
+          React.createElement(
+            'div',
+            { className: 'field' },
+            React.createElement('input', { id: 'iPersistenceTitle', type: 'text', placeholder: 'Title' })
+          )
+        )
       )
     );
   }

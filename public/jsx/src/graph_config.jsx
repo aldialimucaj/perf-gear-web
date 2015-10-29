@@ -216,9 +216,6 @@ var GraphPreview = React.createClass({
     return (
         <div id="chart-container" className="ui segment pg-hidden">
           <div id="chart"></div>
-          <div className="ui floated">
-            <GraphPersistence />
-          </div>
         </div>
     );
   }
@@ -226,10 +223,52 @@ var GraphPreview = React.createClass({
 
 // ============================================================================
 var GraphPersistence = React.createClass({
+  mixins: [Reflux.connect(persistenceStore,"chart")],
+  
+  componentDidMount: function() {
+    this.init();
+  },
+
+  toggleContainer: function() {
+    $('#persistence-container').toggleClass('pg-hidden');
+    $('#btnToggleContainer').toggleClass('pg-hidden');
+    $('#iPersistenceTitle').focus();
+  },
+  
+  init: function() {
+    let self = this;
+    $('#persistence-container').keyup(function(e) {
+      if (e.keyCode == 27) { 
+          self.toggleContainer();
+      }
+    });
+    
+     $('#persistence-container').keydown(function(e) {
+        if (e.keyCode == 83 && e.ctrlKey) {
+          PersistenceActions.saveChart();
+        }
+    });
+    
+    $('#persistence-container').keyup(function(e) {
+      self.state.chart.title = $('#iPersistenceTitle').val();
+      self.state.chart.type = self.props.type; 
+      PersistenceActions.updatePersistenceConfig(self.state.chart);
+    });
+  },
+
   render: function() {
     return(
-      <div className="ui small basic icon buttons">
-        <button className="ui button"><i className="save icon"></i></button>
+      <div className="ui">
+        <div className="ui small basic icon buttons">
+          <button id="btnToggleContainer" className="ui button" onClick={this.toggleContainer}><i className="save icon"></i></button>
+        </div>
+        <div id="persistence-container" className="ui vertical segment pg-hidden">
+          <form className="ui form">
+            <div className="field">
+              <input id="iPersistenceTitle" type="text" placeholder="Title"/>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
