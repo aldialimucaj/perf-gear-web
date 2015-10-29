@@ -305,7 +305,18 @@ var GraphPersistence = React.createClass({
     // CLTR + S
     $('#persistence-container').keydown(function (e) {
       if (e.keyCode == 83 && e.ctrlKey) {
-        PersistenceActions.saveChart();
+        if (self.preCommit()) {
+          PersistenceActions.saveChart();
+        }
+        e.preventDefault();
+      }
+    });
+
+    // CLTR + S for Document
+    // show persistence container if invisible
+    $(document).keydown(function (e) {
+      if (e.keyCode == 83 && e.ctrlKey && !$('#btnToggleContainer').hasClass('pg-hidden')) {
+        self.toggleContainer();
         e.preventDefault();
       }
     });
@@ -316,6 +327,10 @@ var GraphPersistence = React.createClass({
       self.state.chart.type = self.props.type;
       PersistenceActions.updatePersistenceConfig(self.state.chart);
     });
+  },
+
+  preCommit: function preCommit() {
+    return true;
   },
 
   render: function render() {

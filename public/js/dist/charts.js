@@ -8,6 +8,15 @@ var ChartNode = React.createClass({
 
   mixins: [Reflux.connect(collectionStore, "collection")],
 
+  componentDidMount: function componentDidMount() {
+    //highlightjs
+    $(document).ready(function () {
+      $('code').each(function (i, block) {
+        hljs.highlightBlock(block);
+      });
+    });
+  },
+
   render: function render() {
     var shortId = this.props.data.id.substr(-7);
     var itemHref = "/charts/" + this.state.collection.current + "/" + this.props.data.id;
@@ -31,7 +40,11 @@ var ChartNode = React.createClass({
       React.createElement(
         "td",
         null,
-        this.props.data.query
+        React.createElement(
+          "code",
+          { className: "javascript pg-no-bg-color" },
+          this.props.data.query
+        )
       )
     );
   }
@@ -105,7 +118,7 @@ var ChartsBox = React.createClass({
   render: function render() {
     return React.createElement(
       "div",
-      { className: "ChartsBox" },
+      { className: "chartsBox" },
       React.createElement(ChartsTable, null)
     );
   }

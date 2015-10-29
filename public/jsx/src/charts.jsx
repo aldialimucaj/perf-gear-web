@@ -4,6 +4,15 @@ var pgUtils = new PGUtils();
 var ChartNode = React.createClass({
   mixins: [Reflux.connect(collectionStore,"collection")],
   
+   componentDidMount: function() {
+    //highlightjs
+    $(document).ready(function() {
+      $('code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });
+  },
+  
   render: function() {
     let shortId = this.props.data.id.substr(-7);
     let itemHref = "/charts/"+this.state.collection.current+"/"+this.props.data.id;
@@ -11,7 +20,7 @@ var ChartNode = React.createClass({
       <tr>
         <td><a href={itemHref}>{shortId}</a></td>
         <td>{this.props.data.title}</td>
-        <td>{this.props.data.query}</td>
+        <td><code className="javascript pg-no-bg-color">{this.props.data.query}</code></td>
       </tr>
     );
   }
@@ -21,6 +30,8 @@ var ChartNode = React.createClass({
 var ChartsTable = React.createClass({
   mixins: [Reflux.connect(chartsStore,"charts")],
   chartNodes: [],
+  
+
   
   render: function() {
     if(this.state.charts.data) {
@@ -59,10 +70,12 @@ var ChartsBox = React.createClass({
     ChartsActions.getCharts(this.state.collection.current, 0, this.state.charts.limit);
     ChartsActions.getChartsCount(this.state.collection.current);
   },
+  
+
 
   render: function() {
     return (
-      <div className="ChartsBox">
+      <div className="chartsBox">
         <ChartsTable />
       </div>
     );

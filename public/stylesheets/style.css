@@ -35,6 +35,8 @@ code.json.hljs {
   margin-right: auto
 }
 
+.pg-no-bg-color { background-color:transparent; }
+
 .adder {
 
 }

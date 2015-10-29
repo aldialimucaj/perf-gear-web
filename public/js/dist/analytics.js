@@ -104,6 +104,9 @@ var AnalyticsContainer = React.createClass({
 
     this.state.configuration.editor.setSize('100%', 'auto');
 
+    // set the initial value to chart configuration
+    AnalyticsActions.updateAnalyticsQuery(this.state.configuration.editor.getValue());
+
     this.init();
   },
 
