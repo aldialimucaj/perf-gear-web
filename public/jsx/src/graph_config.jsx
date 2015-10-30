@@ -68,7 +68,7 @@ var GraphKey = React.createClass({
     return (
       <div className="field">
         <label>{this.props.label}</label>
-        <select id={this.props.optionId + this.props.keyId} className="ui select dropdown axis">
+        <select name="dropdown" id={this.props.optionId + this.props.keyId} className="ui select dropdown axis">
           <option></option>
           {keys}
         </select>
@@ -108,7 +108,10 @@ var GraphConfiguration = React.createClass({
     var results = this.props.results? this.props.results:this.props.data;
     
     var config = pgUtils[this.props.plotFunc](results, this.state.keyList);
-    pgUtils.buildGraph(config.graphTypes, config.options);
+    
+    if($('#graph-config-form').form('validate form')) {
+      pgUtils.buildGraph(config.graphTypes, config.options);
+    }
   },
 
   addElement: function (argument) {
@@ -126,6 +129,10 @@ var GraphConfiguration = React.createClass({
       self.init();
     }, 500);
   },
+  
+  componentDidUpdate: function (argument) {
+    this.initFormValidation();
+  },
 
   init: function (argument) {
     var self = this;
@@ -136,6 +143,8 @@ var GraphConfiguration = React.createClass({
         dropdown.dropdown("hide");
       }
     });
+    
+    this.initFormValidation();
   },
 
   getGraphElement: function (measurement, argument, idx) {
@@ -165,6 +174,35 @@ var GraphConfiguration = React.createClass({
         return (<div>Error</div>);
     }
   },
+  
+  initFormValidation: function() {
+    let fields = { };
+    let fieldTemplate = { 
+          identifier: null,
+          rules: [{
+            type: 'empty',
+            prompt: 'You have to add a data selection row in order to draw a graph.'
+          }]
+        };
+        
+    let elements = $('#graph-config-form').find("[id*='Axis']");
+    elements.each(function (i, el) {
+         var newField = _.clone(fieldTemplate, true);
+         newField.identifier = el.id;
+         fields[el.id] = newField;
+     });
+    // add dummy validation for no selection
+    if(elements.length == 0) {
+      var newField = _.clone(fieldTemplate, true);
+         newField.identifier = 'dummy';
+         newField.rules[0].prompt = 'You have to add a data selection row in order to draw a graph.';
+         fields.dummy = newField;
+    }
+     
+    $('#graph-config-form').form({
+      fields: fields
+    });
+  },
 
   render: function() {
     var self = this;
@@ -182,28 +220,31 @@ var GraphConfiguration = React.createClass({
     
     return (
       <div className="graphConfiguration">
-        <div className="ui form">
-        {elements}
-        <div className="field">
-          <div className="ui circular black left pointing dropdown icon button adder">
-            <i className="icon plus"></i>
-            <div className="menu">
-              <div className="item" data-value="bar">
-                  Bar
-              </div>
-              <div className="item" data-value="line">
-                  Line
-              </div>
-              <div className={seqClasses.join(" ")}  data-value="seq">
-                  Sequence
+        <form id="graph-config-form" className="ui form">
+          {elements}
+          <div className="field">
+            <div className="ui circular black left pointing dropdown icon button adder">
+              <i className="icon plus"></i>
+              <div className="menu">
+                <div className="item" data-value="bar">
+                    Bar
+                </div>
+                <div className="item" data-value="line">
+                    Line
+                </div>
+                <div className={seqClasses.join(" ")}  data-value="seq">
+                    Sequence
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
+          
+          <input type="hidden" name="dummy" />
+          
+          <div className="ui error message"></div>
+        </form>
         <div className="field pg-center">
           <button className="ui primary button" onClick={this.buildGraph}>Build Graph</button>
-        </div>
         </div>
       </div>
     );
@@ -260,6 +301,11 @@ var GraphPersistence = React.createClass({
       if (e.keyCode == 83 && e.ctrlKey && !$('#btnToggleContainer').hasClass('pg-hidden')) {
         self.toggleContainer();
         e.preventDefault();
+      }else if(e.keyCode == 83 && e.ctrlKey && $('#btnToggleContainer').hasClass('pg-hidden')) {
+        if(self.preCommit()) {
+          PersistenceActions.saveChart();
+        }
+        e.preventDefault();
       }
     });
     
@@ -269,10 +315,34 @@ var GraphPersistence = React.createClass({
       self.state.chart.type = self.props.type; 
       PersistenceActions.updatePersistenceConfig(self.state.chart);
     });
+    
+    this.initFormValidation();
   },
   
+  initFormValidation: function() {
+   $('#persistence-form').form({
+    fields: {
+      iPersistenceTitle : { 
+        identifier: 'iPersistenceTitle',
+        rules: [{
+          type: 'empty',
+          prompt: 'Please enter a title. It will apear on the charts header'
+        }]
+      }
+    }
+   });
+  },
+  
+  /**
+  * Necessary checks before commiting to server.
+  */
   preCommit: function() {
-    return true;
+    let result = true;
+    
+    result &= $('#persistence-form').form('validate form');
+    result &= $('#graph-config-form').form('validate form');
+    
+    return result;
   },
 
   render: function() {
@@ -282,10 +352,11 @@ var GraphPersistence = React.createClass({
           <button id="btnToggleContainer" className="ui button" onClick={this.toggleContainer}><i className="save icon"></i></button>
         </div>
         <div id="persistence-container" className="ui vertical segment pg-hidden">
-          <form className="ui form">
+          <form id="persistence-form" className="ui form">
             <div className="field">
-              <input id="iPersistenceTitle" type="text" placeholder="Title"/>
+              <input id="iPersistenceTitle" name="iPersistenceTitle" type="text" placeholder="Title"/>
             </div>
+            <div className="ui error message"></div>
           </form>
         </div>
       </div>

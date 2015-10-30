@@ -91,7 +91,7 @@ var GraphKey = React.createClass({
       ),
       React.createElement(
         'select',
-        { id: this.props.optionId + this.props.keyId, className: 'ui select dropdown axis' },
+        { name: 'dropdown', id: this.props.optionId + this.props.keyId, className: 'ui select dropdown axis' },
         React.createElement('option', null),
         keys
       )
@@ -138,7 +138,10 @@ var GraphConfiguration = React.createClass({
     var results = this.props.results ? this.props.results : this.props.data;
 
     var config = pgUtils[this.props.plotFunc](results, this.state.keyList);
-    pgUtils.buildGraph(config.graphTypes, config.options);
+
+    if ($('#graph-config-form').form('validate form')) {
+      pgUtils.buildGraph(config.graphTypes, config.options);
+    }
   },
 
   addElement: function addElement(argument) {
@@ -157,6 +160,10 @@ var GraphConfiguration = React.createClass({
     }, 500);
   },
 
+  componentDidUpdate: function componentDidUpdate(argument) {
+    this.initFormValidation();
+  },
+
   init: function init(argument) {
     var self = this;
     var dropdown = $('.ui.dropdown.adder').dropdown({
@@ -165,6 +172,8 @@ var GraphConfiguration = React.createClass({
         dropdown.dropdown("hide");
       }
     });
+
+    this.initFormValidation();
   },
 
   getGraphElement: function getGraphElement(measurement, argument, idx) {
@@ -201,6 +210,35 @@ var GraphConfiguration = React.createClass({
     }
   },
 
+  initFormValidation: function initFormValidation() {
+    var fields = {};
+    var fieldTemplate = {
+      identifier: null,
+      rules: [{
+        type: 'empty',
+        prompt: 'You have to add a data selection row in order to draw a graph.'
+      }]
+    };
+
+    var elements = $('#graph-config-form').find("[id*='Axis']");
+    elements.each(function (i, el) {
+      var newField = _.clone(fieldTemplate, true);
+      newField.identifier = el.id;
+      fields[el.id] = newField;
+    });
+    // add dummy validation for no selection
+    if (elements.length == 0) {
+      var newField = _.clone(fieldTemplate, true);
+      newField.identifier = 'dummy';
+      newField.rules[0].prompt = 'You have to add a data selection row in order to draw a graph.';
+      fields.dummy = newField;
+    }
+
+    $('#graph-config-form').form({
+      fields: fields
+    });
+  },
+
   render: function render() {
     var self = this;
     var measurement = this.props.data;
@@ -219,8 +257,8 @@ var GraphConfiguration = React.createClass({
       'div',
       { className: 'graphConfiguration' },
       React.createElement(
-        'div',
-        { className: 'ui form' },
+        'form',
+        { id: 'graph-config-form', className: 'ui form' },
         elements,
         React.createElement(
           'div',
@@ -250,14 +288,16 @@ var GraphConfiguration = React.createClass({
             )
           )
         ),
+        React.createElement('input', { type: 'hidden', name: 'dummy' }),
+        React.createElement('div', { className: 'ui error message' })
+      ),
+      React.createElement(
+        'div',
+        { className: 'field pg-center' },
         React.createElement(
-          'div',
-          { className: 'field pg-center' },
-          React.createElement(
-            'button',
-            { className: 'ui primary button', onClick: this.buildGraph },
-            'Build Graph'
-          )
+          'button',
+          { className: 'ui primary button', onClick: this.buildGraph },
+          'Build Graph'
         )
       )
     );
@@ -318,6 +358,11 @@ var GraphPersistence = React.createClass({
       if (e.keyCode == 83 && e.ctrlKey && !$('#btnToggleContainer').hasClass('pg-hidden')) {
         self.toggleContainer();
         e.preventDefault();
+      } else if (e.keyCode == 83 && e.ctrlKey && $('#btnToggleContainer').hasClass('pg-hidden')) {
+        if (self.preCommit()) {
+          PersistenceActions.saveChart();
+        }
+        e.preventDefault();
       }
     });
 
@@ -327,10 +372,34 @@ var GraphPersistence = React.createClass({
       self.state.chart.type = self.props.type;
       PersistenceActions.updatePersistenceConfig(self.state.chart);
     });
+
+    this.initFormValidation();
   },
 
+  initFormValidation: function initFormValidation() {
+    $('#persistence-form').form({
+      fields: {
+        iPersistenceTitle: {
+          identifier: 'iPersistenceTitle',
+          rules: [{
+            type: 'empty',
+            prompt: 'Please enter a title. It will apear on the charts header'
+          }]
+        }
+      }
+    });
+  },
+
+  /**
+  * Necessary checks before commiting to server.
+  */
   preCommit: function preCommit() {
-    return true;
+    var result = true;
+
+    result &= $('#persistence-form').form('validate form');
+    result &= $('#graph-config-form').form('validate form');
+
+    return result;
   },
 
   render: function render() {
@@ -351,12 +420,13 @@ var GraphPersistence = React.createClass({
         { id: 'persistence-container', className: 'ui vertical segment pg-hidden' },
         React.createElement(
           'form',
-          { className: 'ui form' },
+          { id: 'persistence-form', className: 'ui form' },
           React.createElement(
             'div',
             { className: 'field' },
-            React.createElement('input', { id: 'iPersistenceTitle', type: 'text', placeholder: 'Title' })
-          )
+            React.createElement('input', { id: 'iPersistenceTitle', name: 'iPersistenceTitle', type: 'text', placeholder: 'Title' })
+          ),
+          React.createElement('div', { className: 'ui error message' })
         )
       )
     );
