@@ -216,7 +216,7 @@ var GraphConfiguration = React.createClass({
       identifier: null,
       rules: [{
         type: 'empty',
-        prompt: 'You have to add a data selection row in order to draw a graph.'
+        prompt: 'Field cannot be empty'
       }]
     };
 
@@ -289,15 +289,15 @@ var GraphConfiguration = React.createClass({
           )
         ),
         React.createElement('input', { type: 'hidden', name: 'dummy' }),
-        React.createElement('div', { className: 'ui error message' })
-      ),
-      React.createElement(
-        'div',
-        { className: 'field pg-center' },
+        React.createElement('div', { className: 'ui error message' }),
         React.createElement(
-          'button',
-          { className: 'ui primary button', onClick: this.buildGraph },
-          'Build Graph'
+          'div',
+          { className: 'field pg-center' },
+          React.createElement(
+            'button',
+            { className: 'ui primary button', type: 'button', onClick: this.buildGraph },
+            'Build Graph'
+          )
         )
       )
     );
@@ -398,6 +398,7 @@ var GraphPersistence = React.createClass({
 
     result &= $('#persistence-form').form('validate form');
     result &= $('#graph-config-form').form('validate form');
+    result &= $('#query-from').form('validate form');
 
     return result;
   },

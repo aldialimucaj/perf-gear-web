@@ -7,10 +7,10 @@ var QueryEditor = React.createClass({
   },
   
   render : function (argument) {
-    return (<div className="row">
-      <div className="column sixteen wide">
-        <textarea id="queryEditor" value='m.group("path");' onChange={this.handleChange}></textarea>
-        </div>
+    return (<div className="field">
+      
+        <textarea id="queryEditor" name="queryEditor" value='m.group("path").limit(10);' onChange={this.handleChange}></textarea>
+        
       </div>)
   }
 });
@@ -24,14 +24,14 @@ var SendQueryButton = React.createClass({
   },
 
   render: function(argument) {
-    return (<div className="right aligned column"><button onClick={this.sendQuery} className="ui olive button">Query</button></div>);
+    return (<div className="field"><button type="button" onClick={this.sendQuery} className="ui olive button">Query</button></div>);
   }
 });
 
 // ============================================================================
 var BottomActions = React.createClass({
   render: function(argument) {
-    return (<div className="row"><SendQueryButton configuration={this.props.configuration}/></div>);
+    return (<div className="field pg-center"><SendQueryButton configuration={this.props.configuration}/></div>);
   }
 });
 
@@ -71,14 +71,35 @@ var AnalyticsContainer = React.createClass({
       }
     });
     
-    this.state.configuration.editor.on('keyup',function(cm){ AnalyticsActions.updateAnalyticsQuery(cm.getValue());});
+    this.state.configuration.editor.on('keyup',function(cm){ 
+      AnalyticsActions.updateAnalyticsQuery(cm.getValue());
+      $('#queryEditor').val(cm.getValue())
+    });
     
     this.state.configuration.editor.setSize('100%', 'auto')
     
     // set the initial value to chart configuration
     AnalyticsActions.updateAnalyticsQuery(this.state.configuration.editor.getValue());
+    // also set the value to the underlying textarea in order for form validation to be able to check it
+    $('#queryEditor').val(this.state.configuration.editor.getValue())
     
     this.init();
+    
+    this.initFormValidation();
+  },
+  
+  initFormValidation: function() {
+   $('#query-from').form({
+    fields: {
+      queryEditor : { 
+        identifier: 'queryEditor',
+        rules: [{
+          type: 'empty',
+          prompt: 'Please enter a query.'
+        }]
+      }
+    }
+   });
   },
     
   render : function (argument) {
@@ -88,8 +109,15 @@ var AnalyticsContainer = React.createClass({
             <GraphPersistence type="analytics"/>
           </div>
       </div>
-      <QueryEditor/>
-      <BottomActions configuration={this.state.configuration}/>
+      <div className="row">
+        <div className="sixteen column">
+          <form id="query-from" className="ui form">
+            <QueryEditor/>
+            <div className="ui error message"></div>
+            <BottomActions configuration={this.state.configuration}/>
+          </form>
+        </div>
+      </div>
       <div className="row">
         <div className="column sixteen wide">
         <div className="content">

@@ -13,12 +13,8 @@ var QueryEditor = React.createClass({
   render: function render(argument) {
     return React.createElement(
       "div",
-      { className: "row" },
-      React.createElement(
-        "div",
-        { className: "column sixteen wide" },
-        React.createElement("textarea", { id: "queryEditor", value: "m.group(\"path\");", onChange: this.handleChange })
-      )
+      { className: "field" },
+      React.createElement("textarea", { id: "queryEditor", name: "queryEditor", value: "m.group(\"path\").limit(10);", onChange: this.handleChange })
     );
   }
 });
@@ -36,10 +32,10 @@ var SendQueryButton = React.createClass({
   render: function render(argument) {
     return React.createElement(
       "div",
-      { className: "right aligned column" },
+      { className: "field" },
       React.createElement(
         "button",
-        { onClick: this.sendQuery, className: "ui olive button" },
+        { type: "button", onClick: this.sendQuery, className: "ui olive button" },
         "Query"
       )
     );
@@ -53,7 +49,7 @@ var BottomActions = React.createClass({
   render: function render(argument) {
     return React.createElement(
       "div",
-      { className: "row" },
+      { className: "field pg-center" },
       React.createElement(SendQueryButton, { configuration: this.props.configuration })
     );
   }
@@ -100,14 +96,33 @@ var AnalyticsContainer = React.createClass({
 
     this.state.configuration.editor.on('keyup', function (cm) {
       AnalyticsActions.updateAnalyticsQuery(cm.getValue());
+      $('#queryEditor').val(cm.getValue());
     });
 
     this.state.configuration.editor.setSize('100%', 'auto');
 
     // set the initial value to chart configuration
     AnalyticsActions.updateAnalyticsQuery(this.state.configuration.editor.getValue());
+    // also set the value to the underlying textarea in order for form validation to be able to check it
+    $('#queryEditor').val(this.state.configuration.editor.getValue());
 
     this.init();
+
+    this.initFormValidation();
+  },
+
+  initFormValidation: function initFormValidation() {
+    $('#query-from').form({
+      fields: {
+        queryEditor: {
+          identifier: 'queryEditor',
+          rules: [{
+            type: 'empty',
+            prompt: 'Please enter a query.'
+          }]
+        }
+      }
+    });
   },
 
   render: function render(argument) {
@@ -123,8 +138,21 @@ var AnalyticsContainer = React.createClass({
           React.createElement(GraphPersistence, { type: "analytics" })
         )
       ),
-      React.createElement(QueryEditor, null),
-      React.createElement(BottomActions, { configuration: this.state.configuration }),
+      React.createElement(
+        "div",
+        { className: "row" },
+        React.createElement(
+          "div",
+          { className: "sixteen column" },
+          React.createElement(
+            "form",
+            { id: "query-from", className: "ui form" },
+            React.createElement(QueryEditor, null),
+            React.createElement("div", { className: "ui error message" }),
+            React.createElement(BottomActions, { configuration: this.state.configuration })
+          )
+        )
+      ),
       React.createElement(
         "div",
         { className: "row" },
