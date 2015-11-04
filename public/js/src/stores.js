@@ -163,6 +163,8 @@ var chartsStore = Reflux.createStore({
 var persistenceStore = Reflux.createStore({
   listenables: [PersistenceActions, AnalyticsActions,MeasurementActions],
 
+  chart: {},
+
   getInitialState: function () {
     this.chart = {
       title: null,

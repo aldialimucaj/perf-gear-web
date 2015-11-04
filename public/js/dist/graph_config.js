@@ -132,6 +132,26 @@ var GraphConfiguration = React.createClass({
     $('#chart').addClass('graph-content');
   },
 
+  plot: function plot(graphTypes, options, element) {
+    var chartHolder = document.getElementById(element) || document.getElementById('chart');
+    var chartType = ['echarts'].concat(graphTypes);
+
+    // checking options
+    if (!options.legend) options.legend = {
+      data: ['#Add legend']
+    };
+
+    console.log(JSON.stringify(options));
+
+    require(chartType, function (ec) {
+      // Initialize after dom ready
+      var myChart = ec.init(chartHolder);
+
+      // Load data into the ECharts instance
+      myChart.setOption(options);
+    });
+  },
+
   buildGraph: function buildGraph(argument) {
     $('#chart-container').removeClass('pg-hidden');
     this.willBuildGraph();
@@ -140,7 +160,7 @@ var GraphConfiguration = React.createClass({
     var config = pgUtils[this.props.plotFunc](results, this.state.keyList);
 
     if ($('#graph-config-form').form('validate form')) {
-      pgUtils.buildGraph(config.graphTypes, config.options);
+      this.plot(config.graphTypes, config.options);
     }
   },
 

@@ -12,7 +12,7 @@
 
   /* ************************************************************************* */
   // NET
-  
+  /* ************************************************************************* */
 
   /** 
    * Fetch data from database
@@ -37,6 +37,7 @@
     });
   };
 
+  /* ************************************************************************* */
 
   /** 
    * Fetch one measurement by id
@@ -59,6 +60,8 @@
     });
   };
   
+  /* ************************************************************************* */
+  
   /** 
    * Fetch measurements count from database
    *
@@ -77,6 +80,8 @@
       }.bind(this)
     });
   };
+  
+  /* ************************************************************************* */
   
   /**
    * Save chart configuration.
@@ -101,10 +106,12 @@
 
   }
   
+  /* ************************************************************************* */
+  
   /** 
- * Fetch data from database
- *
- */
+   * Fetch data from database
+   *
+   */
   PGUtils.prototype.fetchCollections = function (cb) {
 
     $.ajax({
@@ -119,6 +126,8 @@
       }.bind(this)
     });
   };
+  
+  /* ************************************************************************* */
   
   /** 
     * Fetch data from database
@@ -143,6 +152,8 @@
     });
   };
   
+  /* ************************************************************************* */
+  
   /** 
     * Fetch data from database
     *
@@ -162,6 +173,8 @@
     });
   };
   
+  /* ************************************************************************* */
+  
   /**  
     * Fetch charts count from database
     *
@@ -180,6 +193,8 @@
       }.bind(this)
     });
   };
+  
+  /* ************************************************************************* */
 
   /** 
    * Check data if valid and errors.
@@ -196,6 +211,8 @@
       }, null);
     }
   };
+  
+  /* ************************************************************************* */
 
   /**
   * Get relevant items to be selected for axis.
@@ -234,33 +251,6 @@
   /* ************************************************************************* */
 
   /** 
-   * Build graph
-   *
-   */
-  PGUtils.prototype.buildGraph = function (graphTypes, options, element) {
-    var chartHolder = document.getElementById(element) || document.getElementById('chart');
-    var chartType = ['echarts'].concat(graphTypes);
-
-    // checking options
-    if (!options.legend) options.legend = {
-      data: ['#Add legend']
-    };
-
-    console.log(JSON.stringify(options));
-
-    require(chartType,
-      function (ec) {
-        // Initialize after dom ready
-        var myChart = ec.init(chartHolder);
-
-        // Load data into the ECharts instance
-        myChart.setOption(options);
-      }
-      );
-
-  };
-
-  /** 
    * Generate Graph Options from a single measurement.
    * This function only build options for non sequencial graphs.
    *
@@ -288,6 +278,8 @@
 
     return options;
   };
+  
+  /* ************************************************************************* */
 
   /**
    * Generate Graph Options for single RAM measurements
@@ -346,6 +338,8 @@
     return options;
   };
   
+  /* ************************************************************************* */
+  
   /**
    * Generate Graph Options for single TIME measurements
    * This function generates options for sequential timestamp measurements.
@@ -395,6 +389,8 @@
 
     return options;
   };
+  
+  /* ************************************************************************* */
 
   /** 
    * Builds options for sequence charts
@@ -412,6 +408,7 @@
     }
   }
 
+  /* ************************************************************************* */
 
   /** 
    * Create options from measurement and selection and build graph
@@ -460,6 +457,7 @@
 
   /* ************************************************************************* */
   // ANALYTICS
+  /* ************************************************************************* */
   
   /**
    * Sends query to backend API to request ReQL results
@@ -482,6 +480,8 @@
     });
 
   }
+  
+  /* ************************************************************************* */
 
   /**
    * Pick up results out of returend results. This is done in order to
@@ -511,6 +511,7 @@
     return { template: template, err: err };
   }
 
+  /* ************************************************************************* */
 
   /** 
    * Generate Graph Options from a multiple measurement
@@ -586,6 +587,8 @@
     return options;
   };
 
+  /* ************************************************************************* */
+
   /** 
    * Generate Graph Options from a multiple measurements
    *
@@ -632,6 +635,7 @@
 
   /* ************************************************************************* */
   // EXTERNALS
+  /* ************************************************************************* */
 
   String.prototype.toUpperFirst = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
