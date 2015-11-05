@@ -1,7 +1,8 @@
-var pgUtils = new PGUtils();
 
 // ============================================================================
 var ChartBox = React.createClass({
+  graphUtils: new GraphUtils(),
+  
   getInitialState: function() {
     return {chartId: 0};
   },
@@ -20,7 +21,7 @@ var ChartBox = React.createClass({
     if(this.state.graphTypes && this.state.options) {
       $('#chart-container').removeClass('pg-hidden');
       $('#chart').addClass('graph-content');
-      pgUtils.buildGraph(this.state.graphTypes, this.state.options);
+      this.graphUtils.buildGraph(this.state.graphTypes, this.state.options);
     }
   },
 

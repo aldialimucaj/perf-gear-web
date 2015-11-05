@@ -5,7 +5,7 @@ var gmon = require('gulp-nodemon');
 var babel = require('gulp-babel');
 var browserSync = require('browser-sync').create();
 
-gulp.task('default', ['scripts', 'react','browser-sync']);
+gulp.task('default', ['scripts', 'react', 'shared','browser-sync']);
 
 gulp.task('scripts', function () {
   return gulp.src('./public/js/src/**/*.js')
@@ -18,6 +18,11 @@ gulp.task('react', function () {
         .pipe(gulp.dest('./public/js/dist'));
 });
 
+gulp.task('shared', function () {
+    return gulp.src('./controllers/shared/**/*.js')
+        .pipe(gulp.dest('./public/js/dist'));
+});
+
 gulp.task('browser-sync', ['start'], function() {
   browserSync.init({
     baseDir: "./",
@@ -25,7 +30,9 @@ gulp.task('browser-sync', ['start'], function() {
     proxy: "http://localhost:4000",
     open: false
 	});
-
+  
+  gulp.watch('./controllers/shared/**/*.js', ['shared']).on('change', browserSync.reload);
+  
   gulp.watch('./public/jsx/src/**/*.jsx', ['react']).on('change', browserSync.reload);
   gulp.watch('./public/js/src/**/*.js', ['scripts']).on('change', browserSync.reload);
   gulp.watch("./public/stylesheets/**/*.css").on('change', browserSync.reload);

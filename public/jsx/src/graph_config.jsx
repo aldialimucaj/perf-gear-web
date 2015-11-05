@@ -96,6 +96,8 @@ var GraphLabel = React.createClass({
 // ============================================================================
 var GraphConfiguration = React.createClass({
   mixins: [Reflux.connect(measurementStore,"keyList")],
+  
+  graphUtils: new GraphUtils(),
 
   willBuildGraph: function() {
     // add class to set element height needed by echarts
@@ -129,7 +131,7 @@ var GraphConfiguration = React.createClass({
     this.willBuildGraph();
     var results = this.props.results? this.props.results:this.props.data;
     
-    var config = pgUtils[this.props.plotFunc](results, this.state.keyList);
+    var config = this.graphUtils[this.props.plotFunc](results, this.state.keyList);
     
     if($('#graph-config-form').form('validate form')) {
       this.plot(config.graphTypes, config.options);
