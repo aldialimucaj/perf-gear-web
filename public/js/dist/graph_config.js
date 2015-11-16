@@ -41,6 +41,8 @@ var GraphType = React.createClass({
 var GraphKey = React.createClass({
   displayName: 'GraphKey',
 
+  graphUtils: new GraphUtils(),
+
   getInitialState: function getInitialState() {
     return {};
   },
@@ -70,7 +72,7 @@ var GraphKey = React.createClass({
     var self = this;
     var keys = [];
     if (this.props.measurement) {
-      var keyList = pgUtils.getAxisItems(self.props.type, self.props.optionId, this.props.measurement);
+      var keyList = this.graphUtils.getAxisItems(self.props.type, self.props.optionId, this.props.measurement);
       var index = 0;
       keys = keyList.map(function (key) {
         return React.createElement(

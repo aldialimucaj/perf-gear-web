@@ -8,8 +8,8 @@ var r = require('rethinkdb');
 var request = require('request');
 var router = express.Router();
 
-var PGUtils = require("../public/js/src/pg_utils");
-var graphBuilder = new PGUtils();
+var GraphUtils = require("../controllers/shared/graph_utils");
+var graphBuilder = new GraphUtils();
 
 // internal depencencies
 var rcon = require('../controllers/rethinkConnection');

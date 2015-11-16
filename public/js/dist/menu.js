@@ -1,6 +1,6 @@
 "use strict";
 
-var pgUtils = new PGUtils();
+var netUtils = new NetUtils();
 
 // ============================================================================
 var CollectionItem = React.createClass({

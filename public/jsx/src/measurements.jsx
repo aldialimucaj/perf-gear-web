@@ -1,4 +1,4 @@
-var pgUtils = new PGUtils();
+var netUtils = new NetUtils();
 
 // ============================================================================
 var MeasurementNode = React.createClass({

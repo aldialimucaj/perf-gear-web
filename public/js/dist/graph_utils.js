@@ -4,7 +4,7 @@
 	'use strict';
 
 	if (module && require) { // put the requires here
-		_ = require("lodash");
+		GLOBAL._ = require("lodash");
 	}
 
 
@@ -411,5 +411,9 @@
 		module.exports = GraphUtils;
 	else
 		window.GraphUtils = GraphUtils;
+
+  if(!String.prototype.toUpperFirst) String.prototype.toUpperFirst = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+  }
 
 })(typeof module === 'undefined' ? undefined : module);

@@ -1,4 +1,4 @@
-var pgUtils = new PGUtils();
+var netUtils = new NetUtils();
 
 // ============================================================================
 var MeasurementBox = React.createClass({
@@ -11,7 +11,7 @@ var MeasurementBox = React.createClass({
   componentDidMount: function() {
     var self = this;
     self.setState({measurementId: params.id});
-    pgUtils.fetchOneMeasurementById(this.state.collection.current, params.id, function (err, data) {
+    netUtils.fetchOneMeasurementById(this.state.collection.current, params.id, function (err, data) {
       self.setState({measurement: data});
     });
 

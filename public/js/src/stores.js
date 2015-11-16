@@ -62,7 +62,7 @@ var measurementsStore = Reflux.createStore({
 
   onGetMeasurements: function (collection, skip, limit) {
     let self = this;
-    pgUtils.fetchMeasurements(collection, skip, limit, function (err, data) {
+    netUtils.fetchMeasurements(collection, skip, limit, function (err, data) {
       self.measurements.data = data;
       self.update(self.measurements);
     });
@@ -70,7 +70,7 @@ var measurementsStore = Reflux.createStore({
   
   onGetMeasurementsCount: function (collection) {
     let self = this;
-    pgUtils.fetchMeasurementsCount(collection, function (err, data) {
+    netUtils.fetchMeasurementsCount(collection, function (err, data) {
       self.measurements.count = data;
       self.measurements.pages = Math.ceil(data / self.measurements.limit);
       self.update(self.measurements);
@@ -120,7 +120,7 @@ var chartsStore = Reflux.createStore({
 
   onGetCharts: function (collection, skip, limit) {
     let self = this;
-    pgUtils.fetchCharts(collection, skip, limit, function (err, data) {
+    netUtils.fetchCharts(collection, skip, limit, function (err, data) {
       self.charts.data = data;
       self.update(self.charts);
     });
@@ -128,7 +128,7 @@ var chartsStore = Reflux.createStore({
   
   onGetChartsCount: function (collection) {
     let self = this;
-    pgUtils.fetchChartsCount(collection, function (err, data) {
+    netUtils.fetchChartsCount(collection, function (err, data) {
       self.charts.count = data;
       self.charts.pages = Math.ceil(data / self.charts.limit);
       self.update(self.charts);
@@ -178,7 +178,7 @@ var persistenceStore = Reflux.createStore({
   },
   
   onSaveChart: function() {
-    pgUtils.saveChart(this.chart, function(err, msg){
+    netUtils.saveChart(this.chart, function(err, msg){
       console.log(err);
     });
   },
@@ -230,7 +230,7 @@ var analyticsStore = Reflux.createStore({
     };
     
     try {
-      pgUtils.sendAnalyticsQuery(q, (data) => {
+      netUtils.sendAnalyticsQuery(q, (data) => {
         this.config.result = data.content;
         this.updateConfiguration(this.config);
         this.transformResultsToMeasurement(data.content);
@@ -242,7 +242,7 @@ var analyticsStore = Reflux.createStore({
   },
   
   transformResultsToMeasurement: function(qResult) {
-    var result = pgUtils.queryResultsToMeasurement(qResult) // TODO: check and display errors
+    var result = netUtils.queryResultsToMeasurement(qResult) // TODO: check and display errors
     this.config.mockMeasurement = result.template;
     this.updateConfiguration(this.config);
   },
@@ -281,7 +281,7 @@ var collectionStore = Reflux.createStore({
   
   onGetCollectionList: function () {
     let self = this;
-    pgUtils.fetchCollections((err, data) => {
+    netUtils.fetchCollections((err, data) => {
       self.collection.list = data;
       self.checkDefault();
       self.updateConfiguration(self.collection);

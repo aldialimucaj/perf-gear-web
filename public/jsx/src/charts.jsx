@@ -1,4 +1,4 @@
-var pgUtils = new PGUtils();
+var netUtils = new NetUtils();
 
 // ============================================================================
 var ChartNode = React.createClass({

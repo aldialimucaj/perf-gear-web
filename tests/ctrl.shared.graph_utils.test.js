@@ -1,10 +1,10 @@
-var PGUtils = require("../public/js/src/pg_utils");
+var GraphUtils = require("../controllers/shared/graph_utils");
 var expect = require("chai").expect;
 var _ = require("lodash");
 
 
-describe("Public.PG_UTILS", function () {
-    var pg_utils = null;
+describe("Public.GRAPH_UTILS", function () {
+    var graphUtils = null;
 	var fix = {};
 
 	
@@ -12,24 +12,24 @@ describe("Public.PG_UTILS", function () {
 	describe("Get a list of axis fields out of object", function() {
 		it("should compile a list of itmes out of a plain object", function() {
 			// bar x-axis
-			var xKeyList = pg_utils.getAxisItems("bar","xAxis",fix.getAxisItems.m1);
+			var xKeyList = graphUtils.getAxisItems("bar","xAxis",fix.getAxisItems.m1);
 			expect(xKeyList).to.be.eql(fix.getAxisItems.e1);
 			// bar y-axis
-			var yKeyList = pg_utils.getAxisItems("bar","yAxis",fix.getAxisItems.m1);
+			var yKeyList = graphUtils.getAxisItems("bar","yAxis",fix.getAxisItems.m1);
 			expect(yKeyList).to.be.eql(fix.getAxisItems.e1_2);
 			
 			
 		});
 		it("should compile a list of itmes out of a complex object and sequence", function(){
 			// complex object with subobject, recursion test
-			var xKeyList = pg_utils.getAxisItems("bar","xAxis",fix.getAxisItems.m2);
+			var xKeyList = graphUtils.getAxisItems("bar","xAxis",fix.getAxisItems.m2);
 			expect(xKeyList).to.be.eql(fix.getAxisItems.e2);
 			// type line
-			var xKeyList = pg_utils.getAxisItems("line","xAxis",fix.getAxisItems.m2);
+			var xKeyList = graphUtils.getAxisItems("line","xAxis",fix.getAxisItems.m2);
 			expect(xKeyList).to.be.eql(fix.getAxisItems.e2);
 			
 			// sequence
-			var xKeyList = pg_utils.getAxisItems("seq","xAxis",fix.getAxisItems.m2);
+			var xKeyList = graphUtils.getAxisItems("seq","xAxis",fix.getAxisItems.m2);
 			expect(xKeyList).to.be.eql(fix.getAxisItems.e2_1);
 		})
 	});
@@ -37,7 +37,7 @@ describe("Public.PG_UTILS", function () {
 	/* ======================================================================== */
 	describe("Build graph options from single measurement", function () {
 		it("should transform a single measurement", function () {
-			var options = pg_utils.buildOptionsFromSingle(fix.buildOptionsFromSingle.m1, fix.buildOptionsFromSingle.s1);
+			var options = graphUtils.buildOptionsFromSingle(fix.buildOptionsFromSingle.m1, fix.buildOptionsFromSingle.s1);
 			expect(options).not.to.be.null;
 			expect(options).to.be.eql(fix.buildOptionsFromSingle.e1);
 		});
@@ -46,7 +46,7 @@ describe("Public.PG_UTILS", function () {
 	/* ======================================================================== */
 	describe("Build graph options from single sequencial TIME measurement", function () {
 		it("should transform a single measurement", function () {
-			var options2 = pg_utils.buildOptionsFromSingleTimestamp(fix.buildOptionsFromSingle.m1, fix.buildOptionsFromSingle.s1_2);
+			var options2 = graphUtils.buildOptionsFromSingleTimestamp(fix.buildOptionsFromSingle.m1, fix.buildOptionsFromSingle.s1_2);
 			expect(options2).not.to.be.null;
 			expect(options2).to.be.eql(fix.buildOptionsFromSingle.e1_2);
 		});
@@ -55,7 +55,7 @@ describe("Public.PG_UTILS", function () {
 	/* ======================================================================== */
 	describe("Build graph options from single sequencial RAM measurement", function () {
 		it("should transform a single measurement", function () {
-			var options = pg_utils.buildOptionsFromSingleRAM(fix.buildOptionsFromSingleRAM.m1, fix.buildOptionsFromSingleRAM.s1);
+			var options = graphUtils.buildOptionsFromSingleRAM(fix.buildOptionsFromSingleRAM.m1, fix.buildOptionsFromSingleRAM.s1);
 			expect(options).not.to.be.null;
 			expect(options).to.be.eql(fix.buildOptionsFromSingleRAM.e1);
 		});
@@ -64,7 +64,7 @@ describe("Public.PG_UTILS", function () {
 	/* ======================================================================== */
 	describe("Create phantom measurement to match graph axes options", function () {
 		it("should transform all measurements to one phaton measurement", function () {
-			var result = pg_utils.queryResultsToMeasurement(fix.queryResultsToMeasurement.m1)
+			var result = graphUtils.queryResultsToMeasurement(fix.queryResultsToMeasurement.m1)
 				expect(result.template).not.to.be.null;
 				expect(result.template).to.be.eql(fix.queryResultsToMeasurement.e1);
 		});
@@ -73,7 +73,7 @@ describe("Public.PG_UTILS", function () {
 	/* ======================================================================== */
 	describe("Build graph from multiple results", function () {
 		it("should transform multiple results to chart options", function () {
-			var options = pg_utils.buildOptionsFromMultiple(fix.buildOptionsFromMultiple.m1, fix.buildOptionsFromMultiple.s1);
+			var options = graphUtils.buildOptionsFromMultiple(fix.buildOptionsFromMultiple.m1, fix.buildOptionsFromMultiple.s1);
 			expect(options).not.to.be.null;
 			expect(options).to.be.eql(fix.buildOptionsFromMultiple.e1);
 		});
@@ -82,7 +82,7 @@ describe("Public.PG_UTILS", function () {
 	
 	/* ======================================================================== */
 	before(function () {
-		pg_utils = new PGUtils();
+		graphUtils = new GraphUtils();
 		// -----
 		fix.buildOptionsFromSingle = {};
 		fix.buildOptionsFromSingle.m1 = { "_commitDate": "2015-10-11T19:32:59.907Z", 
