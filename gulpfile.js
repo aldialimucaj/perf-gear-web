@@ -26,8 +26,8 @@ gulp.task('shared', function () {
 gulp.task('browser-sync', ['start'], function() {
   browserSync.init({
     baseDir: "./",
-    port: 3000,
-    proxy: "http://localhost:4000",
+    port: 4000,
+    proxy: "http://localhost:3000",
     open: false
 	});
   
