@@ -48,7 +48,7 @@ gulp.task('push-test-data', function() {
   for(let fix in fixtures.preview_data) {
     request(
           {
-            url: 'http://localhost:4000/api/measurements',
+            url: 'http://localhost:3000/api/measurements',
             method: "POST",
             json: true,
             body: fixtures.preview_data[fix]

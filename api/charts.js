@@ -81,7 +81,7 @@ router.get('/:id/:collection/options', function(req, res) {
       case TYPE_ANALYTICS: {
         request(
           {
-            url: 'http://localhost:4000/api/analytics/query',
+            url: 'http://localhost:3000/api/analytics/query',
             method: "POST",
             json: true,
             body: {query: chart.query, collection: collection}
