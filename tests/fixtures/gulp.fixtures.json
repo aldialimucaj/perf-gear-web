@@ -1,0 +1,86 @@
+{
+	"preview_data": [
+		{
+			"semver": "0.0.1",
+			"_commitDate": "2015-11-28T19:03:14.406Z",
+			"hitValue": 3,
+			"path": "test/api/save_timestamp",
+			"sequence": [
+				{
+					"tag": "Start",
+					"timestamp": 1446058994308461,
+					"value": 1446058994308461
+				},
+				{
+					"tag": "mid",
+					"timestamp": 1446058994308468,
+					"value": 1446058994308468
+				},
+				{
+					"tag": "End",
+					"timestamp": 1446058994308472,
+					"value": 1446058994308472
+				}
+			],
+			"type": "TIME",
+			"unit": "MICROSECONDS"
+		},
+		{
+			"semver": "0.0.2",
+			"_commitDate": "2015-11-29T19:03:14.406Z",
+			"hitValue": 3,
+			"path": "test/api/save_timestamp",
+			"sequence": [
+				{
+					"tag": "Start",
+					"timestamp": 1446058994308461,
+					"value": 1446058994308461
+				},
+				{
+					"tag": "mid",
+					"timestamp": 1446058994308468,
+					"value": 1446058994308468
+				},
+				{
+					"tag": "End",
+					"timestamp": 1446058994308472,
+					"value": 1446058994308472
+				}
+			],
+			"type": "TIME",
+			"unit": "MICROSECONDS"
+		},
+		{
+			"_commitDate": "2015-11-28T19:03:14.635Z",
+			"hitValue": 3,
+			"id": "40c14c8b-b2c9-45c2-9ae0-a715e677947d",
+			"path": "test/api/ram_usage",
+			"sequence": [
+				{
+					"timestamp": 1446058994309875,
+					"value": 5984
+				},
+				{
+					"timestamp": 1446058994476593,
+					"value": 7008
+				},
+				{
+					"timestamp": 1446058994620002,
+					"value": 7108
+				}
+			],
+			"type": "RAM",
+			"unit": "KIBIBYTE"
+		},
+		{
+			"_commitDate": "2015-11-28T19:03:14.471Z",
+			"hitValue": 1,
+			"id": "996e0e23-6616-4fa2-91bf-bf62f4d1986b",
+			"path": "test/api/params",
+			"sequence": [],
+			"test": "dynamic params",
+			"type": "HIT",
+			"unit": "HITS"
+		}
+	]
+}

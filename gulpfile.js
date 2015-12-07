@@ -40,6 +40,26 @@ gulp.task('browser-sync', ['start'], function() {
 
 });
 
+gulp.task('push-test-data', function() {
+  "use strict";
+  var fs = require('fs');
+  var request = require('request');
+  var fixtures = JSON.parse(fs.readFileSync('tests/fixtures/gulp.fixtures.json', 'utf8'));
+  for(let fix in fixtures.preview_data) {
+    request(
+          {
+            url: 'http://localhost:4000/api/measurements',
+            method: "POST",
+            json: true,
+            body: fixtures.preview_data[fix]
+          }, 
+          function(err, response, body) {
+            if(err) console.log(err);
+        });   
+  }
+  console.log("Finished adding "+ fixtures.preview_data.length + " test data." );
+});
+
 gulp.task('start', function (cb) {
   var started = false;
 
