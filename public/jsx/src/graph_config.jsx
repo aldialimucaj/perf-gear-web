@@ -313,10 +313,12 @@ var GraphPersistence = React.createClass({
     // CLTR + S
     $('#persistence-container').keydown(function(e) {
       if (e.keyCode == 83 && e.ctrlKey) {
+        e.preventDefault();
+        e.stopPropagation();
+        
         if(self.preCommit()) {
           PersistenceActions.saveChart();
         }
-        e.preventDefault();
       }
     });
     
